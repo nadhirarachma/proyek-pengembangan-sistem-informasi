@@ -35,6 +35,10 @@ public class ObatDetailModel implements Serializable {
     private String status;
 
     @NotNull
+    @Column(name = "status_konfirmasi", nullable = false)
+    private String statusKonfirmasi;
+
+    @NotNull
     @Column(name = "stok", nullable = false)
     private int stok;
 

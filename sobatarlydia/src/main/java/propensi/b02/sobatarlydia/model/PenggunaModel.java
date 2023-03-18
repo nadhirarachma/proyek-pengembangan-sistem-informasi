@@ -37,7 +37,7 @@ public class PenggunaModel implements Serializable {
 
     @NotNull
     @Column(name = "nomor_telepon", nullable = false)
-    private long nomorTelepon;
+    private String nomorTelepon;
 
     @NotNull
     @Column(name = "password", nullable = false)
