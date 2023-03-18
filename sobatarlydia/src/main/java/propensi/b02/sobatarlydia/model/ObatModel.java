@@ -34,7 +34,7 @@ public class ObatModel implements Serializable {
     @Size(max = 50)
     @Column(name = "id_obat", nullable = false)
     private String idObat;
-    
+
     @NotNull
     @Column(name = "nama_obat", nullable = false)
     private String namaObat;
