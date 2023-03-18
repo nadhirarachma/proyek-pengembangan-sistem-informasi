@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar Input Obat</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
+  <!--    <object th:include="fragments/fragment :: css" th:remove="tag"></object>-->
+  <!--    <object th:include="fragments/fragment :: js" th:remove="tag"></object>-->
+</head>
+
+<body style="background-color: #EBFEFF">
+<div class="container">
+  <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Daftar Input Obat</div>
+</div>
+<div class="container" style="border-radius:0.25rem">
+  <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 150px; margin-right: 150px">
+    <div th:if="*{role == 'apoteker'}">
+      <div th:if="*{status == 'isi'}">
+        <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
+        <table class="p-3 m-1 table table-striped" style="outline-style: none">
+          <thead style="background-color: #ADF6F6">
+          <tr>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">No</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Kode Batch</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Farmasi</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Nama Obat</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Tanggal Kadaluarsa</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Stok</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Satuan Per Box</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Per Box</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Verifikasi</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="obat, iterationStatus:${listWaiting}">
+            <td class="text-center" th:text="${iterationStatus.count}"></td>
+            <td class="text-center" th:text="${obat.kodebatch}"></td>
+            <td class="text-center" th:text="${obat.farmasi}"></td>
+            <td class="text-center" th:text="${obat.namaobat}"></td>
+            <td class="text-center" th:text="${obat.tanggalexp}"></td>
+            <td class="text-center" th:text="${obat.stok}"></td>
+            <td class="text-center" th:text="${obat.satuanperbox}"></td>
+            <td class="text-center" th:text="${obat.jumlahperbox}"></td>
+            <td>
+              <button type="button" class="btn btn-primary" style="background-color: #F0BF76; border-color: #F0BF76; color: white; font-family:Urbanist;font-weight: bold" data-toggle="modal" th:data-target="|#userModal${iterationStatus.index}|">
+                Update
+              </button>
+            </td>
+
+            <div class="modal fade" th:id="|userModal${iterationStatus.index}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                      Apakah Anda akan mengonfirmasi bahwa data obat yang dimasukkan sudah benar?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary pull-left" data-dismiss="modal">Batalkan</button>
+                      <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" th:href="@{/}">Ajukan Revisi</a>
+                      <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/}">Terima</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+<!--              <a class="btn btn-primary text-black text-center" type="submit" th:href="@{/}" style="background-color: #5FE7E7; border-color: #5FE7E7">Terima</a>-->
+<!--              <a class="btn btn-primary text-black text-center" type="submit" th:href="@{/}" style="background-color: #5FE7E7; border-color: #5FE7E7">Tolak</a>-->
+            </td>
+          </tbody>
+        </table>
+      </div>
+
+      <div th:if="*{status == 'kosong'}">
+        <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Belum ada daftar obat yang harus diverifikasi statusnya</h4>
+      </div>
+    </div>
+    <div th:if="*{role == 'karyawan'}">
+      <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
+      <table class="p-3 m-1 table table-striped" style="outline-style: none">
+        <thead style="background-color: #ADF6F6">
+        <tr>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">No</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Kode Batch</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Farmasi</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Nama Obat</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Tanggal Kadaluarsa</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Stok</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Satuan Per Box</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Per Box</th>
+          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="obat, iterationStatus:${listWaiting}">
+          <td class="text-center" th:text="${iterationStatus.count}"></td>
+          <td class="text-center" th:text="${obat.kodebatch}"></td>
+          <td class="text-center" th:text="${obat.farmasi}"></td>
+          <td class="text-center" th:text="${obat.namaobat}"></td>
+          <td class="text-center" th:text="${obat.tanggalexp}"></td>
+          <td class="text-center" th:text="${obat.stok}"></td>
+          <td class="text-center" th:text="${obat.satuanperbox}"></td>
+          <td class="text-center" th:text="${obat.jumlahperbox}"></td>
+          <td class="text-center" th:text="${obat.statuskonfirmasi}"></td>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
