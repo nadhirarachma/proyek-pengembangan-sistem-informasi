@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
 import propensi.b02.sobatarlydia.service.ObatDetailService;
+import propensi.b02.sobatarlydia.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -18,15 +20,18 @@ public class ObatDetailController {
     @Autowired
     ObatDetailService obatDetailService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/waiting")
-    public String listAllWaiting(Model model) {
+    public String listAllWaiting(Principal principal, Model model) {
         List<ObatWaiting> listWaiting = obatDetailService.getAllObatWaiting();
         String status="isi";
         if (listWaiting.size()==0){
             status="kosong";
         }
 
-        String role = "apoteker";
+        String role = userService.getAkunByEmail(principal.getName()).getRole();
 
         System.out.println(status);
         model.addAttribute("status", status);
