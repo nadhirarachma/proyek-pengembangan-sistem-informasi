@@ -12,4 +12,6 @@ public interface UserService {
     public List<PenggunaModel> getListAkun();
     void nonaktifAkun(PenggunaModel akun);
     PenggunaModel getAkunByEmail(String email);
+    PenggunaModel addDistributor(PenggunaModel pengguna);
+    public String encrypt(String password);
 }
