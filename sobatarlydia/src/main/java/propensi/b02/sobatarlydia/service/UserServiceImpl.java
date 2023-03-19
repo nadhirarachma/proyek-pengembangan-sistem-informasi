@@ -1,6 +1,7 @@
 package propensi.b02.sobatarlydia.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.repository.UserDB;
@@ -58,5 +59,31 @@ public class UserServiceImpl implements UserService{
         if(akun.isPresent()){
             return akun.get();
         } else return null;
+    }
+
+    @Override
+    public String encrypt(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
+    }
+
+    @Override
+    public PenggunaModel addDistributor(PenggunaModel pengguna) {
+
+        String email = pengguna.getEmail();
+        if (getAkunByEmail(email) == null) {
+            
+            String pass = encrypt(pengguna.getPassword());
+
+            pengguna.setPassword(pass);
+            pengguna.setIsActive(0);
+            pengguna.setRole("Distributor");
+            return userDB.save(pengguna);
+        }
+        else {
+            PenggunaModel penggunaExist = new PenggunaModel();
+            penggunaExist.setEmail("exist");
+            return penggunaExist;
+        }
     }
 }

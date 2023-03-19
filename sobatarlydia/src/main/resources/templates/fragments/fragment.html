@@ -28,21 +28,23 @@
                     </a>
                 </div>
             </a>
-                <ul class="navbar-nav mx-auto">
-                    <li th:class="${#strings.equals(activeLink, 'Akun')} ? 'nav-item active' : 'nav-item'">
-                        <a class="nav-link " th:href="@{/pengguna/viewall}" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem">Akun</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Profil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Katalog Obat</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px;" href="#">Penjualan</a>
-                    </li>
-                </ul>
-            <button type="button" class="btn btn-primary">Logout</button>
+            <ul class="navbar-nav mx-auto">
+                <li th:class="${#strings.equals(activeLink, 'Akun')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link " th:href="@{/pengguna/viewall}" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem">Akun</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Katalog Obat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px;" href="#">Penjualan</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav pull-right">
+                <a class="nav-item nav-link btn" style="background:#5FE7E7;color:white;border-radius: 10px;" onclick="return confirm('Apakah Anda yakin untuk Log Out?');" th:href="@{/logout}">Log Out</a>
+            </ul>
         </div>
     </nav>
 </body>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registrasi</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .bg {
+            /* The image used */
+            background-image: url("https://pbs.twimg.com/media/FrQGKVqaYAAR4kx?format=jpg&name=large");
+
+            /* Full height */
+            height: 150%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        * {
+            font-family: 'Urbanist', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-5-strong">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="https://pbs.twimg.com/media/FrQA-mqagAE-Opq?format=png&name=120x120" alt="SOBAT Arlydia" height="90">
+                </a>
+            </div>
+        </nav>
+        <h2 class="font-weight-bold text-center">SELAMAT DATANG DI SOBAT ARLYDIA!</h2>
+        <br>
+
+        <div class="row justify-content-center mx-auto">
+            <div class="col-md-6">
+                <div class="card shadow" style="border-radius: 5%;">
+                    <div class="mt-4">
+                        <h4 class="font-weight-bold text-center">Registrasi</h4>
+                    </div>
+                    <div class="card-body col-9 mx-auto">
+                        <form th:action="@{/registrasi}" th:object="${pengguna}" method="POST" onsubmit='checkit()'>
+                            <div class="row form-group">
+                                <div class="col">
+                                    <label class="font-weight-bold">Nama Depan</label>
+                                    <input type="text" class="form-control input-sm" name="namaDepan" placeholder="contoh: Lala" required>
+                                </div>
+                                <div class="col">
+                                    <label class="font-weight-bold">Nama Belakang</label>
+                                    <input type="text" class="form-control input-sm" name="namaBelakang" placeholder="contoh: Putri" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Email</label>
+                                <input type="email" class="form-control input-sm" name="email" placeholder="contoh: putri@mail.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nomor Telepon</label>
+                                <input type="text" class="form-control input-sm" name="nomorTelepon" placeholder="contoh: 08123456789" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Password</label>
+                                <div class="input-group mb-3">
+                                    <input type="password" id="password-field" class="form-control input-sm" name="password" placeholder="Password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" required>
+                                    <div class="input-group-append">
+                                      <span class="input-group-text" id="basic-addon2"><i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <span th:text=${validasi} class="text-danger"></h5>
+                            </div>
+                            <div class="form-group text-center mt-5">
+                                <button type="submit" class="btn" style="background:#7698F0;color:white;border-radius: 10px;padding-inline:20%;">Daftar</button>
+                            </div>
+                            <div class="text-center mt-4">
+                                Sudah memiliki akun? <a th:href="@{/login}" style="color:#7698F0">Masuk</a>
+                            </div>
+                            <br><br>
+                        </form>
+
+                        <div class="modal fade centered" id="myModal" role="dialog">
+                            <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title text-center">Pendaftaran Anda Berhasil</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Anda sudah bisa masuk dan mengakses fitur Penawaran Obat pada sistem</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                                        <a th:href="@{/login}" class="btn btn-primary" role="button">Log In</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button th:if="${statMsg} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+    <script>
+        document.getElementById('btn').click();
+    </script>
+    <script>
+        var firstNameField = document.querySelector("input[name=namaDepan]");
+        var lastNameField = document.querySelector("input[name=namaBelakang]");
+        var emailField = document.querySelector("input[name=email]");
+        var noField = document.querySelector("input[name=nomorTelepon]");
+        var passwordField = document.querySelector("input[name=password]");
+
+        firstNameField.addEventListener("invalid", function(){
+        this.setCustomValidity('');
+        if (!this.validity.valid) {
+            this.setCustomValidity('Mohon mengisi Nama Depan Anda');  
+            }
+        });
+
+        lastNameField.addEventListener("invalid", function(){
+        this.setCustomValidity('');
+        if (!this.validity.valid) {
+            this.setCustomValidity('Mohon mengisi Nama Belakang Anda');  
+            }
+        });
+
+        emailField.addEventListener("invalid", function(){
+        this.setCustomValidity('');
+        if (!this.validity.valid) {
+            this.setCustomValidity('Mohon mengisi Email Anda');  
+            }
+        });
+
+        noField.addEventListener("invalid", function(){
+        this.setCustomValidity('');
+        if (!this.validity.valid) {
+            this.setCustomValidity('Mohon mengisi Nomor Telepon Anda');  
+            }
+        });
+
+        passwordField.addEventListener("invalid", function(){
+        this.setCustomValidity('');
+        if (!this.validity.valid) {
+            this.setCustomValidity('Password harus mengandung angka, huruf besar, huruf kecil, dan simbol, serta minimal memiliki 8 karakter');  
+            }
+        });
+    </script>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password-field');
+
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>
