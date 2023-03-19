@@ -26,13 +26,15 @@ public class ObatDetailServiceImpl implements ObatDetailService{
         for (int i = 0; i < getAllObatDetail().size(); i++) {
             if (getAllObatDetail().get(i).getStatusKonfirmasi().equals("Menunggu")){
                 ObatWaiting obat = new ObatWaiting();
-                // obat.setJumlahperbox(getAllObatDetail().get(i).getObatDetailId().getIdObat().getJumlahPerBox());
+                obat.setObatDetailId(getAllObatDetail().get(i).getObatDetailId().toString());
+                obat.setJumlahperbox(getAllObatDetail().get(i).getJumlahPerBox());
+                obat.setJumlahbox(getAllObatDetail().get(i).getJumlahBox());
                 obat.setKodebatch(getAllObatDetail().get(i).getObatDetailId().getKodeBatch());
-                obat.setStok(getAllObatDetail().get(i).getStok());
+                obat.setStok(getAllObatDetail().get(i).getStokTotal());
                 obat.setFarmasi(getAllObatDetail().get(i).getObatDetailId().getIdObat().getFarmasi());
-                // obat.setSatuanperbox(getAllObatDetail().get(i).getObatDetailId().getIdObat().getSatuanPerBox());
+                obat.setSatuanperbox(getAllObatDetail().get(i).getSatuanPerBox());
                 obat.setNamaobat(getAllObatDetail().get(i).getObatDetailId().getIdObat().getNamaObat());
-                // obat.setTanggalexp(getAllObatDetail().get(i).getTanggalKadaluarsa());
+                obat.setTanggalexp(getAllObatDetail().get(i).getTanggalKadaluarsa());
                 obat.setStatuskonfirmasi(getAllObatDetail().get(i).getStatusKonfirmasi());
                 waitingList.add(obat);
             }

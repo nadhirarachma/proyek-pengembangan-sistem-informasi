@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftarkan Obat</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body>
+
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Pendaftaran Obat</h2>
+        <br>
+        <form th:action="@{/obat/daftarkan-obat}" th:object="${obat}" method="POST">
+          <br>
+          <label>Nama Obat</label>
+          <input type="text" name="namaObat" class="form-control"/>
+
+          <br>
+          <label>Farmasi</label>
+          <input type="text" name="farmasi" class="form-control"/>
+
+          <br>
+          <label>Bentuk Obat</label>
+          <input type="text" name="bentukObat" class="form-control"/>
+
+          <br>
+          <label>Harga</label>
+          <input type="number" name="harga" class="form-control"/>
+
+          <br>
+          <label>Kategori</label>
+          <select name="kategori" class="form-control" th:field="*{kategori.no}">
+            <div th:each="kategoriAvailable, iterationStatus:${listKategori}">
+              <option th:value="${kategoriAvailable.no}" th:text="${kategoriAvailable.namaKategori}"></option>
+            </div>
+          </select>
+
+          <br>
+          <a class="btn btn-link" href="/">Home</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+
+        <div class="modal fade centered" id="myModal" role="dialog">
+          <div class="px-5 modal-dialog modal-dialog-centered text-center">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title text-center">Obat Berhasil Disimpan</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <p>Anda sudah bisa menginput detail obat pada halaman Input Data Obat</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
+                 <a th:href="@{/obat/input-data}" class="px-5 m-3 bg-warning btn text-white">Input Data Obat</a>
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button th:if="${statMsg} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+<script>
+  document.getElementById('btn').click();
+</script>
+
+</body>
+</html>

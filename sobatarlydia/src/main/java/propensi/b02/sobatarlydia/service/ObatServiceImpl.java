@@ -1,25 +1,24 @@
 package propensi.b02.sobatarlydia.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
+import propensi.b02.sobatarlydia.repository.KategoriObatDb;
 import propensi.b02.sobatarlydia.repository.ObatDb;
 import propensi.b02.sobatarlydia.repository.ObatDetailDb;
-import propensi.b02.sobatarlydia.repository.KategoriObatDb;
 
-import propensi.b02.sobatarlydia.repository.ObatDetailDb;
-import javax.transaction.Transactional;
-
-
-import java.util.List;
-import java.util.Optional;
-
-@Transactional
 @Service
-public class ObatServiceImpl implements ObatService{
+@Transactional
+public class ObatServiceImpl implements ObatService {
     @Autowired
     ObatDb obatDb;
 
@@ -29,9 +28,62 @@ public class ObatServiceImpl implements ObatService{
     @Autowired
     KategoriObatDb kategoriObatDb;
 
+
+    public ObatModel addObat(ObatModel obat) {
+        obatDb.save(obat);
+        return obat;
+    }
+
+    public ObatDetailModel addObatDetail(ObatDetailModel obat) {
+        obatDetailDb.save(obat);
+        return obat;
+    }
+
+
+    public ObatModel setId(ObatModel obat) {
+        String nama = obat.getNamaObat().substring(0, 3).toUpperCase();
+        String farmasi = obat.getFarmasi().substring(0, 3).toUpperCase();
+        obat.setIdObat(nama + farmasi);
+        System.out.println(obat.getIdObat());
+
+        return obat;
+    }
+
+
+
     @Override
     public List<ObatModel> getListObat() {
         return obatDb.findAll();
+    }
+
+    public List<ObatModel> getObatByFarmasi(String farmasi) {
+        System.out.println(farmasi);
+        System.out.println("AAAAAA");
+        List<ObatModel> lst = new ArrayList<>();
+        try {
+            lst = obatDb.findByFarmasi(farmasi);
+            System.out.println("MASUK SINI");
+            System.out.println(lst);
+        } catch (Exception e) {
+            System.out.println("KOK GAMASUK");
+        }
+        
+        return lst;
+    }
+
+    public ObatModel getObatByNamaDanFarmasi(String nama, String farmasi) {
+        List<ObatModel> listObat = obatDb.findByFarmasi(farmasi);
+        System.out.println("CCCCCCCCCCCCCC");
+        System.out.println(listObat);
+
+        for (ObatModel obat : listObat) {
+            if (obat.getNamaObat().equals(nama)) {
+                System.out.println(obat.getNamaObat());
+                return obat;
+            }
+        }
+        return null;
+
     }
 
     @Override
@@ -67,8 +119,6 @@ public class ObatServiceImpl implements ObatService{
     public ObatDetailModel updateObatDitolak(ObatDetailModel tolak) {
         tolak.setStatusKonfirmasi("Ditolak");
         return obatDetailDb.save(tolak);
-
-//        return obatDetailDb.findById(tolak.getObatDetailId().getIdObat().getIdObat()).get();
     }
 
     @Override

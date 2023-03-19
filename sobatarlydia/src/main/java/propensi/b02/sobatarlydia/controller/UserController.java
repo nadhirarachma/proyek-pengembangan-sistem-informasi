@@ -1,10 +1,13 @@
 package propensi.b02.sobatarlydia.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import propensi.b02.sobatarlydia.model.PenggunaModel;
@@ -16,6 +19,23 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping( "/viewall")
+    private String viewAllAkun (Model model) {
+        List<PenggunaModel> listAkun = userService.getListAkun();
+        listAkun.removeIf(x -> x.getIsActive() == 1);
+        model.addAttribute("listAkun", listAkun);
+        return "viewall-akun";
+    }
+
+    @GetMapping("/nonaktif/{email}")
+    public String nonaktifAkun(@PathVariable String email, Model model){
+        PenggunaModel akun = userService.getAkunByEmail(email);
+        akun.setIsActive(1);
+        userService.nonaktifAkun(akun);
+        return "redirect:/pengguna/viewall";
+    }
+
 
     @GetMapping("/add")
     public String addPengguna(Model model) {
@@ -35,7 +55,7 @@ public class UserController {
         else {
 //            model.addAttribute("stat","sukses");
             model.addAttribute("pengguna", savedUser);
-            return "user/notif-sukses";
+            return "redirect:/pengguna/viewall";
         }
 
     }

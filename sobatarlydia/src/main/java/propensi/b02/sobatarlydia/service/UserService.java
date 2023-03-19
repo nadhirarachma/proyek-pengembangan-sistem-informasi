@@ -9,4 +9,7 @@ import java.util.List;
 public interface UserService {
     PenggunaModel addPengguna (PenggunaModel pengguna);
     List<PenggunaModel> getAllPengguna();
+    public List<PenggunaModel> getListAkun();
+    void nonaktifAkun(PenggunaModel akun);
+    PenggunaModel getAkunByEmail(String email);
 }

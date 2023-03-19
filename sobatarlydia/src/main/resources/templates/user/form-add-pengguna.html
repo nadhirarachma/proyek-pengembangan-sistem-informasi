@@ -1,23 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
-    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="bootstrap/js/bootstrap-modal.js"></script>
-    <script src="bootstrap/js/bootstrap-transition.js"></script>
-
-    <title>Registrasi Akun</title>
+  <meta charset="UTF-8">
+  <title>Daftarkan Pengguna</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
+
 <body style="background-color: #EBFEFF">
 <nav th:replace="fragments/fragment :: navbar('User')"></nav>
 <div class="container">
@@ -27,30 +22,42 @@
                 <h2 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Formulir Pembuatan Akun</h2>
                 <br>
                 <form th:action="@{/pengguna/add}" th:object="${pengguna}" method="POST">
-                    Nama Depan: <br>
+                    <label>
+                        Nama Depan:
+                    </label>
                     <input class="form-control" type="text" placeholder="cth: Ami" required th:field="*{namaDepan}"/>
-                    <br><br>
 
-                    Nama Belakang: <br>
+                    <br>
+                    <label>
+                        Nama Belakang:
+                    </label>
                     <input class="form-control" type="text" placeholder="cth: Smith" required th:field="*{namaBelakang}"/>
-                    <br><br>
 
-                    Email: <br>
+                    <br>
+                    <label>
+                        Email:
+                    </label>
                     <input class="form-control" type="text" placeholder="cth: ami@mail.com" required th:field="*{email}"/>
-                    <br><br>
-
-                    Nomor Telepon: <br>
+                    
+                    <br>
+                    <label>
+                        Nomor Telepon:
+                    </label>
                     <input class="form-control" type="text" placeholder="cth: 081289898999" required th:field="*{nomorTelepon}" />
-                    <br><br>
-
-                    Role: <br>
-                    <select name="role" th:value="*{role}">
+                    
+                    <br>
+                    <label>
+                        Role:
+                    </label>
+                    <select name="role" th:value="*{role}" class="form-control">
                         <option value="karyawan">karyawan</option>
                         <option value="apoteker">apoteker</option>
                     </select>
-                    <br><br>
 
-                    Password: <br>
+                    <br>
+                    <label>
+                        Password:
+                    </label>
                     <input type="password" value="pswd" id="myInput" required th:field="*{password}"/><br><br>
                     <input type="checkbox" onclick="myFunction()"> Tunjukkan Password
 
@@ -67,8 +74,6 @@
 
                     <br><br>
 
-<!--                    <button class="btn btn-primary" type="submit">Simpan</button>-->
-<!--                    <a class="btn btn-primary" href="/">Beranda</a>-->
 
                     <div class="row gx-5">
                         <div class="col">
@@ -79,35 +84,24 @@
                         </div>
                     </div>
 
-<!--                    <div class="row" >-->
-<!--                        <div class="column">-->
-<!--                            <a class="btn btn-primary" href="/">Beranda</a>-->
-<!--                        </div>-->
-<!--                        <div class="column">-->
-<!--                            <button class="btn btn-primary" type="submit">Simpan</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                 </form>
 
-<!--                <div th:if="*{stat == 1}">-->
-<!--                <div class="modal fade centered" id="myModal" role="dialog">-->
-<!--                                <div class="px-5 modal-dialog modal-dialog-centered text-center">-->
-<!--                                    <div class="modal-content">-->
-<!--                                        <div class="modal-header">-->
-<!--                                            <h4 class="modal-title text-center">Pengguna Baru Gagal Disimpan</h4>-->
-<!--                                            <button type="button" class="close" data-dismiss="modal">&times;</button>-->
-<!--                                        </div>-->
-<!--                                        <div class="modal-body">-->
-<!--                                            <p>Silakan input ulang pengguna baru dengan email berbeda</p>-->
-<!--                            </div>-->
-<!--                            <div class="modal-footer">-->
-<!--                                <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>-->
-<!--                                <button class="px-5 m-3 bg-warning btn text-white">Registrasi Ulang</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+               <div class="modal fade centered" id="myModal" role="dialog">
+                               <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                                   <div class="modal-content">
+                                       <div class="modal-header">
+                                           <h4 class="modal-title text-center">Pengguna Baru Gagal Disimpan</h4>
+                                           <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                       </div>
+                                       <div class="modal-body">
+                                           <p>Silakan input ulang pengguna baru dengan email berbeda</p>
+                           </div>
+                           <div class="modal-footer">
+                               <button type="button" class="btn btn-default" data-dismiss="modal">Oke</button>
+                           </div>
+                       </div>
+                   </div>
+               </div>
 
             </div>
         </div>
@@ -118,9 +112,7 @@
 
 <script th:replace="fragments/fragment :: js"></script>
 <script>
-
     document.getElementById("btn").click();
-    alert("Akun dengan Email tersebut sudah tersedia. Silakan daftar lagi dengan email baru");
 </script>
 </body>
 </html>

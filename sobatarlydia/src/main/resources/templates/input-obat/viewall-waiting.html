@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <title>Daftar Input Obat</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-  <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
-  <!--    <object th:include="fragments/fragment :: css" th:remove="tag"></object>-->
-  <!--    <object th:include="fragments/fragment :: js" th:remove="tag"></object>-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
+<body>
+
 
 <body style="background-color: #EBFEFF">
 <div class="container">
@@ -28,7 +32,7 @@
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Farmasi</th>
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Nama Obat</th>
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Tanggal Kadaluarsa</th>
-            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Stok</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Box</th>
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Satuan Per Box</th>
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Per Box</th>
             <th class="text-center" style="font-family: Urbanist; font-weight: bold">Verifikasi</th>
@@ -41,7 +45,7 @@
             <td class="text-center" th:text="${obat.farmasi}"></td>
             <td class="text-center" th:text="${obat.namaobat}"></td>
             <td class="text-center" th:text="${obat.tanggalexp}"></td>
-            <td class="text-center" th:text="${obat.stok}"></td>
+            <td class="text-center" th:text="${obat.jumlahbox}"></td>
             <td class="text-center" th:text="${obat.satuanperbox}"></td>
             <td class="text-center" th:text="${obat.jumlahperbox}"></td>
             <td>
@@ -64,7 +68,7 @@
                     <div class="modal-footer">
                       <button type="button" class="btn btn-outline-secondary pull-left" data-dismiss="modal">Batalkan</button>
                       <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" th:href="@{/}">Ajukan Revisi</a>
-                      <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/}">Terima</a>
+                      <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/obat-diterima/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Terima</a>
                     </div>
                   </div>
                 </div>
@@ -115,13 +119,33 @@
       </table>
     </div>
 
+    <div class="modal fade centered" id="myModal" role="dialog">
+      <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 class="modal-title text-center">Disetujui</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <p>Obat Berhasil Disetujui</p>
+          </div>
+          <div class="modal-footer">
+              <a class="btn btn-default" th:href="@{/obat-detail/waiting}">Kembali</a>
+                
+             <a th:href="@{/obat/data-obat}" class="px-5 m-3 bg-warning btn text-white">Lihat semua obat disetujui</a>
+          </div>
+      </div>
+  </div>
+  </div>
+
 
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<button th:if="${stat} == 1" hidden id="btn" data-toggle="modal" data-target="#myModal">Click me</button>
+<script>
+  document.getElementById('btn').click();
+</script>
 
 </body>
 </html>

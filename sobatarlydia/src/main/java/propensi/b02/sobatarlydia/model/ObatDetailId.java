@@ -28,4 +28,8 @@ public class ObatDetailId implements Serializable {
     private ObatModel idObat;
 
     private int kodeBatch;
+
+    public String toString() {
+        return idObat.getIdObat();
+    }
 }
