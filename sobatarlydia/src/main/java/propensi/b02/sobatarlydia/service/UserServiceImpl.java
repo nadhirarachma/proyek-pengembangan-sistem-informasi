@@ -8,6 +8,7 @@ import propensi.b02.sobatarlydia.repository.UserDB;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -39,5 +40,23 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<PenggunaModel> getAllPengguna() {
         return userDB.findAll();
+    }
+
+    @Override
+    public List<PenggunaModel> getListAkun() {
+        return userDB.findAll();
+    }
+
+    @Override
+    public void nonaktifAkun(PenggunaModel akun){
+        userDB.save(akun);
+    }
+
+    @Override
+    public PenggunaModel getAkunByEmail(String email){
+        Optional<PenggunaModel> akun = userDB.findByEmail(email);
+        if(akun.isPresent()){
+            return akun.get();
+        } else return null;
     }
 }

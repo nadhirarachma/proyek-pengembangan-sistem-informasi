@@ -8,14 +8,18 @@ import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 
 public interface ObatService {
+    ObatModel addObat(ObatModel obat);
+    ObatDetailModel addObatDetail(ObatDetailModel obat);
+    ObatModel setId(ObatModel obat);
     List<ObatModel> getListObat();
+    List<ObatModel> getObatByFarmasi(String farmasi);
+    ObatModel getObatByNamaDanFarmasi(String nama, String farmasi);
     ObatModel getObatById(String idObat);
-//    ObatDetailModel getStatus(String status);
     List<ObatModel> getListObatFiltered(Integer no);
     List<KategoriObatModel> getListKategori();
     KategoriObatModel getKategoriById(Integer no);
     ObatDetailModel getDetailObat(ObatDetailId idObat);
     ObatDetailModel updateObatDitolak(ObatDetailModel tolak);
     ObatDetailModel updateObatDiterima(ObatDetailModel terima);
-
+    
 }

@@ -2,14 +2,16 @@ package propensi.b02.sobatarlydia.rest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
+import propensi.b02.sobatarlydia.model.ObatDetailId;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ObatWaiting {
+
+    private String obatDetailId;
 
     private int kodebatch;
 
@@ -22,6 +24,8 @@ public class ObatWaiting {
     private int stok;
 
     private int jumlahperbox;
+
+    private int jumlahbox;
 
     private String satuanperbox;
 

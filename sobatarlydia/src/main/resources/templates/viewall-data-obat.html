@@ -14,15 +14,16 @@
 <body style="background-color: #EBFEFF">
 <div class="container">
 <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Daftar Obat</div>
-    <div class="p-4 m-4">
+    <div class="w-50 p-4" style="margin-left: 130px">
     <form th:action="@{/obat/filter-obat}" th:method="POST">
-        <label class="my-1 mr-2" style="font-family: Urbanist; font-weight: normal; margin-left: 110px; margin-right: 140px" >Kategori Obat</label>
-        <select class="form-control" name="no" style="margin-left: 110px">
-            <option style="font-family: Urbanist; font-weight: lighter" th:each="kategori : ${listKategori}" th:value="${kategori.no}" th:text="${kategori.namaKategori}">
-            </option>
-
-        </select>
-        <button class="btn align-content-center" style="font-family: Urbanist;background-color: #ADD8E6; margin-left: 110px"  type="submit" >Cari</button>
+        <label style="font-family: Urbanist; font-weight: normal;">Kategori Obat</label>
+        <div class="d-flex justify-content-between">
+            <select class="form-control" name="no">
+                <option style="font-family: Urbanist; font-weight: lighter" th:each="kategori : ${listKategori}" th:value="${kategori.no}" th:text="${kategori.namaKategori}">
+                </option>
+            </select>
+            <button class="btn align-content-center" style="font-family: Urbanist;background-color: #ADD8E6; margin-left: 10px"  type="submit" >Cari</button>
+        </div>
     </form>
     </div>
 </div>
@@ -59,5 +60,6 @@
         </table>
     </div>
 </div>
+<br><br>
 </body>
 </html>

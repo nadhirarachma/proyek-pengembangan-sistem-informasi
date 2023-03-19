@@ -1,6 +1,7 @@
 package propensi.b02.sobatarlydia.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,8 +41,25 @@ public class ObatDetailModel implements Serializable {
     private String statusKonfirmasi;
 
     @NotNull
-    @Column(name = "stok", nullable = false)
-    private int stok;
+    @Column(name = "tanggal_kadaluarsa")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public LocalDate tanggalKadaluarsa;
+
+    @NotNull
+    @Column(name = "jumlah_box", nullable = false)
+    private int jumlahBox;
+    
+    @NotNull
+    @Column(name = "satuan_per_box", nullable = false)
+    private String satuanPerBox;
+    
+    @NotNull
+    @Column(name = "jumlah_per_box", nullable = false)
+    private int jumlahPerBox;
+
+    @NotNull
+    @Column(name = "stok_total", nullable = false)
+    private int stokTotal;
 
     // Relasi dengan FakturModel
     @ManyToOne(fetch = FetchType.EAGER)
