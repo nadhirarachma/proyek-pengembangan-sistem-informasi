@@ -32,14 +32,23 @@
                 <li th:class="${#strings.equals(activeLink, 'Akun')} ? 'nav-item active' : 'nav-item'">
                     <a class="nav-link " th:href="@{/pengguna/viewall}" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem">Akun</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" th:href="@{/}">Profil</a>
+                <li sec:authorize="hasAuthority('Admin') || hasAuthority('Karyawan') || hasAuthority('Apoteker') || hasAuthority('Distributor')" th:class="${#strings.equals(activeLink, 'Profil')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Profil</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasAuthority('Admin') || hasAuthority('Karyawan') || hasAuthority('Apoteker')" th:class="${#strings.equals(activeLink, 'Katalog')} ? 'nav-item active' : 'nav-item'">
                     <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" th:href="@{/obat/data-obat}">Katalog Obat</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px;" href="#">Penjualan</a>
+                <li sec:authorize="hasAuthority('Admin') || hasAuthority('Karyawan') || hasAuthority('Apoteker')" th:class="${#strings.equals(activeLink, 'Penjualan')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Penjualan</a>
+                </li>
+                <li sec:authorize="hasAuthority('Karyawan') || hasAuthority('Apoteker')" th:class="${#strings.equals(activeLink, 'ObatMasuk')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" th:href="@{/obat-detail/waiting}">Obat Masuk</a>
+                </li>
+                <li sec:authorize="hasAuthority('Apoteker') || hasAuthority('Distributor')" th:class="${#strings.equals(activeLink, 'Penawaran')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px; padding-right: 4.5rem" href="#">Penawaran</a>
+                </li>
+                <li sec:authorize="hasAuthority('Karyawan') || hasAuthority('Apoteker')" th:class="${#strings.equals(activeLink, 'Retur')} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" style="font-weight: bold; color: #161A1E; font-size: 20px;" href="#">Retur</a>
                 </li>
             </ul> -->
             <!-- <div> -->
@@ -69,9 +78,19 @@
                         </li>
                     
                     </ul>
-                    <ul class="navbar-nav mx-auto">
+                    <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker', 'Admin')">
                         <li th:classappend="${page == 'Penjualan'} ? font-weight-bold : ''" class="nav-item">
                             <a class="nav-link" href="/" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penjualan</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Distributor', 'Apoteker')">
+                        <li th:classappend="${page == 'Penawaran'} ? font-weight-bold : ''" class="nav-item">
+                            <a class="nav-link" href="/" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penawaran</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker')">
+                        <li th:classappend="${page == 'Retur'} ? font-weight-bold : ''" class="nav-item">
+                            <a class="nav-link" href="/" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Retur</a>
                         </li>
                     </ul>
                 </ul>
