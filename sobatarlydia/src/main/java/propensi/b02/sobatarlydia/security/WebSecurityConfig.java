@@ -48,6 +48,7 @@ public class WebSecurityConfig {
             .formLogin()
             .loginPage("/login").permitAll()
             .failureHandler(handleAuthenticationFailure())
+            .defaultSuccessUrl("/", true)
             .and()
             .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .logoutSuccessUrl("/login").permitAll();

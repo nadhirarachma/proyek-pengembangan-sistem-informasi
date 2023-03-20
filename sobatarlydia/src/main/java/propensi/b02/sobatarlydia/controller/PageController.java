@@ -18,6 +18,7 @@ public class PageController {
 
     @Autowired
     UserService userService;
+    
     @RequestMapping("/")
     public String home (Principal principal, Model model){
         String role = userService.getAkunByEmail(principal.getName()).getRole();
