@@ -2,7 +2,6 @@ package propensi.b02.sobatarlydia.rest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import propensi.b02.sobatarlydia.model.ObatDetailId;
 
 import java.time.LocalDate;
 
