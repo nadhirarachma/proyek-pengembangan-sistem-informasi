@@ -20,7 +20,7 @@
         <label style="font-family: Urbanist; font-weight: normal;">Kategori Obat</label>
         <div class="d-flex justify-content-between">
             <select class="form-control" name="no">
-                <option style="font-family: Urbanist; font-weight: lighter" th:value="0" th:text="'Seluruh Obat'">
+                <option style="font-family: Urbanist; font-weight: lighter" th:value="'0'" th:text="'Seluruh Obat'">
 
                 </option>
                 <option style="font-family: Urbanist; font-weight: lighter" th:each="kategori : ${listKategori}" th:value="${kategori.no}" th:text="${kategori.namaKategori}">
