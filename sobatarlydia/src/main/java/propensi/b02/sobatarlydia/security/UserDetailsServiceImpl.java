@@ -30,7 +30,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (pengguna.isPresent()){
             user = pengguna.get();
         } 
-        
+        else {
+            throw new UsernameNotFoundException("User does not exist");
+        }
+
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
         if (user.getIsActive() == 0) {
             grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
