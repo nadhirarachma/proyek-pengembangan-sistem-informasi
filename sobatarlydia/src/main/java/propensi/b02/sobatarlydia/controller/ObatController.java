@@ -1,5 +1,6 @@
 package propensi.b02.sobatarlydia.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +27,7 @@ import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
-import propensi.b02.sobatarlydia.service.FakturService;
-import propensi.b02.sobatarlydia.service.KategoriObatService;
-import propensi.b02.sobatarlydia.service.ObatDetailService;
-import propensi.b02.sobatarlydia.service.ObatService;
+import propensi.b02.sobatarlydia.service.*;
 
 @Controller
 @RequestMapping("/obat")
@@ -44,6 +44,9 @@ public class ObatController {
 
     @Autowired
     KategoriObatService kategoriService;
+
+    @Autowired
+    UserService userService;
     
     @GetMapping("/daftarkan-obat")
     private String daftarkanObatForm(Model model){
@@ -282,7 +285,7 @@ public class ObatController {
     }
 
     @GetMapping("/obat-diterima/{obatDetailId}/{kodeBatch}")
-    public String obatDiterima(Model model, @PathVariable String obatDetailId, @PathVariable Integer kodeBatch){
+    public String obatDiterima(Principal principal, Model model, @PathVariable String obatDetailId, @PathVariable Integer kodeBatch){
         ObatModel obat = obatService.getObatById(obatDetailId);
         ObatDetailId id = new ObatDetailId(obat, kodeBatch);
         ObatDetailModel terima = obatService.getDetailObat(id);
@@ -299,7 +302,9 @@ public class ObatController {
             status="kosong";
         }
 
-        String role = "apoteker";
+//        String role = "apoteker";
+//        String role =  String.valueOf(((User) authentication.getPrincipal()).getAuthorities().iterator().next());
+        String role = userService.getAkunByEmail(principal.getName()).getRole();
 
         System.out.println(status);
         model.addAttribute("status", status);

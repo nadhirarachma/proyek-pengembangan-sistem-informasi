@@ -17,12 +17,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDB userDB;
 
-//    public String encrypt(String password) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String hashedPassword = passwordEncoder.encode(password);
-//        return hashedPassword;
-//    }
-
     @Override
     public PenggunaModel addPengguna(PenggunaModel pengguna) {
         List<PenggunaModel> listPengguna = getAllPengguna();
@@ -33,7 +27,7 @@ public class UserServiceImpl implements UserService{
         if(listEmail.contains(pengguna.getEmail())){
             return null;
         }
-//        pengguna.setPassword(encrypt(pengguna.getPassword()));
+        pengguna.setPassword(encrypt(pengguna.getPassword()));
 
         return userDB.save(pengguna);
     }
