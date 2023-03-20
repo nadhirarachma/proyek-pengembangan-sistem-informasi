@@ -56,9 +56,18 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav mx-auto">
-                        <li th:classappend="${page == 'Obat'} ? font-weight-bold : ''" class="nav-item">
-                            <a class="nav-link" th:href="@{/obat/data-obat}" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Katalog Obat</a>
+                        <li th:classappend="${page == 'Obat'} ? font-weight-bold : ''" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Katalog Obat</a>
+                      
+                              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a sec:authorize="hasAuthority('Karyawan')" class="dropdown-item" th:href="@{/obat/input-data}" href="#">Input Data Obat</a>
+                                <div sec:authorize="hasAuthority('Karyawan')" class="dropdown-divider"></div>
+                                <a sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker')" class="dropdown-item" th:href="@{/obat-detail/waiting}">Daftar Input Data Obat</a>
+                                <div sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker')" class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/obat/data-obat}">Daftar Obat</a>
+                              </div>
                         </li>
+                    
                     </ul>
                     <ul class="navbar-nav mx-auto">
                         <li th:classappend="${page == 'Penjualan'} ? font-weight-bold : ''" class="nav-item">
