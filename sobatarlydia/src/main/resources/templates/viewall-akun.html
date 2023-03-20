@@ -60,7 +60,7 @@
               <td class="text-center" th:text="${user.email}"></td>
               <td class="text-center" th:text="${user.nomorTelepon}"></td>
               <td class="text-center" th:text="${user.role}"></td>
-                <td align="center">
+                <td align="center" th:if="${user.role} != 'Distributor'">
                     <button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="|#userModal${iterationStatus.index}|">
                         Nonaktifkan
                     </button>

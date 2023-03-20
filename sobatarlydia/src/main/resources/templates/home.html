@@ -78,6 +78,16 @@
             <p>Sistem Informasi Obat Arlydia</p>
             <div th:if="*{role == 'Admin'}">
             <a th:href="@{/pengguna/add}" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Daftar Akun  &rarr;</a>
+            </div>
+            <div th:if="*{role == 'Karyawan'}">
+                <a th:href="@{/obat/daftarkan-obat}" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Daftar Obat  &rarr;</a>
+            </div>
+            <div th:if="*{role == 'Apoteker'}">
+                <a th:href="@{/obat-detail/waiting}" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Update Obat Masuk  &rarr;</a>
+            </div>
+            <div th:if="*{role == 'Distributor'}">
+                <a href="#" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Daftar Penawaran  &rarr;</a>
+            </div>
         </div>
     </div>
 </div>
