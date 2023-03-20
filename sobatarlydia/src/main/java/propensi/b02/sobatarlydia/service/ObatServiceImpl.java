@@ -45,7 +45,11 @@ public class ObatServiceImpl implements ObatService {
         String[] namas = obat.getNamaObat().split(" ");
 
         for (String i : namas) {
-            nama += i.substring(0, 3).toUpperCase();
+            if (i.length() >= 3) {
+                nama += i.substring(0, 3).toUpperCase();
+            } else {
+                nama += i.toUpperCase();
+            }
 
         }
         String farmasi = obat.getFarmasi().substring(0, 3).toUpperCase();
