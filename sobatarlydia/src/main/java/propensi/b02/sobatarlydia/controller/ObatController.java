@@ -170,12 +170,11 @@ public class ObatController {
                 List<ObatModel> listObat = obatService.getListObat();
 //            List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
                 List<KategoriObatModel> listKategori = obatService.getListKategori();
-                KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
 
                 model.addAttribute("listKategoriObat", listObat);
                 model.addAttribute("listKategori", listKategori);
                 model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
+                model.addAttribute("judulKategoriObat", "Seluruh Obat");
             }
             else {
 //                String kategoriString = request.getParameter("no");
@@ -219,12 +218,11 @@ public class ObatController {
                 List<ObatModel> listObat = obatService.getListObat();
 //            List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
                 List<KategoriObatModel> listKategori = obatService.getListKategori();
-                KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
 
                 model.addAttribute("listKategoriObat", listObat);
                 model.addAttribute("listKategori", listKategori);
                 model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
+                model.addAttribute("judulKategoriObat", "Seluruh Obat");
             }
             else {
 //                String kategoriString = request.getParameter("no");
