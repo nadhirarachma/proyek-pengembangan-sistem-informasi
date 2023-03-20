@@ -31,8 +31,11 @@ public class UserController {
     @GetMapping("/nonaktif/{email}")
     public String nonaktifAkun(@PathVariable String email, Model model){
         PenggunaModel akun = userService.getAkunByEmail(email);
-        akun.setIsActive(1);
-        userService.nonaktifAkun(akun);
+        System.out.println(akun.getRole());
+        if (!"Distributor".equals(akun.getRole())) {
+            akun.setIsActive(1);
+            userService.nonaktifAkun(akun);
+        }
         return "redirect:/pengguna/viewall";
     }
 

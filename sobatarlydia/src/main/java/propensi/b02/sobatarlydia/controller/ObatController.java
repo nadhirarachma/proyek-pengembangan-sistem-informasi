@@ -58,6 +58,8 @@ public class ObatController {
     @PostMapping(value = "/daftarkan-obat")
     private String daftarkanObatSubmit(@ModelAttribute ObatModel obat, Model model){
         ObatModel obatt = obatService.getObatByNamaDanFarmasi(obat.getNamaObat(), obat.getFarmasi());
+        List<KategoriObatModel> listKategori = kategoriService.getListKategori();
+        model.addAttribute("listKategori", listKategori);
 
         if (obatt != null) {
             model.addAttribute("obat", obat);
