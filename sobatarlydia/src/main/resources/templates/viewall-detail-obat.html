@@ -10,6 +10,8 @@
   <!--    <object th:include="fragments/fragment :: js" th:remove="tag"></object>-->
 </head>
 <body style="background-color: #EBFEFF">
+    <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+
 <div class="container m-5" style="border-radius:0.25rem">
     <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Detail Obat</div>
     <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 150px; margin-right: 150px; margin-bottom: 30px">

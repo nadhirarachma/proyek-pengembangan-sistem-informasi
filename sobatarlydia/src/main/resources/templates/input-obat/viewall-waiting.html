@@ -16,12 +16,14 @@
 
 
 <body style="background-color: #EBFEFF">
+  <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+
 <div class="container">
   <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Daftar Input Obat</div>
 </div>
 <div class="container" style="border-radius:0.25rem">
   <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 150px; margin-right: 150px">
-    <div th:if="*{role == 'apoteker'}">
+    <div th:if="*{role == 'Apoteker'}">
       <div th:if="*{status == 'isi'}">
         <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
         <table class="p-3 m-1 table table-striped" style="outline-style: none">
@@ -83,7 +85,7 @@
       </div>
     </div>
 
-    <div th:if="*{role == 'karyawan'}">
+    <div th:if="*{role == 'Karyawan'}">
       <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
       <table class="p-3 m-1 table table-striped" style="outline-style: none">
         <thead style="background-color: #ADF6F6">
