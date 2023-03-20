@@ -108,7 +108,7 @@
 <script>
   $('#farmasi').change(
   function() {
-      $.getJSON("http://localhost:8080/api/v1/obat/by-farmasi/", {
+      $.getJSON("https://sobat-arlydia-production.up.railway.app/api/v1/obat/by-farmasi/", {
           farmasi : $(this).val(),
           ajax : 'true'
           
