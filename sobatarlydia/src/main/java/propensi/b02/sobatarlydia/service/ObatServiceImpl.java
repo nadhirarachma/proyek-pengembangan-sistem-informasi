@@ -41,7 +41,13 @@ public class ObatServiceImpl implements ObatService {
 
 
     public ObatModel setId(ObatModel obat) {
-        String nama = obat.getNamaObat().substring(0, 3).toUpperCase();
+        String nama = "";
+        String[] namas = obat.getNamaObat().split(" ");
+
+        for (String i : namas) {
+            nama += i.substring(0, 3).toUpperCase();
+
+        }
         String farmasi = obat.getFarmasi().substring(0, 3).toUpperCase();
         obat.setIdObat(nama + farmasi);
         System.out.println(obat.getIdObat());
@@ -62,10 +68,8 @@ public class ObatServiceImpl implements ObatService {
         List<ObatModel> lst = new ArrayList<>();
         try {
             lst = obatDb.findByFarmasi(farmasi);
-            System.out.println("MASUK SINI");
-            System.out.println(lst);
         } catch (Exception e) {
-            System.out.println("KOK GAMASUK");
+            System.out.println("--");
         }
         
         return lst;
@@ -73,8 +77,6 @@ public class ObatServiceImpl implements ObatService {
 
     public ObatModel getObatByNamaDanFarmasi(String nama, String farmasi) {
         List<ObatModel> listObat = obatDb.findByFarmasi(farmasi);
-        System.out.println("CCCCCCCCCCCCCC");
-        System.out.println(listObat);
 
         for (ObatModel obat : listObat) {
             if (obat.getNamaObat().equals(nama)) {
