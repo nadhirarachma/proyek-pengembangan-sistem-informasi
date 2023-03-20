@@ -36,7 +36,6 @@ public class UserController {
         return "redirect:/pengguna/viewall";
     }
 
-
     @GetMapping("/add")
     public String addPengguna(Model model) {
         PenggunaModel pengguna = new PenggunaModel();

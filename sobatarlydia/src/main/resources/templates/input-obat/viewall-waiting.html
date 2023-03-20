@@ -53,6 +53,7 @@
                 Update
               </button>
             </td>
+          </tr>
 
             <div class="modal fade" th:id="|userModal${iterationStatus.index}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -73,13 +74,6 @@
                   </div>
                 </div>
               </div>
-
-
-
-
-<!--              <a class="btn btn-primary text-black text-center" type="submit" th:href="@{/}" style="background-color: #5FE7E7; border-color: #5FE7E7">Terima</a>-->
-<!--              <a class="btn btn-primary text-black text-center" type="submit" th:href="@{/}" style="background-color: #5FE7E7; border-color: #5FE7E7">Tolak</a>-->
-            </td>
           </tbody>
         </table>
       </div>
@@ -88,6 +82,7 @@
         <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Belum ada daftar obat yang harus diverifikasi statusnya</h4>
       </div>
     </div>
+
     <div th:if="*{role == 'karyawan'}">
       <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
       <table class="p-3 m-1 table table-striped" style="outline-style: none">
@@ -115,28 +110,28 @@
           <td class="text-center" th:text="${obat.satuanperbox}"></td>
           <td class="text-center" th:text="${obat.jumlahperbox}"></td>
           <td class="text-center" th:text="${obat.statuskonfirmasi}"></td>
+        </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="modal fade centered" id="myModal" role="dialog">
-      <div class="px-5 modal-dialog modal-dialog-centered text-center">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h4 class="modal-title text-center">Disetujui</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">
-              <p>Obat Berhasil Disetujui</p>
-          </div>
-          <div class="modal-footer">
-              <a class="btn btn-default" th:href="@{/obat-detail/waiting}">Kembali</a>
-                
-             <a th:href="@{/obat/data-obat}" class="px-5 m-3 bg-warning btn text-white">Lihat semua obat disetujui</a>
-          </div>
-      </div>
-  </div>
-  </div>
+<!--    <div class="modal fade centered" id="myModal" role="dialog">-->
+<!--      <div class="px-5 modal-dialog modal-dialog-centered text-center">-->
+<!--          <div class="modal-content">-->
+<!--              <div class="modal-header">-->
+<!--                <h4 class="modal-title text-center">Disetujui</h4>-->
+<!--                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--              </div>-->
+<!--              <div class="modal-body">-->
+<!--                  <p>Obat Berhasil Disetujui</p>-->
+<!--              </div>-->
+<!--              <div class="modal-footer">-->
+<!--                  <a class="btn btn-default" th:href="@{/obat-detail/waiting}">Kembali</a>-->
+<!--                  <a th:href="@{/obat/data-obat}" class="px-5 m-3 bg-warning btn text-white">Lihat semua obat disetujui</a>-->
+<!--              </div>-->
+<!--          </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
 
   </div>
@@ -148,4 +143,5 @@
 </script>
 
 </body>
+
 </html>

@@ -11,10 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 public class PageController {
+
+    @Autowired
+    UserService userService;
     @RequestMapping("/")
-    public String home (){
+    public String home (Principal principal, Model model){
+        String role = userService.getAkunByEmail(principal.getName()).getRole();
+        model.addAttribute("role",role);
         return "home";
     }
 
@@ -27,9 +34,6 @@ public class PageController {
     public String logout() {
         return "logout";
     }
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/registrasi")
     public String registrasiFormPage() {

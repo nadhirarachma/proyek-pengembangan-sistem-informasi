@@ -25,9 +25,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
-    private String admin = "Admin";
-    private String apoteker = "Apoteker";
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,6 +34,15 @@ public class WebSecurityConfig {
             .antMatchers("/js/**").permitAll()
             .antMatchers("/registrasi").permitAll()
             .antMatchers("/login**").permitAll()
+            .antMatchers("/pengguna/**").hasAuthority("Admin")
+            .antMatchers("/obat/daftarkan-obat").hasAuthority("Karyawan")
+            .antMatchers("/obat/input-data").hasAuthority("Karyawan")
+            .antMatchers("/obat/data-obat").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
+            .antMatchers("/obat/filter-obat").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
+            .antMatchers("/obat/detail-obat/**").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
+            .antMatchers("/obat/obat-ditolak/**").hasAuthority("Apoteker")
+            .antMatchers("/obat/obat-diterima").hasAuthority("Apoteker")
+            .antMatchers("/obat-detail/waiting").hasAnyAuthority("Karyawan", "Apoteker")
             .anyRequest().authenticated()
             .and()
             .formLogin()

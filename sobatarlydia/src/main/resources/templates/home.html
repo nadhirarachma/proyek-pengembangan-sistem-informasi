@@ -76,7 +76,8 @@
         <div class="content px-5">
             <h3>SOBAT Arlydia</h3>
             <p>Sistem Informasi Obat Arlydia</p>
-            <button th:href="@{/}" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Daftar Akun  &rarr;</button>
+            <div th:if="*{role == 'Admin'}">
+            <a th:href="@{/pengguna/add}" class="big-button mx-2 btn btn-outline-primary" style="font-weight: bolder">Mulai Daftar Akun  &rarr;</a>
         </div>
     </div>
 </div>
