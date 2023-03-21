@@ -2,6 +2,7 @@ package propensi.b02.sobatarlydia.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -263,6 +264,12 @@ public class ObatController {
             return "viewall-data-obat";
         }
         List<ObatDetailModel> statusObat = obatModel.getListDetailObat();
+        List<ObatDetailModel> statusKonfirmasiObat = new ArrayList<>();
+        for (int i = 0; i < statusObat.size(); i++) {
+            if (statusObat.get(i).getStatusKonfirmasi().equals("Diterima")) {
+                statusKonfirmasiObat.add(statusObat.get(i));
+            }
+        }
         String statusNow="Kosong";
         for (int i = 0; i < statusObat.size(); i++) {
                 if (statusObat.get(i).getStatus().equals("Tersedia")){
@@ -272,7 +279,7 @@ public class ObatController {
         }
 
         model.addAttribute("detailObat",obatModel);
-        model.addAttribute("statusObat", statusObat);
+        model.addAttribute("statusObat", statusKonfirmasiObat);
         model.addAttribute("status", statusNow);
         return "viewall-detail-obat";
     }

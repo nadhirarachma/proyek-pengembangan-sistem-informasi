@@ -52,7 +52,13 @@ public class ObatServiceImpl implements ObatService {
             }
 
         }
-        String farmasi = obat.getFarmasi().substring(0, 3).toUpperCase();
+
+        String farmasi = "";
+        if (obat.getFarmasi().length() >= 3) {
+            farmasi += obat.getFarmasi().substring(0, 3).toUpperCase();
+        } else {
+            farmasi += obat.getFarmasi().toUpperCase();
+        }
         obat.setIdObat(nama + farmasi);
         System.out.println(obat.getIdObat());
 
