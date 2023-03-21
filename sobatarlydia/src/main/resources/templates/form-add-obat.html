@@ -11,6 +11,12 @@
   <script src="bootstrap/js/bootstrap-transition.js"></script>
   <object th:include="fragments/fragment :: css" th:remove="tag"></object>
   <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <style>
+    label::after {
+            content: " *";
+            color: #e32;
+        }
+  </style>
 </head>
 <body style="background-color: #EBFEFF">
   <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
@@ -25,23 +31,23 @@
         <form th:action="@{/obat/daftarkan-obat}" th:object="${obat}" method="POST">
           <br>
           <label>Nama Obat</label>
-          <input type="text" name="namaObat" class="form-control"/>
+          <input type="text" name="namaObat" class="form-control" required/>
 
           <br>
           <label>Farmasi</label>
-          <input type="text" name="farmasi" class="form-control"/>
+          <input type="text" name="farmasi" class="form-control" required/>
 
           <br>
           <label>Bentuk Obat</label>
-          <input type="text" name="bentukObat" class="form-control"/>
+          <input type="text" name="bentukObat" class="form-control" required/>
 
           <br>
           <label>Harga</label>
-          <input type="number" name="harga" class="form-control"/>
+          <input type="number" name="harga" class="form-control" required/>
 
           <br>
           <label>Kategori</label>
-          <select name="kategori" class="form-control" th:field="*{kategori.no}">
+          <select name="kategori" class="form-control" th:field="*{kategori.no}" required>
             <div th:each="kategoriAvailable, iterationStatus:${listKategori}">
               <option th:value="${kategoriAvailable.no}" th:text="${kategoriAvailable.namaKategori}"></option>
             </div>
@@ -63,12 +69,11 @@
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">
-                  <p th:if="${statMsg} == 1">Anda sudah bisa menginput detail obat pada halaman Input Data Obat</p>
+                  <p th:if="${statMsg} == 1">Anda sudah bisa menginput detail obat</p>
                   <p th:if="${statMsg} == 2">Obat dengan nama dan farmasi yang sama sudah pernah didaftarkan</p>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
-                 <a  th:if="${statMsg} == 1" th:href="@{/obat/input-data}" class="px-5 m-3 bg-warning btn text-white">Input Data Obat</a>
+                 <a  th:if="${statMsg} == 1" th:href="@{/obat/input-data}" class="px-5 m-3 bg-warning btn text-white">Input Detail Obat</a>
               </div>
           </div>
       </div>

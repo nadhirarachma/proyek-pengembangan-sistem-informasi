@@ -11,6 +11,12 @@
   <script src="bootstrap/js/bootstrap-transition.js"></script>
   <object th:include="fragments/fragment :: css" th:remove="tag"></object>
   <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <style>
+    label::after {
+            content: " *";
+            color: #e32;
+        }
+  </style>
 </head>
 <body style="background-color: #EBFEFF">
   <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
@@ -26,7 +32,7 @@
             <div class="col">
               <br>
               <label>Perusahaan Farmasi</label>
-              <select id="farmasi" class="form-control"  th:field="*{farmasi}">
+              <select id="farmasi" class="form-control"  th:field="*{farmasi}" required>
                 <option value="null">Pilih Farmasi</option>
                 <div th:each="farmasiAvailable, iterationStatus:${listFarmasi}">
                   <option th:value="${farmasiAvailable}" th:text="${farmasiAvailable}"></option>
@@ -45,7 +51,7 @@
             <div class="col">
               <br>
               <label>Nama Obat</label>
-              <select id="nama" class="form-control"  th:field="*{namaObat}">
+              <select id="nama" class="form-control"  th:field="*{namaObat}" required>
               <option disabled="disabled" selected="selected" value="null" > -- Pilih perusahaan farmasi terlebih dahulu --</option>
             </select>
             </div>
@@ -67,16 +73,25 @@
               <label>
                   Satuan per box                
               </label>
-              <input class="form-control" type="text" th:field="*{satuanPerBox}" required/>
+              <select id="satuan" name="satuanPerBox" class="form-control" th:field="*{satuanPerBox}" required>
+                  <option th:value="'Strip'" th:text="'Strip'"></option>
+                  <option th:value="'Botol'" th:text="'Botol'"></option>
+                  <option th:value="'Tube'" th:text="'Tube'"></option>
+                  <option th:value="'Lainnya'" th:text="'Lainnya'"></option>
+              </select>
             </div>
-            <div class="col">
-              <br>
-              <label>
-                  Jumlah satuan per box                
-              </label>
-              <input class="form-control" type="number" th:field="*{jumlahPerBox}" required/>
             </div>
-          </div>
+            <div class="row">
+              <div class="col">
+                
+            </div>
+              <div class="col">
+                <br>
+                <div id="jmlsatuan">
+                </div>
+              </div>
+            </div>
+            </div>
           <br>
           <div class="d-flex justify-content-center">
             <button class="px-5 m-3 bg-info btn text-white" type="submit" name="save">Simpan</button>
@@ -95,7 +110,6 @@
                 <p>Obat akan menunggu konfirmasi apoteker</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kembali</button>
                <a th:href="@{/obat-detail/waiting}" class="px-5 m-3 bg-warning btn text-white">Lihat Daftar Input Obat</a>
             </div>
         </div>
@@ -123,6 +137,21 @@
           $('#nama').html(html);
       });
   });
+
+  $('#satuan').change(
+  function() {
+          var html = '';
+          var satuan = $(this).val().toLowerCase();
+
+          if (satuan==="lainnya") {
+            html = '<label> Jumlah satuan per box</label><input class="form-control" type="number" th:field="*{jumlahPerBox}" required/>'
+          } else {
+            html = '<label> Jumlah ' + satuan + ' per box</label><input class="form-control" type="number" th:field="*{jumlahPerBox}" required/>'
+          }
+          
+          $('#jmlsatuan').html(html);
+
+      });
 </script>
 
 <button th:if="${statMsg} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
