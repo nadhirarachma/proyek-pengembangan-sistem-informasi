@@ -1,5 +1,6 @@
 package propensi.b02.sobatarlydia.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,14 @@ public class UserController {
         listAkun.removeIf(x -> x.getIsActive() == 1);
         model.addAttribute("listAkun", listAkun);
         return "viewall-akun";
+    }
+
+    @GetMapping( "/profil")
+    private String profil(Model model, Principal principal) {
+        PenggunaModel akun = userService.getAkunByEmail(principal.getName());
+
+        model.addAttribute("akun", akun);
+        return "profil";
     }
 
     @GetMapping("/nonaktif/{email}")
@@ -55,7 +64,6 @@ public class UserController {
             return "user/form-add-pengguna";
         }
         else {
-//            model.addAttribute("stat","sukses");
             model.addAttribute("pengguna", savedUser);
             return "redirect:/pengguna/viewall";
         }
