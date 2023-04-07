@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body style="background-color: #EBFEFF">
+    <nav th:replace="fragments/fragment :: navbar(page = 'Profil')"></nav>
+
+    <br><br>
+    <div class="text-center container" style="width: 400px" >
+        <div>
+            <h2>Profil</h2>
+            <br>
+            <img th:src="@{/profil.png}" width="150">
+        </div>
+
+        <br>
+        <div class="mx-auto d-flex justify-content-between">
+            <div class="text-start">
+                <p>Nama</p>
+                <p>Email</p>
+                <p>Nomor Telepon</p>
+                <p>Role</p>
+            </div>
+            <div class="text-start">
+                <p th:text="${akun.namaDepan} + ' ' + ${akun.namaBelakang}"></p>
+                <p th:text="${akun.email}"></p>
+                <p th:text="${akun.nomorTelepon}"></p>
+                <p th:text="${akun.role}"></p>
+            </div>
+        </div>
+        <br>
+        <a class="btn btn-info">Ubah Password</a>
+    </div>
+    
+    <br>
+    
+</body>
+</html>

@@ -66,4 +66,10 @@ public class ObatDetailModel implements Serializable {
     @JoinColumn(name = "no_faktur", referencedColumnName = "no_faktur")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FakturModel noFaktur;
+
+    // Relasi dengan PenjualanModel
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "no_penjualan", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private PenjualanModel noPenjualan;
 }
