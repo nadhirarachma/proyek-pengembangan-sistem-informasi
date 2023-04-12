@@ -1,7 +1,6 @@
 package propensi.b02.sobatarlydia.controller;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import propensi.b02.sobatarlydia.dto.FakturDto;
 import propensi.b02.sobatarlydia.dto.ObatDetailDto;
 import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
@@ -78,74 +79,125 @@ public class ObatController {
 
     @GetMapping("/input-data")
     private String inputDataObatFormPage(Model model){
-        ObatDetailDto obatDetail = new ObatDetailDto();
         List<ObatModel> listObat = obatService.getListObat();
         Set<String> listFarmasi = new HashSet<>();
         for (ObatModel obat: listObat) {
             listFarmasi.add(obat.getFarmasi());
         }
-        System.out.println(listFarmasi);
+        
+        FakturDto faktur = new FakturDto();
+        List<ObatDetailDto> listObatDetail = new ArrayList<>();
 
-        model.addAttribute("obatDetail", obatDetail);
-        model.addAttribute("listObat", listObat);
+        faktur.setObat(listObatDetail);
+        faktur.getObat().add(new ObatDetailDto());
+        System.out.println(faktur.getObat());
+
         model.addAttribute("listFarmasi", listFarmasi);
+        model.addAttribute("faktur", faktur);
+        model.addAttribute("listObat", new ArrayList<>());
+
         return "form-input-data-obat";
     }
 
-    @PostMapping("/input-data")
-    private String inputDataObatSubmitPage(@ModelAttribute ObatDetailDto obatDetail, Model model) {
-        ObatModel obat = obatService.getObatByNamaDanFarmasi(obatDetail.getNamaObat(), obatDetail.getFarmasi());
-        
-        LocalDate today = LocalDate.now();
-        List<FakturModel> fakturs = fakturService.getFakturByFarmasi(obatDetail.getFarmasi());
-        FakturModel faktur = fakturService.getFakturByFarmasiDanTanggal(fakturs, today);
-        int kodeBatch;
-
-        if (fakturs.size() == 0) {
-            kodeBatch = 1;
-            faktur = new FakturModel();
-            faktur.setFarmasi(obatDetail.getFarmasi());
-            faktur.setKodeBatch(kodeBatch);
-            faktur.setTanggal(today);
-            fakturService.add(faktur);
-        } else {
-            if (faktur == null) {
-                kodeBatch = fakturService.generateKodeBatch(fakturs);
-                faktur = new FakturModel();
-                faktur.setFarmasi(obatDetail.getFarmasi());
-                faktur.setKodeBatch(kodeBatch);
-                faktur.setTanggal(today);
-                fakturService.add(faktur);
-            } else {
-                kodeBatch = faktur.getKodeBatch();
-            }            
+    @PostMapping(value = "/input-data", params = {"addRow"})
+    public String addRowObatMultiple(@ModelAttribute FakturDto faktur,
+                                      Model model
+    ) {
+        if (faktur.getObat() == null || faktur.getObat().size() == 0) {
+            faktur.setObat(new ArrayList<>());
         }
         
+        faktur.getObat().add(new ObatDetailDto());
         
-        ObatDetailId id = new ObatDetailId(obat, kodeBatch);
-        ObatDetailModel obatDetailBaru = new ObatDetailModel();
+        List<ObatModel> listObat = obatService.getListObat();
+        Set<String> listFarmasi = new HashSet<>();
+        for (ObatModel obat: listObat) {
+            listFarmasi.add(obat.getFarmasi());
+        }
 
-        obatDetailBaru.setObatDetailId(id);
-        obatDetailBaru.setStatusKonfirmasi("Menunggu");
-        obatDetailBaru.setStatus("Tersedia");
-        obatDetailBaru.setTanggalKadaluarsa(obatDetail.getTanggalKadaluarsa());
-        obatDetailBaru.setJumlahBox(obatDetail.getJumlahBox());
-        obatDetailBaru.setSatuanPerBox(obatDetail.getSatuanPerBox());
-        obatDetailBaru.setJumlahPerBox(obatDetail.getJumlahPerBox());
-        obatDetailBaru.setStokTotal(obatDetail.getJumlahPerBox() * obatDetail.getJumlahBox());
-        obatDetailBaru.setNoFaktur(faktur);
-        
-        obatService.addObatDetail(obatDetailBaru);
+        List<ObatModel> listObatBaru = obatService.getObatByFarmasi(faktur.getFarmasi());
+
+        model.addAttribute("listFarmasi", listFarmasi);
+        model.addAttribute("faktur", faktur);
+        model.addAttribute("listObat", listObatBaru);
+
+
+        return "form-input-data-obat";
+    }
+
+    @PostMapping(value = "/input-data", params = {"deleteRow"})
+    private String deleteRowObat(@ModelAttribute FakturDto faktur, 
+                                 @RequestParam("deleteRow") Integer row,
+                                 Model model
+    ) {
+        final Integer rowId = Integer.valueOf(row);
+        faktur.getObat().remove(rowId.intValue());
 
         List<ObatModel> listObat = obatService.getListObat();
         Set<String> listFarmasi = new HashSet<>();
-        for (ObatModel obatt: listObat) {
-            listFarmasi.add(obatt.getFarmasi());
+        for (ObatModel obat: listObat) {
+            listFarmasi.add(obat.getFarmasi());
         }
-        System.out.println(listFarmasi);
-        model.addAttribute("obatDetail", obatDetail);
+
+        List<ObatModel> listObatBaru = obatService.getObatByFarmasi(faktur.getFarmasi());
+
+        model.addAttribute("listFarmasi", listFarmasi);
+        model.addAttribute("faktur", faktur);
+        model.addAttribute("listObat", listObatBaru);
+
+
+        return "form-input-data-obat";
+    }
+
+
+    @PostMapping("/input-data")
+    private String inputDataObatSubmitPage(@ModelAttribute FakturDto faktur, Model model) {
+
+        List<FakturModel> fakturs = fakturService.getFakturByFarmasi(faktur.getFarmasi());
+        int kodeBatch = fakturs.size() + 1;
+
+        FakturModel fakturBaru = new FakturModel();
+        fakturBaru.setNoFaktur(faktur.getNoFaktur());
+        fakturBaru.setFarmasi(faktur.getFarmasi());
+        fakturBaru.setKodeBatch(kodeBatch);
+        fakturBaru.setTanggal(faktur.getTanggal());
+        
+        fakturService.add(fakturBaru);
+
+        List<ObatDetailModel> listBaru = new ArrayList<>();
+
+        for (ObatDetailDto obat: faktur.getObat()) {
+            ObatModel parent = obatService.getObatByNamaDanFarmasi(obat.getNamaObat(), faktur.getFarmasi());
+            ObatDetailId key = new ObatDetailId(parent, kodeBatch);
+            ObatDetailModel obatDetailBaru = new ObatDetailModel();
+
+            obatDetailBaru.setObatDetailId(key);
+            obatDetailBaru.setStatusKonfirmasi("Menunggu");
+            obatDetailBaru.setStatus("Tersedia");
+            obatDetailBaru.setTanggalKadaluarsa(obat.getTanggalKadaluarsa());
+            obatDetailBaru.setJumlahBox(obat.getJumlahBox());
+            obatDetailBaru.setSatuanPerBox(obat.getSatuanPerBox());
+            obatDetailBaru.setJumlahPerBox(obat.getJumlahPerBox());
+            obatDetailBaru.setStokTotal(obat.getJumlahPerBox() * obat.getJumlahBox());
+            obatDetailBaru.setNoFaktur(fakturBaru);
+
+            obatService.addObatDetail(obatDetailBaru);
+
+            listBaru.add(obatDetailBaru);
+        }
+
+        fakturBaru.setListObatDetail(listBaru);
+        fakturService.add(fakturBaru);
+
+        List<ObatModel> listObat = obatService.getListObat();
+        Set<String> listFarmasi = new HashSet<>();
+        for (ObatModel obat2: listObat) {
+            listFarmasi.add(obat2.getFarmasi());
+        }
+
         model.addAttribute("listObat", listObat);
         model.addAttribute("listFarmasi", listFarmasi);
+        model.addAttribute("faktur", faktur);
         model.addAttribute("statMsg", 1);
 
 
