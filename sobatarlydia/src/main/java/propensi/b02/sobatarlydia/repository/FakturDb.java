@@ -1,6 +1,7 @@
 package propensi.b02.sobatarlydia.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,5 @@ public interface FakturDb extends JpaRepository<FakturModel, String> {
     
     @Query("SELECT c FROM FakturModel c WHERE c.farmasi = :farmasi")
     List<FakturModel> findByFarmasi(@Param("farmasi") String farmasi);
-
+    Optional<FakturModel> findFakturModelByNoFaktur(Long noFaktur);
 }

@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,11 @@ public class FakturModel implements Serializable {
 
     @Column(name = "tanggal")
     private LocalDate tanggal;
+
+    @NotNull
+    @Column(name = "status_faktur", nullable = false)
+    private String statusFaktur;
+
 
     // Relasi dengan ObatDetailModel
     @OneToMany(mappedBy = "noFaktur", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
