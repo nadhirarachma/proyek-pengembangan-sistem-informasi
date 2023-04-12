@@ -314,9 +314,6 @@ public class ObatController {
         if (listWaiting.size()==0){
             status="kosong";
         }
-
-//        String role = "apoteker";
-//        String role =  String.valueOf(((User) authentication.getPrincipal()).getAuthorities().iterator().next());
         String role = userService.getAkunByEmail(principal.getName()).getRole();
 
         System.out.println(status);
@@ -326,5 +323,4 @@ public class ObatController {
 
         return "input-obat/viewall-waiting";
     }
-
 }

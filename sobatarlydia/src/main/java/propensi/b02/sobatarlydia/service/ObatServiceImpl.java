@@ -136,5 +136,6 @@ public class ObatServiceImpl implements ObatService {
     @Override
     public ObatDetailModel updateObatDiterima(ObatDetailModel terima) {
         terima.setStatusKonfirmasi("Diterima");
-        return obatDetailDb.save(terima);    }
+        return obatDetailDb.save(terima);
+    }
 }
