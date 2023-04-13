@@ -36,6 +36,7 @@ public class WebSecurityConfig {
             .antMatchers("/js/**").permitAll()
             .antMatchers("/registrasi").permitAll()
             .antMatchers("/login**").permitAll()
+            .antMatchers("/pengguna/profil").permitAll()
             .antMatchers("/pengguna/**").hasAuthority("Admin")
             .antMatchers("/api/v1/**").hasAnyAuthority("Karyawan", "Apoteker")
             .antMatchers("/obat/daftarkan-obat").hasAuthority("Karyawan")
