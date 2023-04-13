@@ -161,6 +161,7 @@ public class ObatController {
         fakturBaru.setFarmasi(faktur.getFarmasi());
         fakturBaru.setKodeBatch(kodeBatch);
         fakturBaru.setTanggal(faktur.getTanggal());
+        fakturBaru.setStatusFaktur("Belum Lunas");
         
         fakturService.add(fakturBaru);
 

@@ -38,10 +38,8 @@ public class FakturModel implements Serializable {
     @Column(name = "tanggal")
     private LocalDate tanggal;
 
-    @NotNull
-    @Column(name = "status_faktur", nullable = false)
+    @Column(name = "status")
     private String statusFaktur;
-
 
     // Relasi dengan ObatDetailModel
     @OneToMany(mappedBy = "noFaktur", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
