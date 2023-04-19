@@ -62,6 +62,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Boolean getPassChecker(String passwordlama, String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        return passwordEncoder.matches(passwordlama, password);
+    }
+
+    @Override
+    public void updatePass(PenggunaModel user1, String passBaruEncode) {
+        user1.setPassword(passBaruEncode);
+        userDB.save(user1);
+    }
+
+    @Override
     public PenggunaModel addDistributor(PenggunaModel pengguna) {
 
         String email = pengguna.getEmail();

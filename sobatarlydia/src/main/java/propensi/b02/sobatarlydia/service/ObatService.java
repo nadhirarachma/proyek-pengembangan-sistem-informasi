@@ -2,6 +2,7 @@ package propensi.b02.sobatarlydia.service;
 
 import java.util.List;
 
+import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
@@ -21,5 +22,5 @@ public interface ObatService {
     ObatDetailModel getDetailObat(ObatDetailId idObat);
     ObatDetailModel updateObatDitolak(ObatDetailModel tolak);
     ObatDetailModel updateObatDiterima(ObatDetailModel terima);
-    
+    ObatUpdtDTO makeObatUpdtDTO (ObatDetailModel obatDetail, String obatDetailId, int kodeBatch);
 }

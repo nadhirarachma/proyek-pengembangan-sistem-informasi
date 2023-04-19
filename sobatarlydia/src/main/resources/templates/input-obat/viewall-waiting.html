@@ -9,23 +9,22 @@
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="bootstrap/js/bootstrap-modal.js"></script>
   <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
   <object th:include="fragments/fragment :: css" th:remove="tag"></object>
   <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
-<body>
-
 
 <body style="background-color: #EBFEFF">
   <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
 
 <div class="container">
-  <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Daftar Input Obat</div>
+  <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Daftar Input Batch Obat</div>
 </div>
 <div class="container" style="border-radius:0.25rem">
-  <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 150px; margin-right: 150px">
+  <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 100px; margin-right: 100px">
     <div th:if="*{role == 'Apoteker'}">
       <div th:if="*{status == 'isi'}">
-        <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
+        <p class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Obat yang Butuh Persetujuan</p>
         <table class="p-3 m-1 table table-striped" style="outline-style: none">
           <thead style="background-color: #ADF6F6">
           <tr>
@@ -69,7 +68,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-outline-secondary pull-left" data-dismiss="modal">Batalkan</button>
-                      <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" th:href="@{/}">Ajukan Revisi</a>
+                      <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/obat-ditolak/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Ajukan Revisi</a>
                       <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/obat-diterima/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Terima</a>
                     </div>
                   </div>
@@ -87,56 +86,40 @@
     </div>
 
     <div th:if="*{role == 'Karyawan'}">
-      <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Input Obat</h4>
+      <h4 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Daftar Obat yang Menunggu Persetujuan atau Diajukan Revisi oleh Apoteker</h4>
       <table class="p-3 m-1 table table-striped" style="outline-style: none">
         <thead style="background-color: #ADF6F6">
-        <tr>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">No</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Kode Batch</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Farmasi</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Nama Obat</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Tanggal Kadaluarsa</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Stok</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Satuan Per Box</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Per Box</th>
-          <th class="text-center" style="font-family: Urbanist; font-weight: bold">Status</th>
-        </tr>
+          <tr>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">No</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Kode Batch</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Farmasi</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Nama Obat</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Tanggal Kadaluarsa</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Stok</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Satuan Per Box</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Jumlah Per Box</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Status</th>
+            <th class="text-center" style="font-family: Urbanist; font-weight: bold">Task</th>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="obat, iterationStatus:${listWaiting}">
-          <td class="text-center" th:text="${iterationStatus.count}"></td>
-          <td class="text-center" th:text="${obat.kodebatch}"></td>
-          <td class="text-center" th:text="${obat.farmasi}"></td>
-          <td class="text-center" th:text="${obat.namaobat}"></td>
-          <td class="text-center" th:text="${obat.tanggalexp}"></td>
-          <td class="text-center" th:text="${obat.stok}"></td>
-          <td class="text-center" th:text="${obat.satuanperbox}"></td>
-          <td class="text-center" th:text="${obat.jumlahperbox}"></td>
-          <td class="text-center" th:text="${obat.statuskonfirmasi}"></td>
-        </tr>
+          <tr th:each="obat, iterationStatus:${listWaiting}">
+            <td class="text-center" th:text="${iterationStatus.count}"></td>
+            <td class="text-center" th:text="${obat.kodebatch}"></td>
+            <td class="text-center" th:text="${obat.farmasi}"></td>
+            <td class="text-center" th:text="${obat.namaobat}"></td>
+            <td class="text-center" th:text="${obat.tanggalexp}"></td>
+            <td class="text-center" th:text="${obat.stok}"></td>
+            <td class="text-center" th:text="${obat.satuanperbox}"></td>
+            <td class="text-center" th:text="${obat.jumlahperbox}"></td>
+            <td class="text-center" th:text="${obat.statuskonfirmasi}"></td>
+            <td>
+              <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/update/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Update</a>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
-
-<!--    <div class="modal fade centered" id="myModal" role="dialog">-->
-<!--      <div class="px-5 modal-dialog modal-dialog-centered text-center">-->
-<!--          <div class="modal-content">-->
-<!--              <div class="modal-header">-->
-<!--                <h4 class="modal-title text-center">Disetujui</h4>-->
-<!--                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
-<!--              </div>-->
-<!--              <div class="modal-body">-->
-<!--                  <p>Obat Berhasil Disetujui</p>-->
-<!--              </div>-->
-<!--              <div class="modal-footer">-->
-<!--                  <a class="btn btn-default" th:href="@{/obat-detail/waiting}">Kembali</a>-->
-<!--                  <a th:href="@{/obat/data-obat}" class="px-5 m-3 bg-warning btn text-white">Lihat semua obat disetujui</a>-->
-<!--              </div>-->
-<!--          </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
   </div>
 </div>
 

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ubah Password</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <style>
+        .required-field::after {
+            content: "*";
+            color: red;
+        }
+    </style>
+</head>
+
+<body style="background-color: #EBFEFF">
+<nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold" th:text="'Edit Detail ' + ${obatdto.idobat} + ' Batch ' + ${obatdto.kodebatch}"></h2>
+                <br>
+                <form th:action="@{/obat/update}" th:object="${obatdto}" method="POST">
+
+                    <input type="hidden" th:field="*{idobat}"/>
+                    <input type="hidden" th:field="*{kodebatch}"/>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold required-field">Tanggal Kadaluarsa</label>
+                        <input class="col-xs-4 form-control" type="date" th:field="*{tanggalkadaluarsa}" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold required-field">Jumlah Box</label>
+                        <input class="form-control" type="number" th:field="*{jumlahbox}" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold required-field">Satuan per box</label>
+                        <select id="satuan" name="satuanPerBox" class="form-control" th:field="*{satuanperbox}" required>
+                            <option th:value="'Strip'" th:text="'Strip'"></option>
+                            <option th:value="'Botol'" th:text="'Botol'"></option>
+                            <option th:value="'Tube'" th:text="'Tube'"></option>
+                            <option th:value="'Lainnya'" th:text="'Lainnya'"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="jmlsatuan" class="font-weight-bold required-field" th:text="'Jumlah ' + ${obatdto.satuanperbox} + ' per Box'"></label>
+                        <input class="form-control" type="number" th:field="*{jumlahperbox}" required/>
+                    </div>
+                    <div class="row gx-5">
+                        <div class="col">
+                            <a class="btn btn-primary float-right" style="background-color: white; border-color: #5FE7E7; color: #161A1E; font-family:Urbanist" href="/">Batal</a>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary" style="background-color: #5FE7E7; border-color: #5FE7E7; color: white; font-family:Urbanist;font-weight: bold" type="submit">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal fade centered" id="myModal" role="dialog">
+                <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">Obat Berhasil Diperbarui</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Obat akan menunggu konfirmasi apoteker</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat-detail/waiting}">Lihat Daftar Tunggu Disetujui</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade centered" id="myModal1" role="dialog">
+                <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">Obat Gagal Diperbarui</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Tanggal kadaluarsa yang boleh diinput minimal adalah BESOK. Silakan perbaiki ulang atau arsipkan obat.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/}">Arsipkan Obat</a>
+                            <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/update/} + ${obatdto.idobat} + '/' + ${obatdto.kodebatch}">Update Ulang</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#satuan').change(
+        function() {
+            var html = '';
+            var satuan = $(this).val().toLowerCase();
+
+            if (satuan==="lainnya") {
+                html = '<label> Jumlah satuan per box</label>'
+            } else {
+                html = '<label> Jumlah ' + satuan + ' per box</label>'
+            }
+
+            $('#jmlsatuan').html(html);
+
+        });
+</script>
+
+<button th:if="${stat} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+<script>
+    document.getElementById('btn').click();
+</script>
+
+<button th:if="${stat} == 0" id="btn1" hidden data-toggle="modal" data-target="#myModal1">Click me</button>
+<script>
+    document.getElementById('btn1').click();
+</script>
+
+</body>
+</html>

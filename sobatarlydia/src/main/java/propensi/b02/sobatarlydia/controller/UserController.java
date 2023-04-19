@@ -4,13 +4,12 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.service.UserService;
 
@@ -68,6 +67,32 @@ public class UserController {
             return "redirect:/pengguna/viewall";
         }
 
+    }
+
+    @GetMapping("/update-password")
+    public String updatePassFormPage(Model model){
+        return "user/form-update-pass";
+    }
+
+    @PostMapping("/update-password")
+    public String updatePassSubmitPage(@RequestParam(value = "passwordlama") String passwordlama,
+                                       @RequestParam(value = "passwordbaru") String passwordbaru,
+                                       @RequestParam(value = "passwordbaru1") String passwordbaru1,
+                                       Model model, Principal principal){
+        PenggunaModel user1 = userService.getAkunByEmail(principal.getName());
+        int stat =0;
+
+        Boolean isPassLamaTrue = userService.getPassChecker(passwordlama, user1.getPassword());
+        if(isPassLamaTrue){
+            if(passwordbaru.equals(passwordbaru1)){
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String passBaruEncode = passwordEncoder.encode(passwordbaru);
+                userService.updatePass(user1, passBaruEncode);
+                return "redirect:/";
+            }
+        }
+        model.addAttribute("stat", stat);
+        return "user/form-update-pass";
     }
 
 }
