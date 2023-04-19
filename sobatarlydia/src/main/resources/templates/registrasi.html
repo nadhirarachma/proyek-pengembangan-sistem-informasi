@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Registrasi</title>
@@ -87,7 +87,8 @@
                                 </div>
                             </div>
                             <div>
-                                <span th:text=${validasi} class="text-danger"></h5>
+<!--                                <span th:text=${validasi} class="text-danger"></h5>-->
+                                <span th:text="${validasi}" class="text-danger"></span>
                             </div>
                             <div class="form-group text-center mt-5">
                                 <button type="submit" class="btn" style="background:#7698F0;color:white;border-radius: 10px;padding-inline:20%;">Daftar</button>

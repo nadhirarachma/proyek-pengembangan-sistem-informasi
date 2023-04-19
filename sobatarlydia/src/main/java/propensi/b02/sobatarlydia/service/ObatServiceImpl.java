@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
@@ -136,6 +137,17 @@ public class ObatServiceImpl implements ObatService {
     @Override
     public ObatDetailModel updateObatDiterima(ObatDetailModel terima) {
         terima.setStatusKonfirmasi("Diterima");
-        return obatDetailDb.save(terima);
+        return obatDetailDb.save(terima);    }
+
+    @Override
+    public ObatUpdtDTO makeObatUpdtDTO(ObatDetailModel obatDetail, String obatDetailId, int kodeBatch) {
+        ObatUpdtDTO dto = new ObatUpdtDTO();
+        dto.setJumlahperbox(obatDetail.getJumlahPerBox());
+        dto.setSatuanperbox(obatDetail.getSatuanPerBox());
+        dto.setIdobat(obatDetailId);
+        dto.setKodebatch(kodeBatch);
+        dto.setJumlahbox(obatDetail.getJumlahBox());
+        dto.setTanggalkadaluarsa(obatDetail.getTanggalKadaluarsa());
+        return dto;
     }
 }

@@ -14,4 +14,8 @@ public interface UserService {
     PenggunaModel getAkunByEmail(String email);
     PenggunaModel addDistributor(PenggunaModel pengguna);
     public String encrypt(String password);
+
+    Boolean getPassChecker(String passwordlama, String password);
+
+    void updatePass(PenggunaModel user1, String passBaruEncode);
 }

@@ -9,8 +9,16 @@
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="bootstrap/js/bootstrap-modal.js"></script>
   <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
   <object th:include="fragments/fragment :: css" th:remove="tag"></object>
   <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <style>
+        .required-field::after {
+            content: "*";
+            color: red;
+        }
+    </style>
 </head>
 
 <body style="background-color: #EBFEFF">
@@ -22,31 +30,31 @@
                 <h2 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Formulir Pembuatan Akun</h2>
                 <br>
                 <form th:action="@{/pengguna/add}" th:object="${pengguna}" method="POST">
-                    <label>
+                    <label class="required-field">
                         Nama Depan:
                     </label>
                     <input class="form-control" type="text" placeholder="cth: Ami" required th:field="*{namaDepan}"/>
 
                     <br>
-                    <label>
+                    <label class="required-field">
                         Nama Belakang:
                     </label>
                     <input class="form-control" type="text" placeholder="cth: Smith" required th:field="*{namaBelakang}"/>
 
                     <br>
-                    <label>
+                    <label class="required-field">
                         Email:
                     </label>
                     <input class="form-control" type="text" placeholder="cth: ami@mail.com" required th:field="*{email}"/>
                     
                     <br>
-                    <label>
+                    <label class="required-field">
                         Nomor Telepon:
                     </label>
                     <input class="form-control" type="text" placeholder="cth: 081289898999" required th:field="*{nomorTelepon}" />
                     
                     <br>
-                    <label>
+                    <label class="required-field">
                         Role:
                     </label>
                     <select name="role" th:value="*{role}" class="form-control">
@@ -55,22 +63,28 @@
                     </select>
 
                     <br>
-                    <label>
+                    <label class="required-field">
                         Password:
                     </label>
-                    <input type="password" value="pswd" id="myInput" required th:field="*{password}"/><br><br>
-                    <input type="checkbox" onclick="myFunction()"> Tunjukkan Password
+<!--                    <input type="password" value="pswd" id="myInput" required th:field="*{password}"/><br><br>-->
+<!--                    <input type="checkbox" onclick="myFunction()"> Tunjukkan Password-->
+                    <div class="input-group mb-3">
+                        <input type="password" id="password-field" class="form-control input-sm" th:name="passwordlama" placeholder="password" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon"><i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i></span>
+                        </div>
+                    </div>
 
-                    <script>
-                        function myFunction() {
-                            var x = document.getElementById("myInput");
-                            if (x.type === "password") {
-                                x.type = "text";
-                            } else {
-                                x.type = "password";
-                            }
-                        }
-                    </script>
+<!--                    <script>-->
+<!--                        function myFunction() {-->
+<!--                            var x = document.getElementById("myInput");-->
+<!--                            if (x.type === "password") {-->
+<!--                                x.type = "text";-->
+<!--                            } else {-->
+<!--                                x.type = "password";-->
+<!--                            }-->
+<!--                        }-->
+<!--                    </script>-->
 
                     <br><br>
 
@@ -113,6 +127,17 @@
 <script th:replace="fragments/fragment :: js"></script>
 <script>
     document.getElementById("btn").click();
+</script>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password-field');
+
+    togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
 </script>
 </body>
 </html>

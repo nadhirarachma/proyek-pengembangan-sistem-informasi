@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Profil</title>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <br>
-        <a class="btn btn-info">Ubah Password</a>
+        <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/pengguna/update-password}">Ubah Password</a>
     </div>
     
     <br>

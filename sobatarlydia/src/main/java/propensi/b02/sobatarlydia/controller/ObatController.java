@@ -1,6 +1,7 @@
 package propensi.b02.sobatarlydia.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import propensi.b02.sobatarlydia.dto.FakturDto;
 import propensi.b02.sobatarlydia.dto.ObatDetailDto;
+import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
@@ -347,7 +350,7 @@ public class ObatController {
         model.addAttribute("tolak", tolak);
         model.addAttribute("updateTolak", updateTolak);
 
-        return "view-page-ditolak";
+        return "input-obat/viewall-waiting";
     }
 
     @GetMapping("/obat-diterima/{obatDetailId}/{kodeBatch}")
@@ -376,4 +379,35 @@ public class ObatController {
 
         return "input-obat/viewall-waiting";
     }
+
+    @GetMapping("/update/{obatDetailId}/{kodeBatch}")
+    public String updateObatDetailFormPage(@PathVariable String obatDetailId, @PathVariable int kodeBatch, Model model){
+        ObatModel obt = obatService.getObatById(obatDetailId);
+        ObatDetailId idObat = new ObatDetailId(obt, kodeBatch);
+        ObatDetailModel obatDetail = obatDetailService.getObatDetailByObatDetailId(idObat);
+        ObatUpdtDTO dto = obatService.makeObatUpdtDTO(obatDetail, obatDetailId, kodeBatch);
+
+        model.addAttribute("obatdto", dto);
+        return "form-update-detail-obat";
+    }
+
+    @PostMapping("/update")
+    public String updateObatDetailSubmitPage(@ModelAttribute ObatUpdtDTO obat, Model model){
+        ObatModel obt = obatService.getObatById(obat.getIdobat());
+        ObatDetailId idObat = new ObatDetailId(obt, obat.getKodebatch());
+        int stat = 1;
+        if(obat.getTanggalkadaluarsa().isAfter(LocalDate.now())){
+            ObatDetailModel obatDetailPast = obatDetailService.getObatDetailByObatDetailId(idObat);
+            ObatDetailModel obatDetailNow = obatDetailService.makeSetterDetail(obatDetailPast, obat);
+            ObatDetailModel updateObatDetail = obatDetailService.updateObatDetail(obatDetailNow);
+            model.addAttribute("obat", updateObatDetail);
+        }
+        else{
+            stat=0;
+        }
+        model.addAttribute("obatdto", obat);
+        model.addAttribute("stat", stat);
+        return "form-update-detail-obat";
+    }
+
 }
