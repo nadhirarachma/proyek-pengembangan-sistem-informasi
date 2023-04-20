@@ -1,7 +1,6 @@
 package propensi.b02.sobatarlydia.service;
 
 import propensi.b02.sobatarlydia.model.FakturModel;
-import propensi.b02.sobatarlydia.model.ObatDetailModel;
 
 import java.time.LocalDate;
 import java.util.List;

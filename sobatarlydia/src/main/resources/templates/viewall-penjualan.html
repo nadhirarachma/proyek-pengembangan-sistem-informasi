@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View All Penjualan</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+
+    <style>
+        .btn-primary {
+            background-color: #5FE7E7;
+            border-color: #5FE7E7;
+        }
+        .btn-outline-primary {
+            color: #5FE7E7;
+            border-color: #5FE7E7;
+        }
+        * {
+            font-family: 'Urbanist', sans-serif;
+        }
+        body {
+            background-color: #EBFEFF;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar(page = 'Penjualan')"></nav>
+<div class="container">
+    <div class="h1 p-4 m-4 text-center" style="font-weight: bolder">Penjualan Obat</div>
+  </div>
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+          <div style="position: relative;">
+              <h3 style="text-align: center;font-weight: bold">Daftar Penjualan</h3>
+              <a style="position: absolute; top: 0; right: 0;border-radius: 10px;" th:href="@{/penjualan/add}" class="mx-2 btn btn-outline-primary font-weight-bold">+Tambah Penjualan</a>
+          </div>
+        <br>
+        <div th:if="*{listPenjualan.size() != 0}">
+          <table class="table table-striped" style="outline-style: none">
+            <thead bgcolor="#ADF6F6">
+            <tr>
+              <th class="text-center">No</th>
+              <th class="text-center">Kode</th>
+              <th class="text-center">Tanggal</th>
+              <th class="text-center">Waktu</th>
+              <th class="text-center">Karyawan</th>
+              <th class="text-center">Total Harga</th>
+              <th class="text-center">Detail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="penjualan, iterationStatus : ${listPenjualan}"
+                th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+                <td class="text-center" th:text="${iterationStatus.count}"></td>
+                <td class="text-center" th:text="${penjualan.id}"></td>
+                <td class="text-center" th:text="${#strings.arraySplit(#strings.arraySplit({penjualan.waktu},'T')[0],'[')[0]}"></td>
+                <td class="text-center" th:text="${#strings.arraySplit(#strings.arraySplit({penjualan.waktu},'T')[1],']')[0]}"></td>
+                <td class="text-center" th:text="${penjualan.karyawan.namaDepan} + ' ' + ${penjualan.karyawan.namaBelakang}"></td>
+                <td class="total text-center" th:text="${penjualan.harga}"></td>
+                <td>
+                    <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/detail-penjualan/} + ${penjualan.id}" style="background-color: #7698F0; border-color: #7698F0;border-radius: 10px;padding-inline:20%">Detail</a>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div th:unless="*{listPenjualan.size() != 0}">
+          <h2 style="text-align: center;" th:text="'Tidak ada Penjualan'"></h2>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <br><br>
+</div>
+
+<script>
+  const price = document.querySelectorAll('.total');
+  for (let i = 0; i < price.length; i++) {
+    price[i].textContent = "Rp" + Number(price[i].textContent).toLocaleString("id-ID");
+  }
+</script>
+
+</body>
+</html>

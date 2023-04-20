@@ -43,6 +43,7 @@ public class FakturServiceImpl implements FakturService{
     }
 
     public void add(FakturModel faktur) {
+        faktur.setStatusFaktur("Lunas");
         fakturDb.save(faktur);
     }
 

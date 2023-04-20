@@ -1,8 +1,10 @@
 package propensi.b02.sobatarlydia.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,5 +151,23 @@ public class ObatServiceImpl implements ObatService {
         dto.setJumlahbox(obatDetail.getJumlahBox());
         dto.setTanggalkadaluarsa(obatDetail.getTanggalKadaluarsa());
         return dto;
+    }
+
+    @Override
+    public List<ObatModel> getListObatDiterimaDanTersedia() {
+        List<ObatModel> daftarObat = obatDb.findAll();
+        List<ObatModel> obatDiterimaDanTersedia = new ArrayList<ObatModel>();
+        Set<ObatModel> obatDiterimaDanTersediaNoDup = new HashSet<ObatModel>();
+
+        for (int i = 0; i < daftarObat.size(); i++) {
+            for (int j = 0; j < daftarObat.get(i).getListDetailObat().size(); j++) {
+                if (daftarObat.get(i).getListDetailObat().get(j).getStatusKonfirmasi().equals("Diterima") && daftarObat.get(i).getListDetailObat().get(j).getStatus().equals("Tersedia")) {
+                    obatDiterimaDanTersediaNoDup.add(daftarObat.get(i));
+                }
+            }
+        }
+        
+        obatDiterimaDanTersedia.addAll(obatDiterimaDanTersediaNoDup);
+        return obatDiterimaDanTersedia;
     }
 }
