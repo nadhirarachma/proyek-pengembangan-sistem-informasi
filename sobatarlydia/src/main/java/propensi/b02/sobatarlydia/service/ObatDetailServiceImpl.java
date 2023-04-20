@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
+import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.ObatDetailDb;
-//import propensi.b02.sobatarlydia.repository.ObatDetailIdDb;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
 
 import java.util.ArrayList;
@@ -45,11 +45,10 @@ public class ObatDetailServiceImpl implements ObatDetailService{
         return waitingList;
     }
 
-//    @Override
-//    public ObatDetailId getObatDetailId(String idObat, int kodeBatch) {
-//        ObatDetailId obat = obatDetailIdDB.findByIdObatAndKodeBatch(idObat,kodeBatch).get();
-//        return obat;
-//    }
+    @Override
+    public void addObatDetail(ObatDetailModel obat) {
+        obatDetailDB.save(obat);
+    }
 
     @Override
     public ObatDetailModel getObatDetailByObatDetailId(ObatDetailId kode) {
@@ -73,4 +72,26 @@ public class ObatDetailServiceImpl implements ObatDetailService{
     }
 
 
+    @Override
+    public ObatDetailModel getObatDetailByIdObat(ObatModel idObat) {
+    
+        List<ObatDetailModel> allObatDetail = getAllObatDetail();
+        for (int i=0; i < allObatDetail.size(); i++) {
+            if (allObatDetail.get(i).getObatDetailId().getIdObat() == idObat) {
+                return allObatDetail.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ObatDetailModel getObatDetailByKodeBatch(ObatModel idObat, int kodeBatch) {
+        List<ObatDetailModel> allObatDetail = getAllObatDetail();
+        for (int i=0; i < allObatDetail.size(); i++) {
+            if (allObatDetail.get(i).getObatDetailId().getIdObat() == idObat && allObatDetail.get(i).getObatDetailId().getKodeBatch() == kodeBatch) {
+                return allObatDetail.get(i);
+            }
+        }
+        return null;
+    }
 }

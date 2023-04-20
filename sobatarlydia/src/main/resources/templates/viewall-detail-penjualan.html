@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Penjualan Obat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+<body style="background-color: #EBFEFF">
+    <nav th:replace="fragments/fragment :: navbar(page = 'Penjualan')"></nav>
+
+    <div class="container align-center" style="border-radius:0.25rem">
+        <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Detail Penjualan Obat</div>
+        <div class="card p-4" style="background-color: white; border-radius: 25px;">
+            <div class="container p-3 m-1" >
+                <div class="row">
+                    <div class="text-left col-8 h2" style="font-family:Urbanist;font-weight: bolder">Penjualan Obat</div>
+                    <div class="total text-right col-4 h4" style="font-family:Urbanist;font-weight: bold;" th:text="${detailPenjualan.harga}"></div>
+                </div>
+                <div class="row pl-1 mb-4">
+                    <div class="row">
+                        <div class="text-left col h5" style="font-family:Urbanist;" th:text="${detailPenjualan.id}"></div>
+                        <div class="text-left col-9 h5" style="font-family:Urbanist;" th:text="${#strings.arraySplit(#strings.arraySplit({detailPenjualan.waktu},'T')[0],'[')[0]}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="text-left col h5" style="font-family:Urbanist;" th:text="${detailPenjualan.karyawan.namaDepan} + ' ' + ${detailPenjualan.karyawan.namaBelakang}"></div>
+                        <div class="text-left col-9 h5" style="font-family:Urbanist;" th:text="${#strings.arraySplit(#strings.arraySplit({detailPenjualan.waktu},'T')[1],']')[0]}"></div>
+                    </div>
+                </div>
+                <table class="p-3 m-1 table table-striped text-center" style="outline-style: none;">
+                    <thead style="background-color: #ADF6F6">
+                    <tr>
+                        <th style="font-family: Urbanist; font-weight: normal">No</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Nama Obat</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Farmasi</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Harga</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Kuantitas</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Total Harga</th>
+                        <th style="font-family: Urbanist; font-weight: normal">Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="detail, iterationStatus:${detailPenjualan.kuantitas}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${detail.id.obat.obatDetailId.idObat.namaObat}"></td>
+                        <td th:text="${detail.id.obat.obatDetailId.idObat.farmasi}"></td>
+                        <td class="price" th:text="${detail.id.obat.obatDetailId.idObat.harga}"></td>
+                        <td class="qty" th:text="${detail.kuantitas}"></td>
+                        <td class="totalHarga" th:text="${detail.kuantitas}"></td>
+                        <td>
+                            <a class="btn text-black" th:href="@{/obat/detail-obat/} + ${detail.id.obat.obatDetailId.idObat.idObat}" style="background-color: #5FE7E7; border-color: #5FE7E7;border-radius:15px;">Detail</a>
+                            <a class="btn btn-warning text-black" style="border-radius:15px;">Riwayat</a>
+                        </td>
+                    </tbody>
+                </table>
+                <div class="col-md-8 mt-4">
+                    <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall}" style="background-color: white; border-color: black;">Kembali</a>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+    </div>
+
+    <script>
+        const totalPrice = document.querySelectorAll('.total');
+        const price = document.querySelectorAll('.price');
+        const hargaTotal = document.querySelectorAll('.totalHarga');
+        
+        for (let i = 0; i < price.length; i++) {
+            const kuantitas = Number(document.querySelectorAll('.qty')[i].textContent);
+            const harga = Number(price[i].textContent);
+
+            price[i].textContent = "Rp" + Number(price[i].textContent).toLocaleString("id-ID");
+            hargaTotal[i].textContent = "Rp" + Number(harga * kuantitas).toLocaleString("id-ID");
+        }
+        totalPrice[0].textContent = "Rp" + Number(totalPrice[0].textContent).toLocaleString("id-ID");
+    </script>
+</body>
+</html>

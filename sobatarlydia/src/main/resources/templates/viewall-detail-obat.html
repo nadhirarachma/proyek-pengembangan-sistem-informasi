@@ -56,14 +56,20 @@
                     </td>
                 </tbody>
             </table>
-            <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Kembali</a>
-
+            <br>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
+            </div>
         </div>
         <div th:if="*{status == 'Kosong'}">
             <a class="btn btn-primary text-white" type="submit" style="background-color: #5FE7E7; border-color: #5FE7E7; margin-right: 10px">TAMBAH STOK</a>
             <a class="btn btn-primary text-white" type="submit" style="background-color: #F0BF76; border-color: #F0BF76; margin-right: 10px">ARSIPKAN</a>
             <a class="btn btn-primary text-white" type="submit" style="background-color: #ED6363; border-color: #ED6363; margin-right: 10px">HAPUS</a>
-            <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; margin-left: 145px">Kembali</a>
+            <div class="d-flex justify-content-center mt-4">
+                <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
+            </div>
         </div>
 
 </div>

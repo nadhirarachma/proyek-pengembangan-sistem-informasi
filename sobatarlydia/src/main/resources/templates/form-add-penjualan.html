@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Input Penjualan Obat</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <style>
+    label::after {
+            content: " *";
+            color: #e32;
+        }
+  </style>
+</head>
+<body style="background-color: #EBFEFF">
+  <nav th:replace="fragments/fragment :: navbar(page = 'Penjualan')"></nav>
+
+
+<div class="container" onmousemove="setTotal()">
+  <div class="card m-3 p-2"  style="background:#EBFEFF;border:none;">
+    <div class="card-body mx-auto">
+      <h2 class="text-center font-weight-bold">Input Penjualan Obat</h2>
+      <div class="flex justify-content-center">
+        <form th:action="@{/penjualan/add}" th:object="${penjualan}" method="POST" id="form">
+          <div class="row">
+            <div class="col">
+              <br>
+              <br>
+              <label>Penjualan Obat</label>
+              <div>
+                <div th:each="obat, iterationStatus : *{kuantitas}" class="row">
+                  <div class="form-group col-md-7">
+                    <div class="input-group">
+                      <input id="in" name="namaObat" th:field="*{kuantitas[__${iterationStatus.index}__].id.obat.obatDetailId.idObat.namaObat}"
+                        list="dataObat" class="obatName form-control" type="text"  oninput="checkExist()" placeholder="Obat" required />
+                      <datalist id="dataObat">
+                        <option th:each="obatName : ${daftarObat}" th:value="${obatName.namaObat} + ' - ' + ${obatName.farmasi} + ' - ' + ${obatName.harga}" th:text="${obatName.namaObat} + ' - ' + ${obatName.farmasi} + ' - ' + ${obatName.harga}"></option>
+                      </datalist>
+                      <div class="input-group-append">
+                        <span class="input-group-text" style="background-color:white;"><i class="fa fa-search" style="color:#DADADA"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <div class="input-group">
+                      <input type="button" value="-" class="button-minus btn rounded-circle border border-info text-info text-center" style="background:#EBFEFF;">
+                      <input type="text" step="1" min="1" max="" value="1" th:field="*{kuantitas[__${iterationStatus.index}__].kuantitas}" class="quantity m-1 text-center text-lg font-weight-bold" style="background:#EBFEFF;border:none;width:40%;">
+                      <input type="button" value="+" class="button-plus btn rounded-circle border border-info text-info text-center" style="background:#EBFEFF;">
+                    </div>                    
+                  </div>
+                  <div class="form-group col-md-2">
+                    <button th:value="${iterationStatus.index}" class="btn" type="submit" name="deleteRowObat" style="background:#ED6363;color:white;border-radius: 10px;padding-inline:25%;">Hapus</button>
+                  </div>
+                </div>
+                <br>
+                <button class="btn" type="submit" name="addRowObat" style="background:#7698F0;color:white;border-radius: 10px;padding-inline:14%;">+Tambah Obat</button> 
+              </div>
+            </div>
+          </div>
+          <br><br>
+          <div style="text-align: center;">
+            <h4>Total</h4>
+            <input type="text" id="zz" disabled th:field="*{harga}" value="Rp" class="out text-center text-lg font-weight-bold" style="background:#EBFEFF;border:none;width:40%;">
+          </div>
+          <br>
+          <div class="d-flex justify-content-center">
+            <button id="simpan" class="px-5 m-3 btn text-white font-weight-bold" type="button" name="save" data-toggle="modal" data-target="#myModal" style="background-color: #5FE7E7;border-radius:10px;">Simpan</button>
+          </div>
+
+          <div class="modal fade centered" id="myModal" role="dialog">
+            <div class="px-5 modal-dialog modal-dialog-centered text-center">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title text-center">Konfirmasi Input Penjualan Obat</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                  <p>Apakah Anda yakin data sudah sesuai? Anda tidak dapat mengubah data setelah disimpan.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                <button name="save" class="px-5 m-3 bg-warning btn text-white" type="submit">Yakin</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const elements = document.querySelectorAll('.quantity');
+  const output = document.querySelectorAll(".out");
+  const name = document.querySelectorAll('.obatName');
+
+  const min = document.querySelectorAll('.button-minus');
+  const plus = document.querySelectorAll('.button-plus');
+
+  const data = document.getElementById("dataObat");
+        
+  for (let i = 0; i < data.options.length; ++i) {
+      const input = data.options[i].value.split(' - ');
+      const nama = input[0];
+      const farmasi = input[1];
+      const harga = input[2];
+
+      data.options[i].value = nama + " - " + farmasi + " - " + "Rp" + Number(harga).toLocaleString("id-ID");
+      console.log(input, nama, farmasi, harga);
+  }
+
+  function checkExist() {
+    let exist = false;
+    const selected = [];
+    for (let i = 0; i < name.length; i++) {
+      for (j = 0; j < document.getElementById("dataObat").options.length; ++j){
+        if (document.getElementById("dataObat").options[j].value == name[i].value && (selected.includes(name[i].value) != true)){
+          exist = true;
+          selected[i] = name[i].value;
+          break;
+        } else {
+          exist = false;
+        }
+      }
+
+      if (exist == false) {
+        name[i].setCustomValidity("Mohon menginput data obat yang sesuai.");
+      } else {
+        name[i].setCustomValidity("");
+      }
+    }
+  }
+
+  function setTotal() {
+    var total = 0;
+    for (let i = 0; i < name.length; i++) {
+      if (name[i].value.split(" - ")[2] != undefined) {
+        total += Number(Number(name[i].value.split(" - ")[2].slice(2).replace(".","")) * (Number(elements[i].value) || 0));
+      }
+      output[0].setAttribute("value", "Rp" + total.toLocaleString("id-ID"));
+    } 
+  }
+
+  for (let i = 0; i < min.length; i++) {
+      min[i].addEventListener("click", event => {
+        event.preventDefault();
+        var currentValue = Number(elements[i].value) || 0;
+        var currentTotal = Number(output[0].value) || 0;
+        if (currentValue > 1) {
+          elements[i].setAttribute("value", currentValue - 1);
+
+          output[0].setAttribute("value", currentTotal - Number(name[i].value.split(" - ")[2]));
+        }
+      });
+  }
+
+  for (let i = 0; i < plus.length; i++) {
+      plus[i].addEventListener("click", event => {
+        event.preventDefault();
+        var currentValue = Number(elements[i].value) || 0;
+        elements[i].setAttribute("value", currentValue + 1);
+        
+        var currentTotal = Number(output[0].value) || 0;
+        output[0].setAttribute("value", currentTotal + Number(name[i].value.split(" - ")[2]));
+      });
+  }
+</script>
+
+</body>
+</html>

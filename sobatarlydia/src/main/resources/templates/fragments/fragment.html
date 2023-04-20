@@ -80,7 +80,7 @@
                     </ul>
                     <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker', 'Admin')">
                         <li th:classappend="${page == 'Penjualan'} ? font-weight-bold : ''" class="nav-item">
-                            <a class="nav-link" href="/" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penjualan</a>
+                            <a class="nav-link" th:href="@{/penjualan/viewall}" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penjualan</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Distributor', 'Apoteker')">
