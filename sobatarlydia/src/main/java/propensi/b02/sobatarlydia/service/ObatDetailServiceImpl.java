@@ -7,6 +7,7 @@ import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.ObatDetailDb;
+//import propensi.b02.sobatarlydia.repository.ObatDetailIdDb;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
 
 import java.util.ArrayList;
@@ -71,6 +72,11 @@ public class ObatDetailServiceImpl implements ObatDetailService{
         return obatDetailPast;
     }
 
+    @Override
+    public ObatDetailModel updateToArsip(ObatDetailModel obatDetail) {
+        obatDetail.setStatusKonfirmasi("Arsipkan");
+        return updateObatDetail(obatDetail);
+    }
 
     @Override
     public ObatDetailModel getObatDetailByIdObat(ObatModel idObat) {

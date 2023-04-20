@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -406,6 +407,19 @@ public class ObatController {
         }
         model.addAttribute("obatdto", obat);
         model.addAttribute("stat", stat);
+        return "form-update-detail-obat";
+    }
+
+    @GetMapping("/update/arsip/{obatDetailId}/{kodeBatch}")
+    public String updateToArsipFormPage(@PathVariable String obatDetailId, @PathVariable int kodeBatch, Model model){
+        ObatModel obt = obatService.getObatById(obatDetailId);
+        ObatDetailId idObat = new ObatDetailId(obt, kodeBatch);
+        ObatDetailModel obatDetail1 = obatDetailService.getObatDetailByObatDetailId(idObat);
+        ObatDetailModel obatDetail = obatDetailService.updateToArsip(obatDetail1);
+        ObatUpdtDTO dto = obatService.makeObatUpdtDTO(obatDetail, obatDetailId, kodeBatch);
+
+        model.addAttribute("obatdto", dto);
+        model.addAttribute("stat", 2);
         return "form-update-detail-obat";
     }
 

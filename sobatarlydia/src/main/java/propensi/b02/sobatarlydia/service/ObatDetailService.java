@@ -12,10 +12,11 @@ import java.util.List;
 public interface ObatDetailService {
     List<ObatDetailModel> getAllObatDetail();
     List<ObatWaiting> getAllObatWaiting();
-    void addObatDetail(ObatDetailModel obat);
-    ObatDetailModel getObatDetailByIdObat(ObatModel idObat);
-    ObatDetailModel getObatDetailByKodeBatch(ObatModel idObat, int kodeBatch);
     ObatDetailModel getObatDetailByObatDetailId(ObatDetailId kode);
     ObatDetailModel updateObatDetail(ObatDetailModel obatDetail);
     ObatDetailModel makeSetterDetail(ObatDetailModel obatDetailPast, ObatUpdtDTO obat);
+    ObatDetailModel updateToArsip (ObatDetailModel obatDetail);
+    void addObatDetail(ObatDetailModel obat);
+    ObatDetailModel getObatDetailByIdObat(ObatModel idObat);
+    ObatDetailModel getObatDetailByKodeBatch(ObatModel idObat, int kodeBatch);
 }
