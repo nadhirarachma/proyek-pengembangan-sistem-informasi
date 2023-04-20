@@ -92,15 +92,41 @@
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
+<<<<<<< HEAD
+                            <p>Tanggal kadaluarsa yang boleh diinput minimal adalah BESOK. Silakan perbaiki ulang atau ajukan pengarsipan obat.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" style=" color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/update/arsip/} + ${obatdto.idobat} + '/' + ${obatdto.kodebatch}">Ajukan Pengarsipan</a>
+=======
                             <p>Tanggal kadaluarsa yang boleh diinput minimal adalah BESOK. Silakan perbaiki ulang atau arsipkan obat.</p>
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/}">Arsipkan Obat</a>
+>>>>>>> d07db709dcd4fcc69bc3b71cebd51a9ff337793b
                             <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/update/} + ${obatdto.idobat} + '/' + ${obatdto.kodebatch}">Update Ulang</a>
                         </div>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+
+            <div class="modal fade centered" id="myModal2" role="dialog">
+                <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title text-center">Pengajuan Pengarsipan Berhasil</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Obat yang sudah diajukan untuk diarsipkan tidak dapat diperbarui lagi. Silakan tunggu hingga Apoteker menerima permintaan Anda</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat-detail/waiting}">Kembali</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+=======
+>>>>>>> d07db709dcd4fcc69bc3b71cebd51a9ff337793b
         </div>
     </div>
 </div>
@@ -120,6 +146,11 @@
             $('#jmlsatuan').html(html);
 
         });
+</script>
+
+<button th:if="${stat} == 2" id="btn2" hidden data-toggle="modal" data-target="#myModal2">Click me</button>
+<script>
+    document.getElementById('btn2').click();
 </script>
 
 <button th:if="${stat} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
