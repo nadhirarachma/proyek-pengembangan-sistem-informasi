@@ -71,7 +71,7 @@
                       Karyawan mengajukan pengarispan pada obat sudah mencapai batas kadaluarsa. Apakah Anda setuju untuk mengarsipkan obat?
                     </div>
                     <div class="modal-footer">
-                      <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/}">Arsipkan Obat</a>
+                      <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/arsipkan/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Arsipkan Obat</a>
                     </div>
                   </div>
                 </div>

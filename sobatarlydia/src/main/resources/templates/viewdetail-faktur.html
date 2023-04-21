@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Detail Faktur</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+
+  <style>
+    .btn-primary {
+      background-color: #5FE7E7;
+      border-color: #5FE7E7;
+    }
+    .btn-outline-primary {
+      color: #5FE7E7;
+      border-color: #5FE7E7;
+    }
+    * {
+      font-family: 'Urbanist', sans-serif;
+    }
+    body {
+      background-color: #EBFEFF;
+    }
+  </style>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar(page = 'Faktur')"></nav>
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <div style="position: relative;">
+          <h2 style="text-align: center;">Detail Faktur</h2>
+        </div>
+        <div class="mx-auto d-flex">
+          <div class="text-start" style="padding-right: 4.5rem">
+            <p>Nomor Faktur : </p>
+            <p>Tanggal Faktur : </p>
+            <p>Tanggal Jatuh Tempo : </p>
+            <p>Status Faktur : </p>
+          </div>
+          <div class="text-start">
+            <p th:text="${fakturModel.noFaktur}"></p>
+            <p th:text="${fakturModel.tanggal}"></p>
+            <p th:text="${fakturModel.tanggalJatuhTempo}"></p>
+            <p th:text="${fakturModel.statusFaktur}"></p>
+          </div>
+        </div>
+        <div th:if="*{fakturModel.statusFaktur == 'Belum Lunas'}">
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+            Bayar
+          </button>
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div th:if="*{statusObat == 'Belum'}">
+                  <h5 class="modal-title">Obat Gagal Dibayar</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div th:if="*{statusObat == 'Belum'}">
+                <div class="modal-body text-center">
+                  Ada Input Obat yang Belum Diterima
+                </div>
+              </div>
+              <div th:if="*{statusObat == 'Diterima'}">
+                <div class="modal-body text-center">
+                  Anda yakin sudah melunasi pembayaran faktur ?
+                </div>
+                <div class="modal-footer">
+                  <a class="btn btn-primary" th:href="@{/faktur/updateStatusFaktur/} + ${fakturModel.noFaktur}">Lunas</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div>
+          <table class="p-3 m-1 table table-striped" style="outline-style: none">
+            <thead style="background-color: #ADF6F6">
+            <tr>
+              <th style="font-weight: normal">No</th>
+              <th style="font-weight: normal">Kode Batch</th>
+              <th style="font-weight: normal">Nama Obat</th>
+              <th style="font-weight: normal">Status</th>
+              <th style="font-weight: normal">Stok</th>
+              <th style="font-weight: normal">Expired Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detail, iterationStatus:${listInputObat}">
+              <td th:text="${iterationStatus.count}"></td>
+              <td th:text="${detail.obatDetailId.kodeBatch}"></td>
+              <td th:text="${detail.obatDetailId.idObat.namaObat}"></td>
+              <td th:text="${detail.status}"></td>
+              <td th:text="${detail.stokTotal}"></td>
+              <td th:text="${detail.tanggalKadaluarsa}"></td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

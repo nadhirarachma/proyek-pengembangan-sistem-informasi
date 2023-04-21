@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View All Faktur</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+
+    <style>
+        .btn-primary {
+            background-color: #5FE7E7;
+            border-color: #5FE7E7;
+        }
+        .btn-outline-primary {
+            color: #5FE7E7;
+            border-color: #5FE7E7;
+        }
+        * {
+            font-family: 'Urbanist', sans-serif;
+        }
+        body {
+            background-color: #EBFEFF;
+        }
+    </style>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar(page = 'Faktur')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <div style="position: relative;">
+                    <h2 style="text-align: center;">Daftar Faktur</h2>
+                </div>
+                <br>
+                <div th:if="*{listFaktur.size() != 0}">
+                    <table class="table">
+                        <thead bgcolor="#ADF6F6">
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Nomor Faktur</th>
+                            <th class="text-center">Tanggal Faktur</th>
+                            <th class="text-center">Tanggal Jatuh Tempo</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="faktur, iterationStatus : ${listFaktur}"
+                            th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+                            <td class="text-center" th:text="${iterationStatus.count}"></td>
+                            <td class="text-center" th:text="${faktur.noFaktur}"></td>
+                            <td class="text-center" th:text="${faktur.tanggal}"></td>
+                            <td class="text-center" th:text="${faktur.tanggalJatuhTempo}"></td>
+                            <td class="text-center" th:text="${faktur.statusFaktur}"></td>
+                            <td align="center">
+                                <a class="btn btn-primary text-black" type="submit" th:href="@{/faktur/detail-faktur/} + ${faktur.noFaktur}" style="background-color: #5FE7E7; border-color: #5FE7E7">Detail</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:unless="*{listFaktur.size() != 0}">
+                    <h2 th:text="'Tidak ada Faktur'"></h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

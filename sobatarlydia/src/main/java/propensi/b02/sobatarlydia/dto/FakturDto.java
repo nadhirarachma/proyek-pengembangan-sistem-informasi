@@ -21,6 +21,10 @@ public class FakturDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggal;
 
+    @JsonProperty("tanggalJatuhTempo")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggalJatuhTempo;
+
     @JsonProperty("obat")
     private List<ObatDetailDto> obat;
 }

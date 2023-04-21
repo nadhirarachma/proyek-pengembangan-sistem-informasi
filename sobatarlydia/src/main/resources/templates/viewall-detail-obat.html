@@ -6,73 +6,125 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
-  <!--    <object th:include="fragments/fragment :: css" th:remove="tag"></object>-->
-  <!--    <object th:include="fragments/fragment :: js" th:remove="tag"></object>-->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 <body style="background-color: #EBFEFF">
     <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+    <div class="container">
+        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+        <div class="card m-4 p-4">
+            <div class="card-body">
+                <div class="justify-content-center">
+                    <div style="position: relative;">
+                        <h2 style="text-align: center;">Detail Obat</h2>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="text-left col-8 h2" style="font-family:Urbanist;font-weight: bolder" th:text="${detailObat.namaObat}"></div>
+                        <div class="text-right col-4 h4" style="font-family:Urbanist;font-weight: bold" th:text="${detailObat.harga}"></div>
+                    </div>
+                    <div>
+                        <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${status}"></a>
+                        <a class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getKategori().getNamaKategori()}"></a>
+                        <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getBentukObat()}"></a>
+                        <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getFarmasi()}"></a>
+                    </div>
+                <div th:if="*{status == 'Tersedia'} OR *{status == 'Diarsipkan'}">
+                    <table class="p-3 m-1 table table-striped" style="outline-style: none">
+                        <thead style="background-color: #ADF6F6">
+                        <tr>
+                            <th style="font-family: Urbanist; font-weight: normal">No</th>
+                            <th style="font-family: Urbanist; font-weight: normal">Kode Batch</th>
+                            <th style="font-family: Urbanist; font-weight: normal">Nama Obat</th>
+                            <th style="font-family: Urbanist; font-weight: normal">Stok</th>
+                            <th style="font-family: Urbanist; font-weight: normal">Expired Date</th>
+                            <th style="font-family: Urbanist; font-weight: normal">Status</th>
+                            <th th:if="${akun.role} == 'Apoteker'" style="font-family: Urbanist; font-weight: normal">Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="detail, iterationStatus:${statusObat}">
+                            <td th:text="${iterationStatus.count}"></td>
+                            <td th:text="${detail.obatDetailId.kodeBatch}"></td>
+                            <td th:text="${detailObat.namaObat}"></td>
+                            <td th:text="${detail.stokTotal}"></td>
+                            <td th:text="${detail.tanggalKadaluarsa}"></td>
+                            <td th:text="${detail.status}"></td>
+                            <td th:if="${akun.role} == 'Apoteker'">
+                                <div th:if="${detail.isArsip} == 0">
+                                    <button type="button" class="btn btn-primary text-black" style="background-color: #5FE7E7; border-color: #5FE7E7" data-toggle="modal" th:data-target="|#userModal${iterationStatus.index}|">
+                                        Arsipkan
+                                    </button>
+                                </div>
+                                <div th:if="${detail.isArsip} == 1">
+                                    <button type="button" class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76" data-toggle="modal" th:data-target="|#userModall${iterationStatus.index}|">
+                                        Batal Arsipkan
+                                    </button>
+                                </div>
+                            </td>
+                            <div class="modal fade" th:id="|userModal${iterationStatus.index}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Obat akan Diarsipkan</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            Stok obat akan berkurang sebanyak stok obat yang akan diarsipkan. Apakah Anda yakin untuk melanjutkan?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" th:href="@{/obat/arsipkan/} + ${detail.obatDetailId.idObat.idObat} + '/' + ${detail.obatDetailId.kodeBatch}">Yakin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" th:id="|userModall${iterationStatus.index}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Obat akan Dibatalkan Arsip</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            Stok obat akan bertambah sebanyak stok obat yang akan diarsipkan. Apakah Anda yakin untuk melanjutkan?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-primary" th:href="@{/obat/arsipkan/} + ${detail.obatDetailId.idObat.idObat} + '/' + ${detail.obatDetailId.kodeBatch}">Yakin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h2 th:text="'Total Stok : '+${total}" style="text-align: center;">Total Stok</h2>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
+                    </div>
 
-<div class="container m-5" style="border-radius:0.25rem">
-    <div class="h1 p-4 m-4 text-center" style="font-family:Urbanist; font-weight: bolder">Detail Obat</div>
-    <div class="card p-4" style="background-color: white; border-radius: 25px; margin-left: 150px; margin-right: 150px; margin-bottom: 30px">
-    <div class="container p-3 m-1" >
-    <div class="row">
-        <div class="text-left col-8 h2" style="font-family:Urbanist;font-weight: bolder" th:text="${detailObat.namaObat}"></div>
-        <div class="text-right col-4 h4" style="font-family:Urbanist;font-weight: bold" th:text="${detailObat.harga}"></div>
+                </div>
+                    <br>
+                <div th:if="*{status == 'Kosong'}">
+                    <a class="btn btn-primary text-white" type="submit" style="background-color: #5FE7E7; border-color: #5FE7E7; margin-right: 10px">TAMBAH STOK</a>
+                    <div class="d-flex justify-content-center mt-4">
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-        <div th:if="*{status == 'Tersedia'}">
-            <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${status}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getKategori().getNamaKategori()}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getBentukObat()}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getFarmasi()}"></a>
-        </div>
-        <div th:if="*{status == 'Kosong'}">
-            <a class="btn btn-primary text-black" style="background-color: #ED6363; border-color: #ED6363; margin-right: 10px; border-radius: 25px" th:text="${status}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getKategori().getNamaKategori()}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getBentukObat()}"></a>
-            <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getFarmasi()}"></a> </div>
-        </div>
-        <div th:if="*{status == 'Tersedia'}">
-            <table class="p-3 m-1 table table-striped" style="outline-style: none">
-                <thead style="background-color: #ADF6F6">
-                <tr>
-                    <th style="font-family: Urbanist; font-weight: normal">No</th>
-                    <th style="font-family: Urbanist; font-weight: normal">Kode Batch</th>
-                    <th style="font-family: Urbanist; font-weight: normal">Nama Obat</th>
-                    <th style="font-family: Urbanist; font-weight: normal">Status</th>
-                    <th style="font-family: Urbanist; font-weight: normal">Stok</th>
-                    <th style="font-family: Urbanist; font-weight: normal">Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="detail, iterationStatus:${statusObat}">
-                    <td th:text="${iterationStatus.count}"></td>
-                    <td th:text="${detail.obatDetailId.kodeBatch}"></td>
-                    <td th:text="${detailObat.namaObat}"></td>
-                    <td th:text="${detail.status}"></td>
-                    <td th:text="${detail.stokTotal}"></td>
-                    <td>
-                        <a class="btn btn-primary text-black" style="background-color: #7698F0; border-color: #7698F0">Update</a>
-                    </td>
-                </tbody>
-            </table>
-            <br>
-            <div class="d-flex justify-content-center">
-                <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
-                <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
-            </div>
-        </div>
-        <div th:if="*{status == 'Kosong'}">
-            <a class="btn btn-primary text-white" type="submit" style="background-color: #5FE7E7; border-color: #5FE7E7; margin-right: 10px">TAMBAH STOK</a>
-            <a class="btn btn-primary text-white" type="submit" style="background-color: #F0BF76; border-color: #F0BF76; margin-right: 10px">ARSIPKAN</a>
-            <a class="btn btn-primary text-white" type="submit" style="background-color: #ED6363; border-color: #ED6363; margin-right: 10px">HAPUS</a>
-            <div class="d-flex justify-content-center mt-4">
-                <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
-                <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
-            </div>
-        </div>
-
-</div>
-</div>
 </body>
 </html>

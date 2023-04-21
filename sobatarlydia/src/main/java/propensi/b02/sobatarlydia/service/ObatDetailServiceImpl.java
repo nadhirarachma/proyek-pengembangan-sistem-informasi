@@ -28,7 +28,7 @@ public class ObatDetailServiceImpl implements ObatDetailService{
     public List<ObatWaiting> getAllObatWaiting() {
         List<ObatWaiting> waitingList = new ArrayList<>();
         for (int i = 0; i < getAllObatDetail().size(); i++) {
-            if (!getAllObatDetail().get(i).getStatusKonfirmasi().equals("Diterima")){
+            if (!(getAllObatDetail().get(i).getStatusKonfirmasi().equals("Diterima"))){
                 ObatWaiting obat = new ObatWaiting();
                 obat.setObatDetailId(getAllObatDetail().get(i).getObatDetailId().toString());
                 obat.setJumlahperbox(getAllObatDetail().get(i).getJumlahPerBox());

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import propensi.b02.sobatarlydia.model.FakturModel;
+import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.repository.FakturDb;
 
 import java.time.LocalDate;
@@ -43,12 +44,12 @@ public class FakturServiceImpl implements FakturService{
     }
 
     public void add(FakturModel faktur) {
-        faktur.setStatusFaktur("Lunas");
+//        faktur.setStatusFaktur("Lunas");
         fakturDb.save(faktur);
     }
 
     @Override
-    public FakturModel getFakturByNo(Long noFaktur){
+    public FakturModel getFakturByNo(String noFaktur){
         Optional<FakturModel> faktur = fakturDb.findFakturModelByNoFaktur(noFaktur);
         if(faktur.isPresent()){
             return faktur.get();
@@ -60,5 +61,10 @@ public class FakturServiceImpl implements FakturService{
     public FakturModel updateFakturStatus(FakturModel fakturObat) {
         fakturObat.setStatusFaktur("Lunas");
         return fakturDb.save(fakturObat);
+    }
+
+    @Override
+    public List<FakturModel> getAllFaktur() {
+        return fakturDb.findAll();
     }
 }

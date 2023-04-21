@@ -65,6 +65,10 @@ public class ObatDetailModel implements Serializable {
     @Column(name = "stok_total", nullable = false)
     private int stokTotal;
 
+    @NotNull
+    @Column(name ="isArsip")
+    private int isArsip;
+
     // Relasi dengan FakturModel
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "no_faktur", referencedColumnName = "no_faktur")

@@ -170,4 +170,17 @@ public class ObatServiceImpl implements ObatService {
         obatDiterimaDanTersedia.addAll(obatDiterimaDanTersediaNoDup);
         return obatDiterimaDanTersedia;
     }
+
+    @Override
+    public ObatDetailModel updateObatDiarsip(ObatDetailModel arsip) {
+        if (arsip.getIsArsip()==0) {
+            arsip.setIsArsip(1);
+            arsip.setStatus("Diarsipkan");
+            arsip.setStatusKonfirmasi("Diterima");
+        } else {
+            arsip.setIsArsip(0);
+            arsip.setStatus("Tersedia");
+        }
+        return obatDetailDb.save(arsip);
+    }
 }
