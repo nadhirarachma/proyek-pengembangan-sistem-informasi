@@ -22,6 +22,7 @@ public interface ObatService {
     ObatDetailModel getDetailObat(ObatDetailId idObat);
     ObatDetailModel updateObatDitolak(ObatDetailModel tolak);
     ObatDetailModel updateObatDiterima(ObatDetailModel terima);
+    ObatDetailModel updateObatDiarsip(ObatDetailModel arsip);
     List<ObatModel> getListObatDiterimaDanTersedia();
     ObatUpdtDTO makeObatUpdtDTO (ObatDetailModel obatDetail, String obatDetailId, int kodeBatch);
 }

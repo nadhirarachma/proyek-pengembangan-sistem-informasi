@@ -15,5 +15,7 @@ public interface FakturDb extends JpaRepository<FakturModel, String> {
     
     @Query("SELECT c FROM FakturModel c WHERE c.farmasi = :farmasi")
     List<FakturModel> findByFarmasi(@Param("farmasi") String farmasi);
-    Optional<FakturModel> findFakturModelByNoFaktur(Long noFaktur);
+    Optional<FakturModel> findFakturModelByNoFaktur(String noFaktur);
+    @Query("SELECT c FROM FakturModel c ORDER BY c.tanggal desc")
+    List<FakturModel> findAll();
 }

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.b02.sobatarlydia.dto.FakturDto;
 import propensi.b02.sobatarlydia.dto.ObatDetailDto;
+import propensi.b02.sobatarlydia.model.*;
 import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
@@ -164,6 +165,8 @@ public class ObatController {
         fakturBaru.setFarmasi(faktur.getFarmasi());
         fakturBaru.setKodeBatch(kodeBatch);
         fakturBaru.setTanggal(faktur.getTanggal());
+        fakturBaru.setTanggalJatuhTempo(faktur.getTanggalJatuhTempo());
+        System.out.println("masuk");
         fakturBaru.setStatusFaktur("Belum Lunas");
         
         fakturService.add(fakturBaru);
@@ -314,8 +317,10 @@ public class ObatController {
     }
 
     @GetMapping("/detail-obat/{idObat}")
-    public String detailObat(Model model, @PathVariable String idObat){
+    public String detailObat(Model model, Principal principal, @PathVariable String idObat){
+        PenggunaModel akun = userService.getAkunByEmail(principal.getName());
         ObatModel obatModel = obatService.getObatById(idObat);
+        Integer total = 0;
         if (obatModel==null) {
             return "viewall-data-obat";
         }
@@ -324,11 +329,17 @@ public class ObatController {
         for (int i = 0; i < statusObat.size(); i++) {
             if (statusObat.get(i).getStatusKonfirmasi().equals("Diterima")) {
                 statusKonfirmasiObat.add(statusObat.get(i));
+                if (statusObat.get(i).getIsArsip() == 0) {
+                    total += statusObat.get(i).getStokTotal();
+                }
             }
         }
         String statusNow="Kosong";
-        for (int i = 0; i < statusObat.size(); i++) {
-                if (statusObat.get(i).getStatus().equals("Tersedia")){
+        for (int i = 0; i < statusKonfirmasiObat.size(); i++) {
+            if(statusKonfirmasiObat.get(i).getStatus().equals("Diarsipkan")) {
+                statusNow = "Diarsipkan";
+            }
+            if (statusKonfirmasiObat.get(i).getStatus().equals("Tersedia")){
                 statusNow = "Tersedia";
                 break;
             }
@@ -337,6 +348,8 @@ public class ObatController {
         model.addAttribute("detailObat",obatModel);
         model.addAttribute("statusObat", statusKonfirmasiObat);
         model.addAttribute("status", statusNow);
+        model.addAttribute("total", total);
+        model.addAttribute("akun", akun);
         return "viewall-detail-obat";
     }
 
@@ -362,7 +375,7 @@ public class ObatController {
 
         model.addAttribute("terima", terima);
         model.addAttribute("updateTerima", updateTerima);
-        
+
         model.addAttribute("stat", 1);
 
         List<ObatWaiting> listWaiting = obatDetailService.getAllObatWaiting();
@@ -380,6 +393,25 @@ public class ObatController {
         return "input-obat/viewall-waiting";
     }
 
+    @GetMapping("/arsipkan/{obatDetailId}/{kodeBatch}")
+    public String arsipkanObat(Model model, RedirectAttributes redirectAttrs, @PathVariable String obatDetailId, @PathVariable Integer kodeBatch){
+        ObatModel obat = obatService.getObatById(obatDetailId);
+        ObatDetailId id = new ObatDetailId(obat, kodeBatch);
+        ObatDetailModel arsip = obatService.getDetailObat(id);
+        if (arsip.getIsArsip()==1) {
+            if (arsip.getTanggalKadaluarsa().isBefore(LocalDate.now())){
+                redirectAttrs.addFlashAttribute("error", "Obat yang sudah expired tidak dapat dibatalkan arsip");
+                return "redirect:/obat/detail-obat/" + obatDetailId;
+            }
+        }
+        ObatDetailModel updateArsip = obatService.updateObatDiarsip(arsip);
+
+
+        model.addAttribute("arsip", arsip);
+        model.addAttribute("updateArsip", updateArsip);
+
+        return "redirect:/obat/detail-obat/" + obatDetailId;
+    }
     @GetMapping("/update/{obatDetailId}/{kodeBatch}")
     public String updateObatDetailFormPage(@PathVariable String obatDetailId, @PathVariable int kodeBatch, Model model){
         ObatModel obt = obatService.getObatById(obatDetailId);
@@ -396,15 +428,13 @@ public class ObatController {
         ObatModel obt = obatService.getObatById(obat.getIdobat());
         ObatDetailId idObat = new ObatDetailId(obt, obat.getKodebatch());
         int stat = 1;
-        if(obat.getTanggalkadaluarsa().isAfter(LocalDate.now())){
-            ObatDetailModel obatDetailPast = obatDetailService.getObatDetailByObatDetailId(idObat);
-            ObatDetailModel obatDetailNow = obatDetailService.makeSetterDetail(obatDetailPast, obat);
-            ObatDetailModel updateObatDetail = obatDetailService.updateObatDetail(obatDetailNow);
-            model.addAttribute("obat", updateObatDetail);
-        }
-        else{
+        if(!obat.getTanggalkadaluarsa().isAfter(LocalDate.now())){
             stat=0;
         }
+        ObatDetailModel obatDetailPast = obatDetailService.getObatDetailByObatDetailId(idObat);
+        ObatDetailModel obatDetailNow = obatDetailService.makeSetterDetail(obatDetailPast, obat);
+        ObatDetailModel updateObatDetail = obatDetailService.updateObatDetail(obatDetailNow);
+        model.addAttribute("obat", updateObatDetail);
         model.addAttribute("obatdto", obat);
         model.addAttribute("stat", stat);
         return "form-update-detail-obat";

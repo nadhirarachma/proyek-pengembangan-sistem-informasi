@@ -51,6 +51,7 @@ public class WebSecurityConfig {
             .antMatchers("/obat/detail-obat/**").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
             .antMatchers("/obat/obat-ditolak").hasAuthority("Apoteker")
             .antMatchers("/obat/obat-diterima").hasAuthority("Apoteker")
+            .antMatchers("/obat/arsipkan/**").hasAuthority("Apoteker")
             .antMatchers("/obat-detail/waiting").hasAnyAuthority("Karyawan", "Apoteker")
             .antMatchers("/obat/update/**").hasAuthority("Karyawan")
             .anyRequest().authenticated()

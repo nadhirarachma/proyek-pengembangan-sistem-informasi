@@ -10,6 +10,7 @@ public interface FakturService {
     public FakturModel getFakturByFarmasiDanTanggal(List<FakturModel> fakturs, LocalDate tanggal);
     public int generateKodeBatch(List<FakturModel> faktur);
     public void add(FakturModel faktur);
-    public FakturModel getFakturByNo(Long noFaktur);
+    public FakturModel getFakturByNo(String noFaktur);
     public FakturModel updateFakturStatus(FakturModel fakturObat);
+    public List<FakturModel> getAllFaktur();
 }

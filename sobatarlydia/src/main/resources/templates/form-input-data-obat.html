@@ -45,6 +45,10 @@
           <input class="col-xs-4 form-control" type="date" th:field="*{tanggal}" required/>
         </div>
         <div class="col">
+          <label>Tanggal Jatuh Tempo</label>
+          <input class="col-xs-4 form-control" type="date" th:field="*{tanggalJatuhTempo}" required/>
+        </div>
+        <div class="col">
           <label>Perusahaan Farmasi</label>
           <select id="farmasi" class="form-control" th:field="*{farmasi}" required>
             <option value="null">Pilih Farmasi</option>
