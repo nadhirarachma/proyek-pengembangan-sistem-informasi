@@ -5,12 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import propensi.b02.sobatarlydia.model.ObatDetailId;
-import propensi.b02.sobatarlydia.model.ObatDetailModel;
-import propensi.b02.sobatarlydia.model.ObatModel;
-import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
 import propensi.b02.sobatarlydia.service.ObatDetailService;
 import propensi.b02.sobatarlydia.service.UserService;
@@ -38,7 +33,6 @@ public class ObatDetailController {
 
         String role = userService.getAkunByEmail(principal.getName()).getRole();
 
-        System.out.println(status);
         model.addAttribute("status", status);
         model.addAttribute("role", role);
         model.addAttribute("listWaiting", listWaiting);

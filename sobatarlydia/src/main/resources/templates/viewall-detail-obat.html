@@ -126,5 +126,38 @@
             </div>
         </div>
     </div>
+
+</div>
+</div>
+<div class="w-75 mx-auto px-5">
+    <hr>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            <h3>Riwayat Obat</h3>
+            <p class="pt-2 ms-2">(10 Aktivitas Terbaru)</p>
+        </div>
+        <a class="btn btn-info text-white" th:href="@{../../obat/riwayat/} + ${detailObat.idObat}">Lihat Riwayat Lengkap</a>
+    </div>
+    <br>
+    <div class="px-2">
+        <div class="card px-2" style="background-color: rgb(245, 252, 253);">
+            <br>
+            <div th:each="riwayat, iterationStatus : *{listRiwayat}" class="row">
+                <div class="mx-auto px-4" >
+                    <div class="d-flex">
+                        <p th:text="${riwayat.peubah.namaDepan} + ' ' + ${riwayat.peubah.namaBelakang} + ' '" class="fw-bold text-secondary m-1"></p>
+                        <p th:text="' - ' + ${#temporals.format(riwayat.key.waktuPerubahan, 'dd MMMM yyyy, HH:mm')}" class="text-secondary m-1"></p>
+                    </div>
+                    <p th:text="${riwayat.informasiPerubahan}" class="text-black m-1"></p>
+                    <div th:if="${riwayat.obatDetail != null}">
+                        <ul th:if="${riwayat.statusChange != null}" th:text="'●  BATCH ' + ${riwayat.obatDetail.obatDetailId.kodeBatch} + ': ' + ${riwayat.statusChange}"></ul>
+                    </div>
+                    <hr class="m-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

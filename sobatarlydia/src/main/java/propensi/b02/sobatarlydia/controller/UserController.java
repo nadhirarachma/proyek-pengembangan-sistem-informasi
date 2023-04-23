@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +37,6 @@ public class UserController {
     @GetMapping("/nonaktif/{email}")
     public String nonaktifAkun(@PathVariable String email, Model model){
         PenggunaModel akun = userService.getAkunByEmail(email);
-        System.out.println(akun.getRole());
         if (!"Distributor".equals(akun.getRole())) {
             akun.setIsActive(1);
             userService.nonaktifAkun(akun);

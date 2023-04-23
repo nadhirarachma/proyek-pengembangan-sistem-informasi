@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
-import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.service.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

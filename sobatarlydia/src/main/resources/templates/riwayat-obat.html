@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ubah Stok Obat - RumahSehat</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script src="/js/datatable.js"></script>
+</head>
+<body>
+
+    <body style="background-color: #EBFEFF">
+        <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav><div class="d-flex justify-content-center">
+  <br>
+  <input type="text" class="form-control" id="idobat" hidden th:value="${idobat}" />
+
+  <div class=" m-4">
+      
+    <div class=" mx-auto" style="width:90%">
+        <div class="d-flex justify-content-between">
+            <h2> Riwayat Obat </h2>
+            <div class="my-auto">
+                <a class="btn btn-info text-white" th:href="@{/obat/detail-obat/} + ${idobat}">Detail Obat</a>
+                <a class="btn btn-info text-white" th:href="@{../../obat/data-obat}">Daftar Obat</a>
+            </div>
+
+        </div>
+        <br>
+        <table id="table_result" class="display table table-striped">
+            <thead class="thead-dark" >
+              
+      
+              <tr >
+                  <th scope="col" rowspan="2"  class="text-center align-middle">Kategori</th>
+                  <th scope="col" colspan="2"  class="text-center align-middle">Waktu</th>
+                  <th scope="col" rowspan="2"  class="text-center align-middle">Peubah</th>
+                  <th scope="col" rowspan="2"  class="text-center align-middle">Informasi</th>
+                  <th scope="col" colspan="2"  class="text-center align-middle">Status</th>
+      
+              </tr>
+            <tr>
+              <th scope="col"  class="text-center align-middle">Tanggal</th>
+              <th scope="col"  class="text-center align-middle">Jam</th>
+              <th scope="col"  class="text-center align-middle">Batch Terkait</th>
+              <th scope="col"  class="text-center align-middle">Perubahan</th>
+            </tr>
+      
+            <tr class="bg-white">
+              <td scope="col" id="search">Kategori</td>
+              <td scope="col" id="search">Tanggal</td>
+              <td scope="col" id="search">Jam</td>
+              <td scope="col" id="search">Peubah</td>
+              <td scope="col" id="search">Informasi</td>
+              <td scope="col" id="search">Batch Terkait</td>
+              <td scope="col" id="search">Perubahan Status</td>
+          </tr>
+            
+            </thead>
+            <tbody>
+              <tr>
+                  <td scope="col" id="search">Kategori</td>
+                  <td scope="col" id="search">Tanggal</td>
+                  <td scope="col" id="search">Jam</td>
+                  <td scope="col" id="search">Peubah</td>
+                  <td scope="col" id="search">Informasi</td>
+                  <td scope="col" id="search">Batch Terkait</td>
+                  <td scope="col" id="search">Perubahan Status</td>
+              </tr>
+      
+            <tr>
+              
+              <td>Data 1</td>
+              <td>Data 2</td>
+              <td>Data 3</td>
+              <td>Data 4</td>
+              <td>Data 5</td>
+              <td class="text-center">Data 6</td>
+              <td>Data 7</td>
+            </tr>
+            </tbody>
+              
+          </table>
+    </div>
+    
+  </div>
+</div>
+
+
+<!-- <footer th:replace="fragments/fragment :: footer(page = 'Ubah Stok Obat')"></footer> -->
+
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const id = $("#idobat").val();
+    const host = [[${host}]];
+
+    $('#table_result #search').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+    });
+
+    $('#table_result').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+ 
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+
+      "ajax": {
+        "url": "/api/v1/obat/riwayat",
+        "data" : { obat: id },
+        "dataSrc": ''
+      },
+      "searching": true,
+        "ordering": true,
+        "columnDefs": [
+        {
+            "targets": [4],
+            "searchable": true
+        }
+        ],
+        "columns": [
+                {"data": "kategori", width: '50px'},
+                {"data": "tanggal", width: '50px'},
+                {"data": "waktu", width: '50px'},
+                {"data": "peubah"},
+                {"data": "info", width: '200px'},
+                {"data": "detail", width: '50px'},
+                {"data": "statchange"},
+            ]
+        
+    });
+  });
+
+</script>
+
+</body>
+</html>

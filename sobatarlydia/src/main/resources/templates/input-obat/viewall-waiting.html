@@ -50,12 +50,21 @@
             <td class="text-center" th:text="${obat.satuanperbox}"></td>
             <td class="text-center" th:text="${obat.jumlahperbox}"></td>
 
+            <div th:if="*{obat.statuskonfirmasi != 'Arsipkan'}">
+
+            <td th:if="${obat.statuskonfirmasi == 'Ditolak'}">
+              <!-- <button th:if="${obat.statuskonfirmasi == 'Menunggu'}" type="button" class="btn btn-primary" style="background-color: #F0BF76; border-color: #F0BF76; color: white; font-family:Urbanist;font-weight: bold" data-toggle="modal" th:data-target="|#userModal${iterationStatus.index}|">
+                Update
+              </button> -->
+              <p >Menunggu Revisi</p>
+            </td>
+            </div>
+
             <div th:if="*{obat.statuskonfirmasi == 'Arsipkan'}">
               <td>
                 <button type="button" class="btn btn-primary" style="background-color: #F0BF76; border-color: #F0BF76; color: white; font-family:Urbanist;font-weight: bold" data-toggle="modal" th:data-target="|#userModal${iterationStatus.index}|">
                   Arsipkan
                 </button>
-<!--                <a class="btn btn-danger" style="color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat-detail/waiting}">Arsipkan</a>-->
               </td>
 
               <div class="modal fade" th:id="|userModal${iterationStatus.index}|" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -68,7 +77,7 @@
                       </button>
                     </div>
                     <div class="modal-body text-center">
-                      Karyawan mengajukan pengarispan pada obat sudah mencapai batas kadaluarsa. Apakah Anda setuju untuk mengarsipkan obat?
+                      Karyawan mengajukan pengarsipan pada obat sudah mencapai batas kadaluarsa. Apakah Anda setuju untuk mengarsipkan obat?
                     </div>
                     <div class="modal-footer">
                       <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/arsipkan/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Arsipkan Obat</a>
@@ -146,20 +155,47 @@
             <td class="text-center" th:text="${obat.stok}"></td>
             <td class="text-center" th:text="${obat.satuanperbox}"></td>
             <td class="text-center" th:text="${obat.jumlahperbox}"></td>
-            <td class="text-center" th:text="${obat.statuskonfirmasi}"></td>
+            <td th:if="${obat.statuskonfirmasi == 'Ditolak'}" class="text-center text-danger" th:text="${obat.statuskonfirmasi}"></td>
+            <td th:if="${obat.statuskonfirmasi == 'Menunggu'}" class="text-center text-warning" th:text="${obat.statuskonfirmasi}"></td>
+            <td th:if="${obat.statuskonfirmasi == 'Arsipkan'}" class="text-center text-danger" th:text="${obat.statuskonfirmasi}"></td>
+            
             <div th:if="*{obat.statuskonfirmasi != 'Arsipkan'}">
               <td>
                 <a class="btn btn-primary" style="background-color: #7698F0; border-color: #7698F0; color: white; font-family:Urbanist;font-weight: bold" type="submit" th:href="@{/obat/update/} + ${obat.obatDetailId} + '/' + ${obat.kodebatch}">Update</a>
+              </td>
+            </div>
+            <div th:if="*{obat.statuskonfirmasi == 'Arsipkan'}">
+              <td>
+                -
               </td>
             </div>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="modal fade centered" id="myModal" role="dialog">
+      <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 th:if="${stat} == 1" class="modal-title text-center">Obat Berhasil Diterima</h4>
+                  <h4 th:if="${stat} == 2" class="modal-title text-center">Obat Ditolak</h4>
+              </div>
+              <div class="modal-body">
+                  <p th:if="${stat} == 1">Detail obat diperbarui</p>
+                  <p th:if="${stat} == 2">Menunggu pembaruan data obat</p>
+              </div>
+              <div class="modal-footer">
+                <a th:if="${stat} == 1" th:href="@{/obat/detail-obat/} + ${id}" class="px-5 m-3 bg-warning btn text-white">Lihat Detail Obat</a>
+                <a th:href="@{/obat-detail/waiting}" class="px-5 m-3 btn btn-outline-secondary">Kembali</a>
+              </div>
+          </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <button th:if="${stat} == 1" hidden id="btn" data-toggle="modal" data-target="#myModal">Click me</button>
+<button th:if="${stat} == 2" hidden id="btn" data-toggle="modal" data-target="#myModal">Click me</button>
 <script>
   document.getElementById('btn').click();
 </script>
