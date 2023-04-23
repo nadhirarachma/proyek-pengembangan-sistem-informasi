@@ -37,6 +37,43 @@ public class ObatRestController {
         })
         .collect(Collectors.toList());
     }
+    
+    @GetMapping(value="/list-all")
+    public List<ObatDto> findAllObat() {
+        List<ObatModel> lst = obatService.getListObat();
+        return lst.stream().map(obat -> {
+            ObatDto dto = new ObatDto();
+            dto.setId(obat.getIdObat());
+            dto.setNamaObat(obat.getNamaObat());
+            dto.setHarga(obat.getHarga());
+            dto.setBentuk(obat.getBentukObat());
+            dto.setKategori(obat.getKategori().getNamaKategori());
+            dto.setFarmasi(obat.getFarmasi());
+            return dto;
+        })
+        .collect(Collectors.toList());
+    }
+    
+    @GetMapping(value="/kategori")
+    public List<ObatDto> perKategori(@RequestParam(value = "kategori", required = true) int kategori) {
+        List<ObatModel> lst = obatService.getListObatFiltered(kategori);
+        if (kategori == 0) {
+            lst = obatService.getListObat();
+        } 
+        return lst.stream().map(obat -> {
+            ObatDto dto = new ObatDto();
+            dto.setId(obat.getIdObat());
+            dto.setNamaObat(obat.getNamaObat());
+            dto.setHarga(obat.getHarga());
+            dto.setBentuk(obat.getBentukObat());
+            dto.setKategori(obat.getKategori().getNamaKategori());
+            dto.setFarmasi(obat.getFarmasi());
+            return dto;
+        })
+        .collect(Collectors.toList());
+    }
+
+
 
     @GetMapping(value = "/riwayat")
     public List<RiwayatDto> riwayat(@RequestParam(value = "obat", required = true) String id) {

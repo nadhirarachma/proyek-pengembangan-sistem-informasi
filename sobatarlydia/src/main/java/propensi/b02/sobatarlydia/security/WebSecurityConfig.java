@@ -47,7 +47,7 @@ public class WebSecurityConfig {
             .antMatchers("/obat/daftarkan-obat").hasAuthority("Karyawan")
             .antMatchers("/obat/input-data").hasAuthority("Karyawan")
             .antMatchers("/obat/data-obat").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
-            .antMatchers("/obat/filter-obat").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
+            // .antMatchers("/obat/filter-obat").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
             .antMatchers("/obat/detail-obat/**").hasAnyAuthority("Karyawan", "Admin", "Apoteker")
             .antMatchers("/obat/obat-ditolak").hasAuthority("Apoteker")
             .antMatchers("/obat/obat-diterima").hasAuthority("Apoteker")

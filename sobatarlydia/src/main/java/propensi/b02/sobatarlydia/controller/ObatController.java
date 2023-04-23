@@ -235,92 +235,92 @@ public class ObatController {
         model.addAttribute("listKategori", listKategori);
         model.addAttribute("listObat", listObat);
         model.addAttribute("judulKategoriObat", "Seluruh Obat");
-        return "viewall-data-obat";
+        return "viewall-obat";
     }
 
-    @RequestMapping(value = "/filter-obat", method = RequestMethod.POST)
-    public String controllerMethod(HttpServletRequest request, Model model){
+    // @RequestMapping(value = "/filter-obat", method = RequestMethod.POST)
+    // public String controllerMethod(HttpServletRequest request, Model model){
 
-        Object kategori = request.getParameter("no");
-        if (kategori != null ) {
-            String kategoriString = request.getParameter("no");
-            if (kategori.equals("0")){
-                List<ObatModel> listObat = obatService.getListObat();
-                List<KategoriObatModel> listKategori = obatService.getListKategori();
+    //     Object kategori = request.getParameter("no");
+    //     if (kategori != null ) {
+    //         String kategoriString = request.getParameter("no");
+    //         if (kategori.equals("0")){
+    //             List<ObatModel> listObat = obatService.getListObat();
+    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
 
-                model.addAttribute("listKategoriObat", listObat);
-                model.addAttribute("listKategori", listKategori);
-                model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", "Seluruh Obat");
-            }
-            else {
-                Integer noKategori = Integer.valueOf(kategoriString);
-                List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
-                List<KategoriObatModel> listKategori = obatService.getListKategori();
-                List<ObatModel> listObat = obatService.getListObat();
-                KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
-
-
-                model.addAttribute("listKategoriObat", listKategoriObat);
-                model.addAttribute("listKategori", listKategori);
-                model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
-            }
-        }
-        else if (kategori==null) {
-            List<ObatModel> listObat = obatService.getListObat();
-            List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-            model.addAttribute("listKategoriObat", listObat);
-            model.addAttribute("listKategori", listKategori);
-            model.addAttribute("listObat", listObat);
-            model.addAttribute("judulKategoriObat", "Seluruh Obat");
-
-        }
-        return "viewall-data-obat";
-    }
-
-    @RequestMapping(value = "/filter-obat", method = RequestMethod.GET)
-    public String controllerMethod1(HttpServletRequest request, Model model) {
-        Object kategori = request.getParameter("no");
-        if (kategori != null ) {
-            String kategoriString = request.getParameter("no");
-            if (kategori.equals("0")){
-                List<ObatModel> listObat = obatService.getListObat();
-                List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-                model.addAttribute("listKategoriObat", listObat);
-                model.addAttribute("listKategori", listKategori);
-                model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", "Seluruh Obat");
-            }
-            else {
-                Integer noKategori = Integer.valueOf(kategoriString);
-                List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
-                List<KategoriObatModel> listKategori = obatService.getListKategori();
-                List<ObatModel> listObat = obatService.getListObat();
-                KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
+    //             model.addAttribute("listKategoriObat", listObat);
+    //             model.addAttribute("listKategori", listKategori);
+    //             model.addAttribute("listObat", listObat);
+    //             model.addAttribute("judulKategoriObat", "Seluruh Obat");
+    //         }
+    //         else {
+    //             Integer noKategori = Integer.valueOf(kategoriString);
+    //             List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
+    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
+    //             List<ObatModel> listObat = obatService.getListObat();
+    //             KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
 
 
-                model.addAttribute("listKategoriObat", listKategoriObat);
-                model.addAttribute("listKategori", listKategori);
-                model.addAttribute("listObat", listObat);
-                model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
-            }
-        }
-        else if (kategori==null) {
-            List<ObatModel> listObat = obatService.getListObat();
-            List<KategoriObatModel> listKategori = obatService.getListKategori();
+    //             model.addAttribute("listKategoriObat", listKategoriObat);
+    //             model.addAttribute("listKategori", listKategori);
+    //             model.addAttribute("listObat", listObat);
+    //             model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
+    //         }
+    //     }
+    //     else if (kategori==null) {
+    //         List<ObatModel> listObat = obatService.getListObat();
+    //         List<KategoriObatModel> listKategori = obatService.getListKategori();
+
+    //         model.addAttribute("listKategoriObat", listObat);
+    //         model.addAttribute("listKategori", listKategori);
+    //         model.addAttribute("listObat", listObat);
+    //         model.addAttribute("judulKategoriObat", "Seluruh Obat");
+
+    //     }
+    //     return "viewall-data-obat";
+    // }
+
+    // @RequestMapping(value = "/filter-obat", method = RequestMethod.GET)
+    // public String controllerMethod1(HttpServletRequest request, Model model) {
+    //     Object kategori = request.getParameter("no");
+    //     if (kategori != null ) {
+    //         String kategoriString = request.getParameter("no");
+    //         if (kategori.equals("0")){
+    //             List<ObatModel> listObat = obatService.getListObat();
+    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
+
+    //             model.addAttribute("listKategoriObat", listObat);
+    //             model.addAttribute("listKategori", listKategori);
+    //             model.addAttribute("listObat", listObat);
+    //             model.addAttribute("judulKategoriObat", "Seluruh Obat");
+    //         }
+    //         else {
+    //             Integer noKategori = Integer.valueOf(kategoriString);
+    //             List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
+    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
+    //             List<ObatModel> listObat = obatService.getListObat();
+    //             KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
 
 
-            model.addAttribute("listKategoriObat", listObat);
-            model.addAttribute("listKategori", listKategori);
-            model.addAttribute("listObat", listObat);
-            model.addAttribute("judulKategoriObat", "Seluruh Obat");
+    //             model.addAttribute("listKategoriObat", listKategoriObat);
+    //             model.addAttribute("listKategori", listKategori);
+    //             model.addAttribute("listObat", listObat);
+    //             model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
+    //         }
+    //     }
+    //     else if (kategori==null) {
+    //         List<ObatModel> listObat = obatService.getListObat();
+    //         List<KategoriObatModel> listKategori = obatService.getListKategori();
 
-        }
-        return "viewall-data-obat";
-    }
+
+    //         model.addAttribute("listKategoriObat", listObat);
+    //         model.addAttribute("listKategori", listKategori);
+    //         model.addAttribute("listObat", listObat);
+    //         model.addAttribute("judulKategoriObat", "Seluruh Obat");
+
+    //     }
+    //     return "viewall-data-obat";
+    // }
 
     @GetMapping("/detail-obat/{idObat}")
     public String detailObat(Model model, Principal principal, @PathVariable String idObat){
@@ -364,7 +364,7 @@ public class ObatController {
 
         if (listRiwayat.size() > 10) {
             
-            for (int i = listRiwayat.size(); i >= listRiwayat.size() - 10; i--) {
+            for (int i = listRiwayat.size(); i >= listRiwayat.size() - 9; i--) {
                 lst.add(listRiwayat.get(i-1));
             }
         } else {
