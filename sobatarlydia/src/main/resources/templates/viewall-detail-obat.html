@@ -33,6 +33,7 @@
                         <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getBentukObat()}"></a>
                         <a class="btn btn-primary text-black" style="background-color: #5FD2E7; border-color: #5FD2E7; margin-right: 10px; border-radius: 25px" th:text="${detailObat.getFarmasi()}"></a>
                     </div>
+                    <br>
                 <div th:if="*{status == 'Tersedia'} OR *{status == 'Diarsipkan'}">
                     <table class="p-3 m-1 table table-striped" style="outline-style: none">
                         <thead style="background-color: #ADF6F6">
@@ -105,10 +106,11 @@
                         </tr>
                         </tbody>
                     </table>
+                    <br>
                     <h2 th:text="'Total Stok : '+${total}" style="text-align: center;">Total Stok</h2>
                     <br>
                     <div class="d-flex justify-content-center">
-                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/data-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
                         <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
                     </div>
 
@@ -117,7 +119,7 @@
                 <div th:if="*{status == 'Kosong'}">
                     <a class="btn btn-primary text-white" type="submit" style="background-color: #5FE7E7; border-color: #5FE7E7; margin-right: 10px">TAMBAH STOK</a>
                     <div class="d-flex justify-content-center mt-4">
-                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/filter-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
+                        <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/data-obat/}" style="background-color: white; border-color: black; ">Halaman Daftar Obat</a>
                         <a class="btn btn-primary text-black" type="submit" th:href="@{/penjualan/viewall/}" style="background-color: white; border-color: black; margin-left: 15px">Halaman Daftar Penjualan</a>
                     </div>
                 </div>

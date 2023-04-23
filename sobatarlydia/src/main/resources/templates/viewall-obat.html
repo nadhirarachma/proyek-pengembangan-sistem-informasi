@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Obat</title>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script src="/js/datatable.js"></script>
+</head>
+<body>
+
+    <body style="background-color: #EBFEFF">
+        <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav><div class="d-flex justify-content-center">
+  <br>
+  <input type="text" class="form-control" id="idobat" hidden th:value="${idobat}" />
+
+  <div class=" m-4">
+      
+    <div class=" mx-auto" style="width:90%">
+        <div class="h1 p-4 m-4 text-center" style="font-weight: bolder">Daftar Obat</div>
+        
+        <label style="font-weight: normal;">Kategori Obat</label>
+        <div>
+            <select id="kategori" class="form-control" name="no">
+                <option style="font-weight: lighter" th:value="'0'" th:text="'Seluruh Obat'">
+                </option>
+                <option style="font-weight: lighter" th:each="kategori : ${listKategori}" th:value="${kategori.no}" th:text="${kategori.namaKategori}">
+                </option>
+            </select>
+        </div>
+
+        <br>
+        <table id="table_result" class="display table table-striped">
+            <thead style="background-color: #ADF6F6">
+   
+            <tr>
+              <th scope="col"  class="text-center align-middle">ID</th>
+              <th scope="col"  class="text-center align-middle">Nama</th>
+              <th scope="col"  class="text-center align-middle">Harga</th>
+              <th scope="col"  class="text-center align-middle">Bentuk</th>
+              <th scope="col"  class="text-center align-middle">Kategori</th>
+              <th scope="col"  class="text-center align-middle">Farmasi</th>
+              <th scope="col"  class="text-center align-middle">Aksi</th>
+            </tr>
+      
+            <tr class="bg-white">
+              <td scope="col" id="search">ID</td>
+              <td scope="col" id="search">Nama</td>
+              <td scope="col" id="search">Harga</td>
+              <td scope="col" id="search">Bentuk</td>
+              <td scope="col" id="search">Kategori</td>
+              <td scope="col" id="search">Farmasi</td>
+              <td></td>
+          </tr>
+            
+            </thead>
+            <tbody>
+      
+            <tr>
+              
+              <td>Data 1</td>
+              <td>Data 2</td>
+              <td>Data 3</td>
+              <td>Data 4</td>
+              <td>Data 5</td>
+              <td>Data 6</td>
+              <td>Data 7</td>
+            </tr>
+            </tbody>
+              
+          </table>
+        </div>
+        <br><br>
+    <input type="text" class="form-control" id="host" hidden th:value="${host}" />
+
+    
+  </div>
+</div>
+
+
+<!-- <footer th:replace="fragments/fragment :: footer(page = 'Ubah Stok Obat')"></footer> -->
+
+<script th:inline="javascript">
+  $(document).ready(function () {
+
+    $('#table_result #search').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+    });
+
+    $('#table_result').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+ 
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+
+      "ajax": {
+        "url": "/api/v1/obat/list-all",
+        "dataSrc": ''
+      },
+      "bDestroy": true,
+
+      "searching": true,
+        "ordering": true,
+        "columnDefs": [
+        {
+            "targets": [6],
+            "bSortable": false
+        }
+        ],
+        "columns": [
+                {"data": "id", width: '50px'},
+                {"data": "nama_obat", width: '200px'},
+                {"data": "harga", width: '50px'},
+                {"data": "bentuk", width: '50px'},
+                {"data": "kategori", width: '200px'},
+                {"data": "farmasi", width: '50px'},
+                {"data": null, defaultContent: '<button class="btn btn-primary">Detail</button>'}
+            ]
+        
+    });
+
+    $('#table_result tbody').on('click', 'button', function () {
+        var $row = $(this).closest("tr");
+        var id = $row.find('td').first().text();
+
+        const host = $("#host").val();
+
+        var url= host + "/obat/detail-obat/" + id;
+        window.location = url;
+
+    });
+
+    
+});
+
+$('#kategori').change(
+    
+    function() {
+        const host = $("#host").val();
+        const id = $(this).val();
+        $("#table_result").dataTable().fnDestroy();
+        
+    $('#table_result #search').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+    });
+
+    $('#table_result').DataTable({
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+ 
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+
+      "ajax": {
+        "url": "/api/v1/obat/kategori",
+        "data" : { kategori: id },
+        "dataSrc": ''
+      },
+      "searching": true,
+        "ordering": true,
+        "autoWidth": false,
+        "aoColumnDefs": [
+        {
+            "targets": [6],
+            "bSortable": false
+        }, 
+        ],
+        "columns": [
+                {"data": "id", width: '50px'},
+                {"data": "nama_obat"},
+                {"data": "harga", width: '50px'},
+                {"data": "bentuk", width: '50px'},
+                {"data": "kategori", width: '200px'},
+                {"data": "farmasi", width: '50px'},
+                {"data": null, defaultContent: '<button class="btn btn-primary">Detail</button>'}
+            ]
+        
+    });
+
+    $('#table_result tbody').on('click', 'button', function () {
+        var $row = $(this).closest("tr");
+        var id = $row.find('td').first().text();
+
+        const host = $("#host").val();
+
+        var url= host + "/obat/detail-obat/" + id;
+        window.location = url;
+
+    });
+
+    
+  });
+</script>
+
+</body>
+</html>

@@ -64,16 +64,7 @@
             
             </thead>
             <tbody>
-              <tr>
-                  <td scope="col" id="search">Kategori</td>
-                  <td scope="col" id="search">Tanggal</td>
-                  <td scope="col" id="search">Jam</td>
-                  <td scope="col" id="search">Peubah</td>
-                  <td scope="col" id="search">Informasi</td>
-                  <td scope="col" id="search">Batch Terkait</td>
-                  <td scope="col" id="search">Perubahan Status</td>
-              </tr>
-      
+              
             <tr>
               
               <td>Data 1</td>
@@ -98,7 +89,6 @@
 <script th:inline="javascript">
   $(document).ready(function () {
     const id = $("#idobat").val();
-    const host = [[${host}]];
 
     $('#table_result #search').each(function () {
         var title = $(this).text();
