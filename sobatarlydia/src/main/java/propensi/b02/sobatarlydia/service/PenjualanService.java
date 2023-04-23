@@ -10,5 +10,6 @@ import java.util.List;
 public interface PenjualanService {
     List<PenjualanModel> getListPenjualan();
     PenjualanModel addPenjualan(PenjualanModel penjualan);
+    void deletePenjualan(PenjualanModel penjualan);
     PenjualanModel getPenjualanById(Long idPenjualan);
 }

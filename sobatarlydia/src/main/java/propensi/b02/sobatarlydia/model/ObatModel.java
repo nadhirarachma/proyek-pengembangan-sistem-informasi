@@ -51,6 +51,10 @@ public class ObatModel implements Serializable {
     @Column(name = "harga", nullable = false)
     private int harga;
 
+    @NotNull
+    @Column(name = "stok")
+    private int stok;
+
     // Relasi dengan KategoriObatModel
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "kategori", referencedColumnName = "no")
@@ -60,4 +64,8 @@ public class ObatModel implements Serializable {
     // Relasi dengan ObatDetailModel
     @OneToMany(mappedBy = "obatDetailId.idObat", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ObatDetailModel> listDetailObat;
+
+    // Relasi dengan ObatDetailModel
+    @OneToMany(mappedBy = "key.idObat", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RiwayatObatModel> listRiwayat;
 }

@@ -59,7 +59,7 @@
                 <td th:text="${obat.farmasi}"></td>
                 <td>
                     <a class="btn btn-primary text-black" type="submit" th:href="@{/obat/detail-obat/} + ${obat.idObat}" style="background-color: #5FE7E7; border-color: #5FE7E7">Detail</a>
-                    <a class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76">Riwayat</a>
+                    <a class="btn btn-primary text-black" style="background-color: #F0BF76; border-color: #F0BF76" th:href="@{/obat/riwayat/} + ${obat.idObat}">Riwayat</a>
                 </td>
             </tbody>
         </table>

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import propensi.b02.sobatarlydia.model.FakturModel;
-import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.repository.FakturDb;
 
 import java.time.LocalDate;

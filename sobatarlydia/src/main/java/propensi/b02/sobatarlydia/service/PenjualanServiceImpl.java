@@ -26,6 +26,11 @@ public class PenjualanServiceImpl implements PenjualanService {
     }
 
     @Override
+    public void deletePenjualan(PenjualanModel penjualan) {
+        penjualanDb.delete(penjualan);
+    }
+
+    @Override
     public PenjualanModel getPenjualanById(Long idPenjualan) {
         Optional<PenjualanModel> penjualan = penjualanDb.findById(idPenjualan);
         if (penjualan.isPresent()) {

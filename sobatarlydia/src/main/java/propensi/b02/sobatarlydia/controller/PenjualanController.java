@@ -24,6 +24,7 @@ import propensi.b02.sobatarlydia.model.PenjualanModel;
 import propensi.b02.sobatarlydia.service.ObatDetailService;
 import propensi.b02.sobatarlydia.service.ObatService;
 import propensi.b02.sobatarlydia.service.PenjualanService;
+import propensi.b02.sobatarlydia.service.RiwayatService;
 import propensi.b02.sobatarlydia.service.UserService;
 import propensi.b02.sobatarlydia.service.KuantitasService;
 
@@ -39,6 +40,9 @@ public class PenjualanController {
 
     @Autowired
     ObatDetailService obatDetailService;
+
+    @Autowired
+    RiwayatService riwayatService;
 
     @Autowired
     ObatService obatService;
@@ -81,6 +85,23 @@ public class PenjualanController {
             penjualan.setKuantitas(new ArrayList<>());
         }
 
+        for (int i=0; i < listObat.size(); i++) {
+            String[] detail = listObat.get(i).getId().getObat().getObatDetailId().getIdObat().getNamaObat().split(" - ");
+            ObatModel medicine = obatService.getObatByNamaDanFarmasi(detail[0], detail[1]);
+            
+            int kuantitas = listObat.get(i).getKuantitas();
+            
+            if (medicine.getStok() < kuantitas) {                
+                List<ObatModel> daftarObat = obatService.getListObatDiterimaDanTersedia();
+                
+                model.addAttribute("daftarObat", daftarObat);
+                model.addAttribute("penjualan", penjualan);
+                model.addAttribute("statMsg", 2);
+            
+                return "form-add-penjualan";
+            }
+        }
+
         penjualan.setHarga(0);
         penjualanService.addPenjualan(penjualan);
 
@@ -98,32 +119,49 @@ public class PenjualanController {
     
                     KuantitasKey key = new KuantitasKey(obatt, penjualan); 
 
-                    if (medicine.getListDetailObat().get(j).getStokTotal() - sisaStok >= 0) {
-                        obatt.setStokTotal(obatt.getStokTotal() - sisaStok);
-                        listObat.set(i, listObat.get(i));
-                        listObat.get(i).setId(key);
-                        listObat.get(i).setKuantitas(sisaStok);
-                        kuantitasService.addKuantitas(listObat.get(i));
-                        break;
-                    } else {
-                        sisaStok -= obatt.getStokTotal();
-                        int quantity = obatt.getStokTotal();
+                    if (obatt.getStokTotal() != 0 && obatt.getStatus().equals("Tersedia")) {
 
-                        obatt.setStokTotal(0);
-                        obatt.setStatus("Kosong");
-
-                        KuantitasModel qty = new KuantitasModel();
-                        listObat.set(i, qty);
-                        listObat.get(i).setId(key);
-                        listObat.get(i).setKuantitas(quantity);
-                        kuantitasService.addKuantitas(listObat.get(i));
+                        if (medicine.getListDetailObat().get(j).getStokTotal() - sisaStok >= 0) {
+                            obatt.setStokTotal(obatt.getStokTotal() - sisaStok);
+                            riwayatService.record(medicine, obatt, karyawan, "jual" + obatt.getObatDetailId().getKodeBatch(), sisaStok);
+                            
+                            if (obatt.getStokTotal() == 0) {
+                                obatt.setStatus("Kosong");
+                                riwayatService.record(medicine, obatt, karyawan, "stok batch habis" + obatt.getObatDetailId().getKodeBatch());
+                            }
+                            listObat.set(i, listObat.get(i));
+                            listObat.get(i).setId(key);
+                            listObat.get(i).setKuantitas(sisaStok);
+                            kuantitasService.addKuantitas(listObat.get(i));
+                            
+                            break;
+                        } else {
+                            sisaStok -= obatt.getStokTotal();
+                            int quantity = obatt.getStokTotal();
+                            
+                            riwayatService.record(medicine, obatt, karyawan, "jual" + obatt.getObatDetailId().getKodeBatch(), quantity);
+                            obatt.setStokTotal(0);
+                            obatt.setStatus("Kosong");
+                            riwayatService.record(medicine, obatt, karyawan, "stok batch habis" + obatt.getObatDetailId().getKodeBatch());
+                            
+                            KuantitasModel qty = new KuantitasModel();
+                            listObat.set(i, qty);
+                            listObat.get(i).setId(key);
+                            listObat.get(i).setKuantitas(quantity);
+                            kuantitasService.addKuantitas(listObat.get(i));
+                        }
                     }
                 }
             } else {
                 ObatDetailModel med = obatDetailService.getObatDetailByIdObat(medicine);   
+                riwayatService.record(medicine, med, karyawan, "jual" + med.getObatDetailId().getKodeBatch(), kuantitas);
 
                 kuantitas = listObat.get(i).getKuantitas();
-                med.setStokTotal(med.getStokTotal() - kuantitas);        
+                med.setStokTotal(med.getStokTotal() - kuantitas);
+                
+                if (med.getStokTotal() == 0) {
+                    riwayatService.record(medicine, med, karyawan, "stok batch habis" + med.getObatDetailId().getKodeBatch());
+                }
     
                 listObat.set(i, listObat.get(i));
     
@@ -133,6 +171,12 @@ public class PenjualanController {
                 kuantitasService.addKuantitas(listObat.get(i));
             }
             total += medicine.getHarga() * kuantitas;
+            medicine.setStok(medicine.getStok() - kuantitas);
+
+            if (medicine.getStok() == 0) {
+                riwayatService.record(medicine, karyawan, "stok obat habis");
+            }
+
         }   
 
         penjualan.setHarga(total);

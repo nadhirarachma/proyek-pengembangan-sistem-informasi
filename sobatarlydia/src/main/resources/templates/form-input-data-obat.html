@@ -129,15 +129,16 @@
         <button class="px-5 m-3 bg-info btn text-white" type="submit" name="save">Simpan</button>
       </form>
     </div>
+    <input type="text" class="form-control" id="host" hidden th:value="${host}" />
+
     </div>
 
 <script>
-
-
   $('#farmasi').change(
-  function() {
-      $.getJSON("https://sobat-arlydia-production.up.railway.app/api/v1/obat/by-farmasi/", {
-      // $.getJSON("http://localhost:8080/api/v1/obat/by-farmasi/", {
+    function() {
+    const host = $("#host").val();
+      // $.getJSON("https://sobat-arlydia-production.up.railway.app/api/v1/obat/by-farmasi/", {
+      $.getJSON(host + "/api/v1/obat/by-farmasi/", {
           farmasi : $(this).val(),
           ajax : 'true'
           

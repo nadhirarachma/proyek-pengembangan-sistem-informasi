@@ -7,6 +7,7 @@ import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
+import propensi.b02.sobatarlydia.model.PenggunaModel;
 
 public interface ObatService {
     ObatModel addObat(ObatModel obat);
@@ -22,7 +23,7 @@ public interface ObatService {
     ObatDetailModel getDetailObat(ObatDetailId idObat);
     ObatDetailModel updateObatDitolak(ObatDetailModel tolak);
     ObatDetailModel updateObatDiterima(ObatDetailModel terima);
-    ObatDetailModel updateObatDiarsip(ObatDetailModel arsip);
+    ObatDetailModel updateObatDiarsip(ObatDetailModel arsip, PenggunaModel akun);
     List<ObatModel> getListObatDiterimaDanTersedia();
     ObatUpdtDTO makeObatUpdtDTO (ObatDetailModel obatDetail, String obatDetailId, int kodeBatch);
 }

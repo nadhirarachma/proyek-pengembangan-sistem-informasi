@@ -15,6 +15,7 @@ import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
+import propensi.b02.sobatarlydia.model.PenggunaModel;
 import propensi.b02.sobatarlydia.repository.KategoriObatDb;
 import propensi.b02.sobatarlydia.repository.ObatDb;
 import propensi.b02.sobatarlydia.repository.ObatDetailDb;
@@ -27,6 +28,9 @@ public class ObatServiceImpl implements ObatService {
 
     @Autowired
     ObatDetailDb obatDetailDb;
+
+    @Autowired
+    RiwayatService riwayatService;
 
     @Autowired
     KategoriObatDb kategoriObatDb;
@@ -63,7 +67,6 @@ public class ObatServiceImpl implements ObatService {
             farmasi += obat.getFarmasi().toUpperCase();
         }
         obat.setIdObat(nama + farmasi);
-        System.out.println(obat.getIdObat());
 
         return obat;
     }
@@ -76,8 +79,6 @@ public class ObatServiceImpl implements ObatService {
     }
 
     public List<ObatModel> getObatByFarmasi(String farmasi) {
-        System.out.println(farmasi);
-        System.out.println("AAAAAA");
         List<ObatModel> lst = new ArrayList<>();
         try {
             lst = obatDb.findByFarmasi(farmasi);
@@ -93,7 +94,6 @@ public class ObatServiceImpl implements ObatService {
 
         for (ObatModel obat : listObat) {
             if (obat.getNamaObat().equals(nama)) {
-                System.out.println(obat.getNamaObat());
                 return obat;
             }
         }
@@ -172,14 +172,18 @@ public class ObatServiceImpl implements ObatService {
     }
 
     @Override
-    public ObatDetailModel updateObatDiarsip(ObatDetailModel arsip) {
+    public ObatDetailModel updateObatDiarsip(ObatDetailModel arsip, PenggunaModel akun) {
+        ObatModel obat = arsip.getObatDetailId().getIdObat();
+
         if (arsip.getIsArsip()==0) {
             arsip.setIsArsip(1);
             arsip.setStatus("Diarsipkan");
             arsip.setStatusKonfirmasi("Diterima");
+            riwayatService.record(obat, arsip, akun, "arsip", arsip.getStokTotal());
         } else {
             arsip.setIsArsip(0);
             arsip.setStatus("Tersedia");
+            riwayatService.record(obat, arsip, akun, "batal arsip", arsip.getStokTotal());
         }
         return obatDetailDb.save(arsip);
     }

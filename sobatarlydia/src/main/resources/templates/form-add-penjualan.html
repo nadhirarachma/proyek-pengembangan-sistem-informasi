@@ -91,10 +91,36 @@
             </div>
           </div>
         </form>
+
+        
+      </div>
+    </div>
+    <div class="modal fade centered" id="errorModal" role="dialog">
+      <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 th:if="${statMsg} == 1" class="modal-title text-center">Obat Berhasil Disimpan</h4>
+                  <h4 th:if="${statMsg} == 2" class="modal-title text-center">Penjualan Gagal Disimpan</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+              <p th:if="${statMsg} == 1">Anda sudah bisa menginput detail obat</p>
+              <p th:if="${statMsg} == 2">Jumlah penjualan melebihi stok yang tersedia</p>
+          </div>
+          <div class="modal-footer">
+             <a  th:if="${statMsg} == 1" th:href="@{/obat/input-data}" class="px-5 m-3 bg-warning btn text-white">Input Detail Obat</a>
+          </div>
       </div>
     </div>
   </div>
 </div>
+
+
+
+<button th:if="${statMsg} == 2" id="btn" hidden data-toggle="modal" data-target="#errorModal">Click me</button>
+<script>
+  document.getElementById('btn').click();
+</script>
 
 <script>
   const elements = document.querySelectorAll('.quantity');
