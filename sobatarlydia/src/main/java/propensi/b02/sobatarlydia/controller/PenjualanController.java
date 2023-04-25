@@ -1,8 +1,10 @@
 package propensi.b02.sobatarlydia.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import propensi.b02.sobatarlydia.service.ObatService;
 import propensi.b02.sobatarlydia.service.PenjualanService;
 import propensi.b02.sobatarlydia.service.RiwayatService;
 import propensi.b02.sobatarlydia.service.UserService;
+import propensi.b02.sobatarlydia.setting.Setting;
 import propensi.b02.sobatarlydia.service.KuantitasService;
 
 @Controller
@@ -239,5 +242,37 @@ public class PenjualanController {
         penjualan.getKuantitas().removeAll(quantity);
         model.addAttribute("detailPenjualan", penjualan);
         return "viewall-detail-penjualan";
+    }
+
+    @GetMapping("/laporan-penjualan")
+    public String laporan(Model model) {
+        return "laporan-penjualan";
+    }
+
+    @GetMapping("/laporan-penjualan/{tab}")
+    public String tab(@PathVariable String tab, Model model) {
+        if (Arrays.asList("harian", "bulanan", "tahunan")
+                  .contains(tab)) {
+            model.addAttribute("host", Setting.CLIENT_BASE_URL);
+            return "_" + tab;
+        }
+
+        return "empty";
+    }
+
+    @GetMapping("/laporan-pendapatan")
+    public String laporanDuit(Model model) {
+        return "laporan-pendapatan";
+    }
+
+    @GetMapping("/laporan-pendapatan/{tab}")
+    public String tabDuit(@PathVariable String tab, Model model) {
+        if (Arrays.asList("harian", "bulanan", "tahunan")
+                  .contains(tab)) {
+            model.addAttribute("host", Setting.CLIENT_BASE_URL);
+            return "_" + tab + "_";
+        }
+
+        return "empty";
     }
 }
