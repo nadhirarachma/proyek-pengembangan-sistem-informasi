@@ -114,7 +114,18 @@
                 {"data": "total"},
                 {"data": null, defaultContent: '<button class="btn btn-primary">Detail</button>'}
             ]
-        });    
+        });
+        $('#table_result tbody').on('click', 'button', function () {
+            var $row = $(this).closest("tr");
+            var id = $row.find('td').first().text();
+
+            const host = $("#host").val();
+
+            var url= host + "/penjualan/laporan-penjualan/harian/" + id;
+            window.location = url;
+
+        });
+
     });
 </script>
 

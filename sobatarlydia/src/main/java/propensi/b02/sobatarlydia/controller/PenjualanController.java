@@ -275,4 +275,16 @@ public class PenjualanController {
 
         return "empty";
     }
+
+    @GetMapping("/laporan-penjualan/{tab}/{date}")
+    public String viewPendapatanHarian(@PathVariable String tab, Model model, @PathVariable String date) {
+        if (Arrays.asList("harian", "bulanan", "tahunan")
+                .contains(tab)) {
+            model.addAttribute("host", Setting.CLIENT_BASE_URL);
+            model.addAttribute("date", date);
+            return "_" + tab + "_";
+        }
+
+        return "empty";
+    }
 }

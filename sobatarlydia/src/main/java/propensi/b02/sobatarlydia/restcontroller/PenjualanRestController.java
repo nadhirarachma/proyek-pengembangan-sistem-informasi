@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import propensi.b02.sobatarlydia.controller.ObatDetailController;
-import propensi.b02.sobatarlydia.dto.ObatDto;
-import propensi.b02.sobatarlydia.dto.PendapatanBulananDto;
-import propensi.b02.sobatarlydia.dto.PenjualanHarianDto;
-import propensi.b02.sobatarlydia.dto.RiwayatDto;
+import propensi.b02.sobatarlydia.dto.*;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.model.RiwayatObatModel;
@@ -57,6 +54,24 @@ public class PenjualanRestController {
         System.out.println(ph);
         return ph;
     }
+    @GetMapping("/bulan")
+    public List<PenjualanBulananDto> laporanBulanan(@RequestParam(value = "month", required = true) String month) {
+        int year = Integer.parseInt(month.split("-")[0]);
+        int monthh = Integer.parseInt(month.split("-")[1]);
+
+        HashMap<ObatModel, Integer> map = penjualanService.getListPenjualanByMonth(monthh, year);
+        List<PenjualanBulananDto> ph = new ArrayList<>();
+
+        for (Map.Entry<ObatModel, Integer> set : map.entrySet()) {
+            PenjualanBulananDto phNew = new PenjualanBulananDto();
+            phNew.setObat(set.getKey().getNamaObat());
+            phNew.setKuantitas(set.getValue());
+
+            ph.add(phNew);
+        }
+        System.out.println("tes");
+        return ph;
+    }
     
     @GetMapping("/bulanan")
     public List<PendapatanBulananDto> pendapatanBulanan(@RequestParam(value = "month", required = true) String month) {
@@ -76,8 +91,40 @@ public class PenjualanRestController {
         }
 
         return ph;
-        // return null;
     }
 
+    @GetMapping("/tahun")
+    public List<PenjualanTahunanDto> laporanTahunan(@RequestParam(value = "year", required = true) String year) {
+
+        HashMap<ObatModel, Integer> map = penjualanService.getListPenjualanByYear(Integer.parseInt(year));
+        List<PenjualanTahunanDto> ph = new ArrayList<>();
+
+        for (Map.Entry<ObatModel, Integer> set : map.entrySet()) {
+            PenjualanTahunanDto phNew = new PenjualanTahunanDto();
+            phNew.setObat(set.getKey().getNamaObat());
+            phNew.setKuantitas(set.getValue());
+
+            ph.add(phNew);
+        }
+        return ph;
+    }
+
+    @GetMapping("/tahunan")
+    public List<PendapatanTahunanDto> pendapatanTahunan(@RequestParam(value = "year", required = true) String year) {
+
+        HashMap<String, Integer> map = penjualanService.getListPendapatanByYear(Integer.parseInt(year));
+        List<PendapatanTahunanDto> ph = new ArrayList<>();
+
+        System.out.println(ph);
+        for (Map.Entry<String, Integer> set : map.entrySet()) {
+            PendapatanTahunanDto phNew = new PendapatanTahunanDto();
+            phNew.setTanggal(set.getKey());
+            phNew.setTotal(set.getValue());
+
+            ph.add(phNew);
+        }
+
+        return ph;
+    }
     
 }
