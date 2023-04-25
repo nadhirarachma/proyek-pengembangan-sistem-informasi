@@ -1,12 +1,19 @@
 package propensi.b02.sobatarlydia.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import propensi.b02.sobatarlydia.model.PenjualanModel;
+import propensi.b02.sobatarlydia.model.KuantitasModel;
+import propensi.b02.sobatarlydia.model.ObatDetailModel;
+import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.PenjualanDb;
 
 @Service
@@ -36,5 +43,41 @@ public class PenjualanServiceImpl implements PenjualanService {
         if (penjualan.isPresent()) {
             return penjualan.get();
         } else return null;
+    }
+
+    @Override
+    public HashMap<ObatModel, Integer> getListPenjualanByDate(LocalDate date) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        HashMap<ObatModel, Integer> byDate = new HashMap<ObatModel, Integer>();
+
+        for (PenjualanModel p: lst) {
+            if (p.getWaktu().getDayOfYear() == date.getDayOfYear() && p.getWaktu().getMonth() == date.getMonth() && p.getWaktu().getYear() == date.getYear()) {
+                for (KuantitasModel k: p.getKuantitas()) {
+                    byDate.put(k.getId().getObat().getObatDetailId().getIdObat(), byDate.containsKey(k.getId().getObat().getObatDetailId().getIdObat()) ? byDate.get(k.getId().getObat().getObatDetailId().getIdObat()) + Integer.valueOf(k.getKuantitas()) : Integer.valueOf(k.getKuantitas()));
+                }
+            }
+        }
+        return byDate;
+    }
+
+    @Override
+    public HashMap<LocalDate, Integer> getListPendapatanByMonth(int month, int year) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        HashMap<LocalDate, Integer> byMonth = new HashMap<LocalDate, Integer>();
+
+        for (PenjualanModel p: lst) {
+            System.out.println(p.getWaktu().getMonthValue());
+            System.out.println(month);
+            if (p.getWaktu().getMonthValue() == month && p.getWaktu().getYear() == year) {
+                System.out.println("HAI");
+                LocalDate tgl = LocalDate.of(year, month, p.getWaktu().getDayOfMonth());
+                for (KuantitasModel k: p.getKuantitas()) {
+                    byMonth.put(tgl, byMonth.containsKey(tgl) ? Integer.valueOf(byMonth.get(tgl) + (k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga())) : Integer.valueOf(k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga()));
+                }
+            }
+        }
+        System.out.println(byMonth);
+
+        return byMonth;
     }
 }
