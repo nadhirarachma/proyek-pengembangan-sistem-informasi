@@ -18,4 +18,7 @@ public interface PenjualanService {
     PenjualanModel getPenjualanById(Long idPenjualan);
     HashMap<ObatModel, Integer> getListPenjualanByDate(LocalDate date);
     HashMap<LocalDate, Integer> getListPendapatanByMonth(int month, int year);
+    HashMap<ObatModel, Integer> getListPenjualanByMonth(int month, int year);
+    HashMap<ObatModel, Integer> getListPenjualanByYear(int year);
+    HashMap<String, Integer> getListPendapatanByYear (int year);
 }

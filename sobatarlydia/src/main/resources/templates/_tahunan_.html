@@ -7,19 +7,20 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-	<script src="/js/datatable.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.4/api/sum().js"></script>
+    <script src="/js/datatable.js"></script>
 </head>
 <body>
 
-    <body style="background-color: #EBFEFF">
-  <br>
+<body style="background-color: #EBFEFF">
+<br>
 
-  <div class=" m-4">
-      
+<div class=" m-4">
+
     <div class=" mx-auto" style="width:90%">
         <div class="d-flex justify-content-between">
             <h2> Laporan Pendapatan Tahunan </h2>
@@ -28,84 +29,89 @@
             </div>
         </div>
 
+        <div class="d-flex align-middle py-5">
+            <label class="pe-3 pt-2">Pilih Tahun</label>
+            <input type="year" class="form-control w-50" id="month">
+        </div>
+
         <br>
         <table id="table_result" class="display table table-striped">
             <thead class="thead-dark" >
-                <tr>
-                    <th scope="col"  class="text-center align-middle">Nama Obat</th>
-                    <th scope="col"  class="text-center align-middle">Jumlah Terjual</th>
-                    <th scope="col"  class="text-center align-middle">Harga Terjual</th>
-                </tr>
-      
-                <tr class="bg-white">
-                    <td scope="col" id="search">Nama Obat</td>
-                    <td scope="col" id="search">Jumlah Terjual</td>
-                    <td scope="col" id="search">Harga Terjual</td>
-                </tr>
+            <tr>
+                <th scope="col"  class="text-center align-middle">Bulan</th>
+                <th scope="col"  class="text-center align-middle">Total Pendapatan</th>
+            </tr>
+
+            <tr class="bg-white">
+                <td scope="col" id="search">Bulan</td>
+                <td scope="col" id="search">Total Pendapatan</td>
+            </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>Data 1</td>
-                    <td>Data 2</td>
-                    <td>Data 3</td>
-                </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+            </tr>
             </tbody>
-              
+
         </table>
     </div>
-  </div>
+</div>
+<input type="text" class="form-control" id="host" hidden th:value="${host}" />
+
 </div>
 
 <script th:inline="javascript">
-    $(document).ready(function () {
-        const id = $("#idobat").val();
+    $('#month').change(
 
-        $('#table_result #search').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
-        });
+        function() {
+            const host = $("#host").val();
+            const month = $(this).val();
 
-        $('#table_result').DataTable({
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var that = this;
-    
-                        $('input', this.header()).on('keyup change clear', function () {
-                            if (that.search() !== this.value) {
-                                that.search(this.value).draw();
-                            }
+            $("#table_result").dataTable().fnDestroy();
+
+            $('#table_result #search').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+            });
+
+            $('#table_result').DataTable({
+                initComplete: function () {
+                    this.api()
+                        .columns()
+                        .every(function () {
+                            var that = this;
+
+                            $('input', this.header()).on('keyup change clear', function () {
+                                if (that.search() !== this.value) {
+                                    that.search(this.value).draw();
+                                }
+                            });
                         });
-                    });
-            },
+                },
 
-            "ajax": {
-                "url": "/api/v1/penjualan/harian",
-                "data" : { obat: id },
-                "dataSrc": ''
-            },
-            "searching": true,
-            "ordering": true,
-            "columnDefs": [
-                {
-                    "targets": [4],
-                    "searchable": true
-                }
-            ],
-            "columns": [
-                {"data": "kategori", width: '50px'},
-                {"data": "tanggal", width: '50px'},
-                {"data": "waktu", width: '50px'},
-                {"data": "peubah"},
-                {"data": "info", width: '200px'},
-                {"data": "detail", width: '50px'},
-                {"data": "statchange"},
-            ]
-        
+                "ajax": {
+                    "url": "/api/v1/penjualan/tahunan",
+                    "data" : { year: month },
+                    "dataSrc": ''
+                },
+                "aoColumnDefs": [
+                    {
+                        "targets": [2],
+                        "bSortable": false,
+                    },
+                ],
+                "searching": true,
+                "ordering": true,
+                "autoWidth": false,
+
+                "columns": [
+                    {"data": "tanggal"},
+                    {"data": "total"},
+                ]
+            });
         });
-    });
 </script>
 
 </body>

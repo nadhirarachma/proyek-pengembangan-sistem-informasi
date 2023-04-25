@@ -1,10 +1,8 @@
 package propensi.b02.sobatarlydia.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.TextStyle;
+import java.util.*;
 
 import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,4 +78,54 @@ public class PenjualanServiceImpl implements PenjualanService {
 
         return byMonth;
     }
+    @Override
+    public HashMap<ObatModel, Integer> getListPenjualanByMonth(int month, int year) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        HashMap<ObatModel, Integer> byDate = new HashMap<ObatModel, Integer>();
+
+        for (PenjualanModel p: lst) {
+            if (p.getWaktu().getMonthValue() == month && p.getWaktu().getYear() == year) {
+                for (KuantitasModel k: p.getKuantitas()) {
+                    byDate.put(k.getId().getObat().getObatDetailId().getIdObat(), byDate.containsKey(k.getId().getObat().getObatDetailId().getIdObat()) ? byDate.get(k.getId().getObat().getObatDetailId().getIdObat()) + Integer.valueOf(k.getKuantitas()) : Integer.valueOf(k.getKuantitas()));
+                }
+            }
+        }
+        return byDate;
+    }
+
+    @Override
+    public HashMap<ObatModel, Integer> getListPenjualanByYear(int year) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        HashMap<ObatModel, Integer> byDate = new HashMap<ObatModel, Integer>();
+
+        for (PenjualanModel p: lst) {
+            if (p.getWaktu().getYear() == year) {
+                for (KuantitasModel k: p.getKuantitas()) {
+                    byDate.put(k.getId().getObat().getObatDetailId().getIdObat(), byDate.containsKey(k.getId().getObat().getObatDetailId().getIdObat()) ? byDate.get(k.getId().getObat().getObatDetailId().getIdObat()) + Integer.valueOf(k.getKuantitas()) : Integer.valueOf(k.getKuantitas()));
+                }
+            }
+        }
+        return byDate;
+    }
+    @Override
+    public HashMap<String, Integer> getListPendapatanByYear(int year) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        HashMap<String, Integer> byYear = new HashMap<String, Integer>();
+
+        for (PenjualanModel p: lst) {
+            System.out.println(p.getWaktu().getMonthValue());
+            System.out.println(year);
+            if (p.getWaktu().getYear() == year) {
+//                System.out.println("HAI");
+                for (KuantitasModel k: p.getKuantitas()) {
+                    byYear.put(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH), byYear.containsKey(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)) ? Integer.valueOf(byYear.get(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)) + (k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga())) : Integer.valueOf(k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga()));
+                }
+            }
+        }
+        System.out.println(byYear);
+
+        return byYear;
+    }
+
+
 }

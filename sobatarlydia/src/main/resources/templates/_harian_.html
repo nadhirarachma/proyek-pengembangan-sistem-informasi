@@ -7,23 +7,23 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/plug-ins/1.13.4/api/sum().js"></script>
-	<script src="/js/datatable.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.4/api/sum().js"></script>
+    <script src="/js/datatable.js"></script>
 </head>
 <body>
 
-    <body style="background-color: #EBFEFF">
-  <br>
+<body style="background-color: #EBFEFF">
+<br>
 
-  <div class=" m-4">
-      
+<div class=" m-4">
+
     <div class=" mx-auto" style="width:90%">
         <div class="d-flex justify-content-between">
-            <h2> Laporan Pendapatan Harian </h2>
+            <h2> Laporan Penjualan Harian </h2>
             <div class="my-auto">
                 <a class="btn btn-info text-white">Unduh Laporan</a>
             </div>
@@ -36,92 +36,87 @@
 
         <table id="table_result" class="display table table-striped">
             <thead class="thead-dark" >
-                <tr>
-                    <th scope="col"  class="text-center align-middle">Nama Obat</th>
-                    <th scope="col"  class="text-center align-middle">Jumlah Terjual</th>
-                    <th scope="col"  class="text-center align-middle">Harga Terjual</th>
-                </tr>
-      
-                <tr class="bg-white">
-                    <td scope="col" id="search">Nama Obat</td>
-                    <td scope="col" id="search">Jumlah Terjual</td>
-                    <td scope="col" id="search">Harga Terjual</td>
-                </tr>
+            <tr>
+                <th scope="col"  class="text-center align-middle">Nama Obat</th>
+                <th scope="col"  class="text-center align-middle">Jumlah Terjual</th>
+                <th scope="col"  class="text-center align-middle">Harga Terjual</th>
+            </tr>
+
+            <tr class="bg-white">
+                <td scope="col" id="search">Nama Obat</td>
+                <td scope="col" id="search">Jumlah Terjual</td>
+                <td scope="col" id="search">Harga Terjual</td>
+            </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>Data 1</td>
-                    <td>Data 2</td>
-                    <td>Data 3</td>
-                </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+            </tr>
             </tbody>
 
             <tfoot>
 
             </tfoot>
-              
+
         </table>
     </div>
-  </div>
-  <input type="text" class="form-control" id="host" hidden th:value="${host}" />
-  <br><br>
+</div>
+<input type="text" class="form-control" id="host" hidden th:value="${host}" />
+<input type="text" class="form-control" id="tanggal" hidden th:value="${date}" />
+<br><br>
 </div>
 
 <script th:inline="javascript">
-    
-    $('#date').change(
-    
-    function() {
-        
-        const host = $("#host").val();
-        const date = $(this).val();
 
-        $("#table_result").dataTable().fnDestroy();
-        
-        $('#table_result #search').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
-        });
+    $(document).ready(
 
-        var table = $('#table_result').DataTable({
-            // drawCallback: function () {
-            //     var api = this.api();
-            //     $( api.table().footer() ).html(
-            //         api.column(1, {page:'current'}).data().sum()
-            //     );
-            // },
+        function() {
 
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var that = this;
-    
-                        $('input', this.header()).on('keyup change clear', function () {
-                            if (that.search() !== this.value) {
-                                that.search(this.value).draw();
-                            }
+            const host = $("#host").val();
+            const date = $("#tanggal").val();
+            // alert(date);
+
+            $("#table_result").dataTable().fnDestroy();
+
+            $('#table_result #search').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+            });
+
+            var table = $('#table_result').DataTable({
+                initComplete: function () {
+                    this.api()
+                        .columns()
+                        .every(function () {
+                            var that = this;
+
+                            $('input', this.header()).on('keyup change clear', function () {
+                                if (that.search() !== this.value) {
+                                    that.search(this.value).draw();
+                                }
+                            });
                         });
-                    });
-            },
+                },
 
-            "ajax": {
-                "url": "/api/v1/penjualan/harian",
-                "data" : { date: date },
-                "dataSrc": ''
-            },
-            "searching": true,
-            "ordering": true,
-            "autoWidth": false,
-            
-            "columns": [
-                {"data": "obat"},
-                {"data": "kuantitas"},
-                {"data": "harga"},
-            ]
-        });    
-    });
+                "ajax": {
+                    "url": "/api/v1/penjualan/harian",
+                    "data" : { date: date },
+                    "dataSrc": ''
+                },
+                "searching": true,
+                "ordering": true,
+                "autoWidth": false,
+
+                "columns": [
+                    {"data": "obat"},
+                    {"data": "kuantitas"},
+                    {"data": "harga"},
+                ]
+            });
+        });
 </script>
 
 </body>
