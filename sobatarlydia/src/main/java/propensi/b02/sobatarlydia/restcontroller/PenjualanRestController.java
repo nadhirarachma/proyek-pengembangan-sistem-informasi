@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import propensi.b02.sobatarlydia.controller.ObatDetailController;
 import propensi.b02.sobatarlydia.dto.*;
+import propensi.b02.sobatarlydia.model.PenjualanModel;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.model.RiwayatObatModel;
@@ -25,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 @RestController
@@ -126,5 +130,28 @@ public class PenjualanRestController {
 
         return ph;
     }
+
+    @GetMapping(value="/list-all")
+    public List<PenjualanDto> findAllObat() {
+        List<PenjualanModel> lst = penjualanService.getListPenjualan();
+        return lst.stream().map(penjualan -> {
+            PenjualanDto dto = new PenjualanDto();
+            dto.setKode(penjualan.getId());
+
+            String tanggal = penjualan.getWaktu().toString().split("T")[0];
+            String waktu = penjualan.getWaktu().toString().split("T")[1];
+            dto.setTanggal(tanggal);
+            dto.setWaktu(waktu);
+
+            dto.setKaryawan(penjualan.getKaryawan().getNamaDepan() + " " + penjualan.getKaryawan().getNamaBelakang());
+
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String harga = nf.format(penjualan.getHarga());
+            dto.setHarga("Rp"+harga);
+            return dto;
+        })
+        .collect(Collectors.toList());
+    }
+    
     
 }

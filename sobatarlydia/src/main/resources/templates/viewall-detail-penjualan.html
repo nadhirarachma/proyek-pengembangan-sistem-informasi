@@ -51,8 +51,8 @@
                         <td class="qty" th:text="${detail.kuantitas}"></td>
                         <td class="totalHarga" th:text="${detail.kuantitas}"></td>
                         <td>
-                            <a class="btn text-black" th:href="@{/obat/detail-obat/} + ${detail.id.obat.obatDetailId.idObat.idObat}" style="background-color: #5FE7E7; border-color: #5FE7E7;border-radius:15px;">Detail</a>
-                            <a class="btn btn-warning text-black" style="border-radius:15px;">Riwayat</a>
+                            <a class="btn btn-primary text-black" th:href="@{/obat/detail-obat/} + ${detail.id.obat.obatDetailId.idObat.idObat}" style="background-color: #5FE7E7; border-color: #5FE7E7;border-radius:15px;">Detail</a>
+                            <a class="btn btn-warning text-black" th:href="@{/obat/riwayat/} + ${detail.id.obat.obatDetailId.idObat.idObat}" style="border-radius:15px;">Riwayat</a>
                         </td>
                     </tbody>
                 </table>

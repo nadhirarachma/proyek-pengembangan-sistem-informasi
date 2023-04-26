@@ -7,7 +7,6 @@ import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.ObatDetailDb;
-//import propensi.b02.sobatarlydia.repository.ObatDetailIdDb;
 import propensi.b02.sobatarlydia.rest.ObatWaiting;
 
 import java.util.ArrayList;

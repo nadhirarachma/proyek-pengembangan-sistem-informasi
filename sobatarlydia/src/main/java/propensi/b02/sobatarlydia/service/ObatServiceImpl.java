@@ -161,7 +161,7 @@ public class ObatServiceImpl implements ObatService {
 
         for (int i = 0; i < daftarObat.size(); i++) {
             for (int j = 0; j < daftarObat.get(i).getListDetailObat().size(); j++) {
-                if (daftarObat.get(i).getListDetailObat().get(j).getStatusKonfirmasi().equals("Diterima") && daftarObat.get(i).getListDetailObat().get(j).getStatus().equals("Tersedia")) {
+                if (daftarObat.get(i).getListDetailObat().get(j).getStatusKonfirmasi().equals("Diterima") && daftarObat.get(i).getListDetailObat().get(j).getStatus().equals("Tersedia") && daftarObat.get(i).getListDetailObat().get(j).getIsArsip() == 0) {
                     obatDiterimaDanTersediaNoDup.add(daftarObat.get(i));
                 }
             }
