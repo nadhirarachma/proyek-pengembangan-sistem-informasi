@@ -4,13 +4,11 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
 
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import propensi.b02.sobatarlydia.model.PenjualanModel;
 import propensi.b02.sobatarlydia.model.KuantitasModel;
-import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.PenjualanDb;
 
@@ -64,17 +62,14 @@ public class PenjualanServiceImpl implements PenjualanService {
         HashMap<LocalDate, Integer> byMonth = new HashMap<LocalDate, Integer>();
 
         for (PenjualanModel p: lst) {
-            System.out.println(p.getWaktu().getMonthValue());
-            System.out.println(month);
+            
             if (p.getWaktu().getMonthValue() == month && p.getWaktu().getYear() == year) {
-                System.out.println("HAI");
                 LocalDate tgl = LocalDate.of(year, month, p.getWaktu().getDayOfMonth());
                 for (KuantitasModel k: p.getKuantitas()) {
                     byMonth.put(tgl, byMonth.containsKey(tgl) ? Integer.valueOf(byMonth.get(tgl) + (k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga())) : Integer.valueOf(k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga()));
                 }
             }
         }
-        System.out.println(byMonth);
 
         return byMonth;
     }
@@ -113,16 +108,12 @@ public class PenjualanServiceImpl implements PenjualanService {
         HashMap<String, Integer> byYear = new HashMap<String, Integer>();
 
         for (PenjualanModel p: lst) {
-            System.out.println(p.getWaktu().getMonthValue());
-            System.out.println(year);
             if (p.getWaktu().getYear() == year) {
-//                System.out.println("HAI");
                 for (KuantitasModel k: p.getKuantitas()) {
                     byYear.put(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH), byYear.containsKey(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)) ? Integer.valueOf(byYear.get(p.getWaktu().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)) + (k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga())) : Integer.valueOf(k.getKuantitas() * k.getId().getObat().getObatDetailId().getIdObat().getHarga()));
                 }
             }
         }
-        System.out.println(byYear);
 
         return byYear;
     }

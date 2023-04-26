@@ -4,22 +4,16 @@ package propensi.b02.sobatarlydia.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import propensi.b02.sobatarlydia.controller.ObatDetailController;
 import propensi.b02.sobatarlydia.dto.*;
 import propensi.b02.sobatarlydia.model.PenjualanModel;
-import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
-import propensi.b02.sobatarlydia.model.RiwayatObatModel;
-import propensi.b02.sobatarlydia.service.ObatService;
 import propensi.b02.sobatarlydia.service.PenjualanService;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +49,6 @@ public class PenjualanRestController {
              ph.add(phNew);
         }
 
-        System.out.println(ph);
         return ph;
     }
     @GetMapping("/bulan")
@@ -73,7 +66,6 @@ public class PenjualanRestController {
 
             ph.add(phNew);
         }
-        System.out.println("tes");
         return ph;
     }
     
@@ -85,7 +77,6 @@ public class PenjualanRestController {
         HashMap<LocalDate, Integer> map = penjualanService.getListPendapatanByMonth(monthh, year);
         List<PendapatanBulananDto> ph = new ArrayList<>();
         
-        System.out.println(ph);
         for (Map.Entry<LocalDate, Integer> set : map.entrySet()) {
              PendapatanBulananDto phNew = new PendapatanBulananDto();
              phNew.setTanggal(set.getKey());
@@ -119,7 +110,6 @@ public class PenjualanRestController {
         HashMap<String, Integer> map = penjualanService.getListPendapatanByYear(Integer.parseInt(year));
         List<PendapatanTahunanDto> ph = new ArrayList<>();
 
-        System.out.println(ph);
         for (Map.Entry<String, Integer> set : map.entrySet()) {
             PendapatanTahunanDto phNew = new PendapatanTahunanDto();
             phNew.setTanggal(set.getKey());

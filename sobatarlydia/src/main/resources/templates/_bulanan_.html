@@ -24,9 +24,9 @@
     <div class=" mx-auto" style="width:90%">
         <div class="d-flex justify-content-between">
             <h2> Laporan Pendapatan Bulanan </h2>
-            <div class="my-auto">
+            <!-- <div class="my-auto">
                 <a class="btn btn-info text-white">Unduh Laporan</a>
-            </div>
+            </div> -->
         </div>
 
         <div class="d-flex align-middle py-5">
@@ -34,7 +34,6 @@
             <input type="month" class="form-control w-50" id="month">
         </div>
 
-        <br>
         <table id="table_result" class="display table table-striped">
             <thead class="thead-dark" >
                 <tr>
@@ -61,6 +60,7 @@
         </table>
     </div>
   </div>
+
   <input type="text" class="form-control" id="host" hidden th:value="${host}" />
 
 </div>
@@ -123,6 +123,7 @@
 
             var url= host + "/penjualan/laporan-penjualan/harian/" + id;
             window.location = url;
+
 
         });
 

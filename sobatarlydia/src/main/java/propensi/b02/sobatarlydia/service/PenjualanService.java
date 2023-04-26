@@ -2,7 +2,6 @@ package propensi.b02.sobatarlydia.service;
 
 import org.springframework.stereotype.Service;
 
-import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.model.PenjualanModel;
 

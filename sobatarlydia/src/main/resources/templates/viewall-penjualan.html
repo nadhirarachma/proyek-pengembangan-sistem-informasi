@@ -22,11 +22,17 @@
         <div style="position: relative;">
             <h1 style="text-align: center;font-weight: bold">Daftar Penjualan Obat</h1>
         </div>
-        <div class="mt-3" style="position: relative;">
-          <a sec:authorize="hasAuthority('Karyawan')" style="position: absolute; top: 0; right: 0;border-radius: 10px;background-color: #7698F0; border-color: #7698F0;border-radius: 10px" th:href="@{/penjualan/add}" class="mx-2 btn btn-primary text-black">+Tambah Penjualan</a>
+        <div class="d-flex justify-content-between mt-3" style="position: relative;">
+          <div>
+
+          </div>
+          <div>
+            <a sec:authorize="hasAuthority('Karyawan')" style="background-color: #7698F0; border-color: #7698F0;border-radius: 10px" th:href="@{/penjualan/add}" class="mx-2 btn btn-primary text-black">+Tambah Penjualan</a>
+            <a sec:authorize="hasAuthority('Karyawan')" style="background-color: #7698F0; border-color: #7698F0;border-radius: 10px" th:href="@{/penjualan/laporan-penjualan}" class="mx-2 btn btn-primary text-black">Lihat Laporan Per Periode</a>
+          </div>
         </div>
       <br>
-      <div class="mt-5" th:if="*{listPenjualan.size() != 0}">
+      <div class="mt-1" th:if="*{listPenjualan.size() != 0}">
         <table id="table_result" class="display table table-striped">
           <thead style="background-color: #ADF6F6">
             <tr>

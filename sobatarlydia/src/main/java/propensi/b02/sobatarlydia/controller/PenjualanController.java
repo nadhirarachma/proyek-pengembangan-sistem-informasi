@@ -1,7 +1,6 @@
 package propensi.b02.sobatarlydia.controller;
 
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -258,11 +257,6 @@ public class PenjualanController {
         }
 
         return "empty";
-    }
-
-    @GetMapping("/laporan-pendapatan")
-    public String laporanDuit(Model model) {
-        return "laporan-pendapatan";
     }
 
     @GetMapping("/laporan-pendapatan/{tab}")

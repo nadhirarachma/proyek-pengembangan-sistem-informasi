@@ -28,7 +28,6 @@ public class FakturController {
             return "redirect:/faktur/viewall";
         }
         List<ObatDetailModel> listInputObat = fakturObat.getListObatDetail();
-        System.out.println(listInputObat.size());
 
         String statusObat = "Diterima";
         for (int i = 0; i < listInputObat.size(); i++) {
@@ -44,7 +43,7 @@ public class FakturController {
 
         FakturModel updateStatusFaktur = fakturService.updateFakturStatus(fakturObat);
         model.addAttribute("faktur", updateStatusFaktur);
-        return "redirect:/faktur/detail-faktur/"+ noFaktur; //nanti bawa ke page view all fakturnya hezkie
+        return "redirect:/faktur/detail-faktur/"+ noFaktur; 
     }
 
     @GetMapping("/viewall")
@@ -56,7 +55,6 @@ public class FakturController {
 
     @GetMapping("/detail-faktur/{noFaktur}")
     public String detailFaktur(Model model, @PathVariable String noFaktur){
-        // ObatModel obatModel = obatService.getObatById(idObat);
         FakturModel fakturModel = fakturService.getFakturByNo(noFaktur);
         if (fakturModel==null) {
             return "redirect:/faktur/viewall";
