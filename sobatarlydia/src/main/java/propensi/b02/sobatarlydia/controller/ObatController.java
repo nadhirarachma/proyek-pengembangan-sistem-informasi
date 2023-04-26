@@ -9,8 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.b02.sobatarlydia.dto.FakturDto;
 import propensi.b02.sobatarlydia.dto.ObatDetailDto;
 import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
+import propensi.b02.sobatarlydia.dto.ObatWaiting;
 import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.KategoriObatModel;
 import propensi.b02.sobatarlydia.model.RiwayatObatModel;
@@ -33,7 +31,6 @@ import propensi.b02.sobatarlydia.model.ObatDetailId;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.model.PenggunaModel;
-import propensi.b02.sobatarlydia.rest.ObatWaiting;
 import propensi.b02.sobatarlydia.service.*;
 import propensi.b02.sobatarlydia.setting.Setting;
 
@@ -238,96 +235,13 @@ public class ObatController {
         return "viewall-obat";
     }
 
-    // @RequestMapping(value = "/filter-obat", method = RequestMethod.POST)
-    // public String controllerMethod(HttpServletRequest request, Model model){
-
-    //     Object kategori = request.getParameter("no");
-    //     if (kategori != null ) {
-    //         String kategoriString = request.getParameter("no");
-    //         if (kategori.equals("0")){
-    //             List<ObatModel> listObat = obatService.getListObat();
-    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-    //             model.addAttribute("listKategoriObat", listObat);
-    //             model.addAttribute("listKategori", listKategori);
-    //             model.addAttribute("listObat", listObat);
-    //             model.addAttribute("judulKategoriObat", "Seluruh Obat");
-    //         }
-    //         else {
-    //             Integer noKategori = Integer.valueOf(kategoriString);
-    //             List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
-    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
-    //             List<ObatModel> listObat = obatService.getListObat();
-    //             KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
-
-
-    //             model.addAttribute("listKategoriObat", listKategoriObat);
-    //             model.addAttribute("listKategori", listKategori);
-    //             model.addAttribute("listObat", listObat);
-    //             model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
-    //         }
-    //     }
-    //     else if (kategori==null) {
-    //         List<ObatModel> listObat = obatService.getListObat();
-    //         List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-    //         model.addAttribute("listKategoriObat", listObat);
-    //         model.addAttribute("listKategori", listKategori);
-    //         model.addAttribute("listObat", listObat);
-    //         model.addAttribute("judulKategoriObat", "Seluruh Obat");
-
-    //     }
-    //     return "viewall-data-obat";
-    // }
-
-    // @RequestMapping(value = "/filter-obat", method = RequestMethod.GET)
-    // public String controllerMethod1(HttpServletRequest request, Model model) {
-    //     Object kategori = request.getParameter("no");
-    //     if (kategori != null ) {
-    //         String kategoriString = request.getParameter("no");
-    //         if (kategori.equals("0")){
-    //             List<ObatModel> listObat = obatService.getListObat();
-    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-    //             model.addAttribute("listKategoriObat", listObat);
-    //             model.addAttribute("listKategori", listKategori);
-    //             model.addAttribute("listObat", listObat);
-    //             model.addAttribute("judulKategoriObat", "Seluruh Obat");
-    //         }
-    //         else {
-    //             Integer noKategori = Integer.valueOf(kategoriString);
-    //             List<ObatModel> listKategoriObat = obatService.getListObatFiltered(noKategori);
-    //             List<KategoriObatModel> listKategori = obatService.getListKategori();
-    //             List<ObatModel> listObat = obatService.getListObat();
-    //             KategoriObatModel kategoriObatModel = obatService.getKategoriById(Integer.valueOf(kategoriString));
-
-
-    //             model.addAttribute("listKategoriObat", listKategoriObat);
-    //             model.addAttribute("listKategori", listKategori);
-    //             model.addAttribute("listObat", listObat);
-    //             model.addAttribute("judulKategoriObat", kategoriObatModel.getNamaKategori());
-    //         }
-    //     }
-    //     else if (kategori==null) {
-    //         List<ObatModel> listObat = obatService.getListObat();
-    //         List<KategoriObatModel> listKategori = obatService.getListKategori();
-
-
-    //         model.addAttribute("listKategoriObat", listObat);
-    //         model.addAttribute("listKategori", listKategori);
-    //         model.addAttribute("listObat", listObat);
-    //         model.addAttribute("judulKategoriObat", "Seluruh Obat");
-
-    //     }
-    //     return "viewall-data-obat";
-    // }
 
     @GetMapping("/detail-obat/{idObat}")
     public String detailObat(Model model, Principal principal, @PathVariable String idObat){
         PenggunaModel akun = userService.getAkunByEmail(principal.getName());
         ObatModel obatModel = obatService.getObatById(idObat);
         if (obatModel==null) {
-            return "viewall-data-obat";
+            return "viewall-obat";
         }
         List<ObatDetailModel> statusObat = obatModel.getListDetailObat();
         List<ObatDetailModel> statusKonfirmasiObat = new ArrayList<>();

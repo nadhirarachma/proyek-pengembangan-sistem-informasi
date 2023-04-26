@@ -20,7 +20,7 @@
     <div class="container w-75 mx-auto">
         <div class="row">
             <div class="col">
-                <ul class="nav nav-tabs mt-5" id="myTabs">
+                <!-- <ul class="nav nav-tabs mt-5" id="myTabs">
                     <li class="nav-item"><a href="#harian" data-url="/harian" class="nav-link active">Harian</a></li>
                     <li class="nav-item"><a href="#bulanan" data-url="/bulanan" class="nav-link">Bulanan</a></li>
                     <li class="nav-item"><a href="#tahunan" data-url="/tahunan" class="nav-link">Tahunan</a></li>
@@ -30,31 +30,107 @@
                     <div class="tab-pane active" id="harian">Active panel</div>
                     <div class="tab-pane" id="bulanan"></div>
                     <div class="tab-pane" id="tahunan"></div>
+                </div> -->
+                <label style="font-weight: normal;">Periode</label>
+                <div>
+                    <select id="periode" class="form-control" name="no">
+                        <option style="font-weight: lighter" th:value="'harian'" th:text="'Harian'">
+                        </option>
+                        <option style="font-weight: lighter" th:value="'bulanan'" th:text="'Bulanan'">
+                        </option>
+                        <option style="font-weight: lighter" th:value="'tahunan'" th:text="'Tahunan'">
+                        </option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <label  id="tipe-field" style="font-weight: normal;" hidden>Tipe Laporan</label>
+                <div>
+                    <select id="tipe" class="form-control" name="no" hidden>
+                        <option style="font-weight: lighter" th:value="'pendapatan'" th:text="'Pendapatan'">
+                        </option>
+                        <option style="font-weight: lighter" th:value="'penjualan'" th:text="'Penjualan'">
+                        </option>                        
+                    </select>
                 </div>
             </div>
         </div>
     </div>
+
+    <br>
+    <div id="content" class="card w-75 mx-auto">
+
+    </div>
     
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!-- <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script> -->
 
     <script>
-        $('#myTabs a').click(function (e) {
+        // $('#myTabs a').click(function (e) {
+        //     e.preventDefault();
+
+        //     var url = "/penjualan/laporan-penjualan" + $(this).attr("data-url");
+        //     var href = this.hash;
+        //     var pane = $(this);
+            
+        //     // ajax load from data-url
+        //     $(href).load(url, function (result) {
+        //         pane.tab('show');
+        //     });
+        // });
+        
+        // // load first tab content
+        // $('#harian').load("/penjualan/laporan-penjualan" + $('.nav-link.active').attr("data-url"), function (result) {
+            
+        // });
+        $('#periode').change(function (e) {
             e.preventDefault();
 
-            var url = "/penjualan/laporan-penjualan" + $(this).attr("data-url");
-            var href = this.hash;
-            var pane = $(this);
+            var periode = $(this).val();
+            var tipe = $('#tipe').val();
+            var url = "/penjualan/laporan-" + tipe + "/" + periode;
+
+            if (periode == "harian") {
+                document.getElementById('tipe-field').hidden = true
+                document.getElementById('tipe').hidden = true
+                var url = "/penjualan/laporan-penjualan/" + periode;
+            } else {
+                document.getElementById('tipe-field').hidden = false
+                document.getElementById('tipe').hidden = false
+            }
+
+
+            // alert(url);
+            // var href = this.hash;
+            // var pane = $(this);
             
             // ajax load from data-url
-            $(href).load(url, function (result) {
-                pane.tab('show');
+            $('#content').load(url, function (result) {
+                // pane.tab('show');
+            });
+        });
+
+        $('#tipe').change(function (e) {
+            e.preventDefault();
+
+            var periode = $('#periode').val();
+            var tipe = $(this).val();
+
+            var url = "/penjualan/laporan-" + tipe + "/" + periode;
+            // alert(url);
+            // var href = this.hash;
+            // var pane = $(this);
+            
+            // ajax load from data-url
+            $('#content').load(url, function (result) {
+                // pane.tab('show');
             });
         });
         
         // load first tab content
-        $('#harian').load("/penjualan/laporan-penjualan" + $('.nav-link.active').attr("data-url"), function (result) {
+        $('#content').load("/penjualan/laporan-penjualan/harian", function (result) {
             
         });
 

@@ -17,22 +17,21 @@
 <body>
 
 <body style="background-color: #EBFEFF">
-<br>
+    <nav th:replace="fragments/fragment :: navbar(page = 'Penjualan')"></nav>
 
-<div class=" m-4">
+    <div class="h1 pt-4 text-center" style="font-weight: bolder">Laporan Penjualan</div>
+<div class="container w-75 mx-auto">
 
     <div class=" mx-auto" style="width:90%">
         <div class="d-flex justify-content-between">
-            <h2> Laporan Penjualan Harian </h2>
-            <div class="my-auto">
-                <a class="btn btn-info text-white">Unduh Laporan</a>
-            </div>
+            <h2 th:text="'Laporan Penjualan Harian ' + ${date}"> </h2>
+            <!-- <div class="my-auto">
+                <a class="btn btn-info text-white">Unduh Laporan</a> -->
+                <a class="btn btn-info text-white" th:href="@{/penjualan/laporan-penjualan}">Kembali</a>
+            <!-- </div> -->
         </div>
 
-        <div class="d-flex align-middle py-5">
-            <label class="pe-3 pt-2">Pilih Tanggal</label>
-            <input type="date" class="form-control w-50" id="date">
-        </div>
+       
 
         <table id="table_result" class="display table table-striped">
             <thead class="thead-dark" >

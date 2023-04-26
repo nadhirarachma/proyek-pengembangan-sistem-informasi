@@ -41,6 +41,7 @@
             <thead style="background-color: #ADF6F6">
    
             <tr>
+              <th scope="col"  class="text-center align-middle">No</th>
               <th scope="col"  class="text-center align-middle">ID</th>
               <th scope="col"  class="text-center align-middle">Nama</th>
               <th scope="col"  class="text-center align-middle">Harga</th>
@@ -51,6 +52,7 @@
             </tr>
       
             <tr class="bg-white">
+              <td></td>
               <td scope="col" id="search">ID</td>
               <td scope="col" id="search">Nama</td>
               <td scope="col" id="search">Harga</td>
@@ -72,6 +74,7 @@
               <td>Data 5</td>
               <td>Data 6</td>
               <td>Data 7</td>
+              <td>Data 8</td>
             </tr>
             </tbody>
               
@@ -85,8 +88,6 @@
 </div>
 
 
-<!-- <footer th:replace="fragments/fragment :: footer(page = 'Ubah Stok Obat')"></footer> -->
-
 <script th:inline="javascript">
   $(document).ready(function () {
 
@@ -97,7 +98,6 @@
 
     $('#table_result').DataTable({
         initComplete: function () {
-            // Apply the search
             this.api()
                 .columns()
                 .every(function () {
@@ -126,6 +126,9 @@
         }
         ],
         "columns": [
+                {"data": null, "width": '10px', "render": function (data, type, full, meta) {
+                  return meta.row + 1;}
+                },
                 {"data": "id", width: '50px'},
                 {"data": "nama_obat", width: '200px'},
                 {"data": "harga", width: '50px'},
@@ -139,7 +142,7 @@
 
     $('#table_result tbody').on('click', 'button', function () {
         var $row = $(this).closest("tr");
-        var id = $row.find('td').first().text();
+        var id = $row.find('td').eq(1).text();
 
         const host = $("#host").val();
 
@@ -193,6 +196,9 @@ $('#kategori').change(
         }, 
         ],
         "columns": [
+                {"data": null, "width": '10px', "render": function (data, type, full, meta) {
+                  return meta.row + 1;}
+                },
                 {"data": "id", width: '50px'},
                 {"data": "nama_obat"},
                 {"data": "harga", width: '50px'},
@@ -206,7 +212,7 @@ $('#kategori').change(
 
     $('#table_result tbody').on('click', 'button', function () {
         var $row = $(this).closest("tr");
-        var id = $row.find('td').first().text();
+        var id = $row.find('td').eq(1).text();
 
         const host = $("#host").val();
 

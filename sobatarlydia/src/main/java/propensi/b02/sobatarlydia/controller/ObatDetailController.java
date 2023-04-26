@@ -6,7 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import propensi.b02.sobatarlydia.rest.ObatWaiting;
+
+import propensi.b02.sobatarlydia.dto.ObatWaiting;
 import propensi.b02.sobatarlydia.service.ObatDetailService;
 import propensi.b02.sobatarlydia.service.UserService;
 

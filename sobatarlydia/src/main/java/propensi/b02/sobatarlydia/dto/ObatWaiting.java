@@ -1,4 +1,4 @@
-package propensi.b02.sobatarlydia.rest;
+package propensi.b02.sobatarlydia.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
