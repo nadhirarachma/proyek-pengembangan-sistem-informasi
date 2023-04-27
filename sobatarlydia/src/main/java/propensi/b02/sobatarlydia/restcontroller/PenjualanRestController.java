@@ -122,7 +122,7 @@ public class PenjualanRestController {
     }
 
     @GetMapping(value="/list-all")
-    public List<PenjualanDto> findAllObat() {
+    public List<PenjualanDto> findAllPenjualan() {
         List<PenjualanModel> lst = penjualanService.getListPenjualan();
         return lst.stream().map(penjualan -> {
             PenjualanDto dto = new PenjualanDto();
