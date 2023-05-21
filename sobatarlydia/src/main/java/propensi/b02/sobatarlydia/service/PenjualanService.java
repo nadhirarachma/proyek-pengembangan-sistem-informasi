@@ -2,6 +2,7 @@ package propensi.b02.sobatarlydia.service;
 
 import org.springframework.stereotype.Service;
 
+import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.model.PenjualanModel;
 
@@ -20,4 +21,6 @@ public interface PenjualanService {
     HashMap<ObatModel, Integer> getListPenjualanByMonth(int month, int year);
     HashMap<ObatModel, Integer> getListPenjualanByYear(int year);
     HashMap<String, Integer> getListPendapatanByYear (int year);
+    public List<PenjualanModel> getListPerTanggal(LocalDate date);
+    ObatDetailModel getObatForRetur(PenjualanModel penjualan, String obatlama);
 }

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Retur Obat</title>
+    
+    <meta charset="UTF-8">
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.13.4/api/sum().js"></script>
+    <script src="/js/datatable.js"></script>
+    <style>
+        label::after {
+                content: " *";
+                color: #e32;
+            }
+    </style>
+</head>
+
+<body style="background-color: #EBFEFF">
+    <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+
+
+    <div class="container">
+        <div class="text-center">
+            <h2>Input Retur</h2>
+        </div>
+        
+        <div class="card m-4 p-4">
+            <form th:action="@{/retur/add/?penjualan=} + ${penjualan.id}" th:object="${retur}" method="POST">
+                <div class="card-header">
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <h3>Data Penjualan</h3>
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            <label>Pilih Tanggal Penjualan</label>
+                            <input id="tanggal" class="col-xs-4 form-control" type="date" th:min="${tanggalbatasbawah}" th:max="${tanggalbatasatas}" th:field="*{tanggalPenjualan}" th:value="${tanggalPenjualan}"/>
+                            <input th:if="${statMsg} == 1" hidden class="col-xs-4 form-control" th:field="*{idPenjualan}" th:value="${penjualan.id}"/>
+                
+                            <div class="p-5">
+
+                            </div>
+
+                            <p class="mt-3">Pilih Penjualan</p>
+                            <div id="nama" class="container d-flex flex-wrap justify-content-center">
+
+                            </div>
+
+                            <table id="table_result" class="display table table-striped">
+                                <thead class="thead-dark" >
+                                    <tr>
+                                        <th scope="col"  class="text-center align-middle">Kode Penjualan</th>
+                                        <th scope="col"  class="text-center align-middle">Waktu Penjualan</th>
+                                        <th scope="col"  class="text-center align-middle">Karyawan</th>
+                                        <th scope="col"  class="text-center align-middle">Daftar Obat</th>
+                                        <th scope="col"  class="text-center align-middle">Total Harga</th>
+                                        <th scope="col"  class="text-center align-middle"></th>
+                                    </tr>
+                        
+                                    <tr class="bg-white">
+                                        <td scope="col" id="search" class="text-center align-middle">Kode Penjualan</td>
+                                        <td scope="col" id="search" class="text-center align-middle">Waktu Penjualan</td>
+                                        <td scope="col" id="search" class="text-center align-middle">Karyawan</td>
+                                        <td scope="col" id="search" class="text-center align-middle">Daftar Obat</td>
+                                        <td scope="col" id="search" class="text-center align-middle">Total Harga</td>
+                                        <td scope="col" id="search" class="text-center align-middle"></td>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>Data 1</td>
+                                        <td>Data 2</td>
+                                        <td>Data 3</td>
+                                        <td>Data 4</td>
+                                        <td>Data 5</td>
+                                        <td>Data 6</td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot>
+
+                                </tfoot>
+                                
+                            </table>
+
+                            <div th:if="${statMsg} == 1" class="modal fade" id="myModal" role="dialog">
+                                <div class="px-5  modal-xl modal-dialog modal-dialog-centered text-center">
+                                    <div class="modal-content" id="ganti-obat">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-center" th:text="'Penjualan ' + ${penjualan.id}"></h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h3>Pilih obat yang akan ditukar</h3>
+                                            <!-- <div>
+                                                <div  class="d-flex justify-content-between" th:each="obatlama, iterationStatus:${penjualan.kuantitas}">
+                                                    <select class="form-control mr-4" required>
+                                                        <option th:value="${obatlama.id}" th:text="${obatlama.id.obat.obatDetailId.idObat.namaObat}"></option>
+                                                    </select>
+                                                    <input type="number" min=0 th:max="${obatlama.kuantitas}">
+                                                </div>
+                                            </div> -->
+                                            <table class="table">
+                                                <thead>
+                                                    <th>Nama Obat</th>
+                                                    <th>Kuantitas</th>
+                                                    <th>
+                                                    </th>
+                                                </thead>
+                                                <tbody>
+                                                        <td>             
+                                                            <select class="form-control" th:field="*{obatlama}">        
+                                                                <option  th:each="pilihan, iterationStatus:${penjualan.kuantitas}" 
+                                                                    th:value="${pilihan.id}" th:text="${pilihan.id.obat.obatDetailId.idObat.namaObat}"
+                                                                    >
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" min=0 th:field="*{kuantitasobatlama}">
+                                                        </td>
+                                                    
+                                                </tbody>
+
+                                              </table>
+                                    
+                                                <h3>Tukar dengan</h3>
+                                                <!-- <div>
+                                                    <div  class="d-flex justify-content-between" th:each="obatlama, iterationStatus:${penjualan.kuantitas}">
+                                                        <select class="form-control mr-4" required>
+                                                            <option th:value="${obatlama.id}" th:text="${obatlama.id.obat.obatDetailId.idObat.namaObat}"></option>
+                                                        </select>
+                                                        <input type="number" min=0 th:max="${obatlama.kuantitas}">
+                                                    </div>
+                                                </div> -->
+                                                <table class="table">
+                                                    <thead>
+                                                        <th>Nama Obat</th>
+                                                        <th>Kuantitas</th>
+                                                        <th>
+                                                        </th>
+                                                    </thead>
+                                                    <tbody>
+                                                            <td>             
+                                                                <select id="aaa" class="form-control" th:field="*{obatbaru}">        
+                                                                    <option  th:each="pilihan, iterationStatus:${listObat}" 
+                                                                        th:value="${pilihan.idObat}" th:text="${pilihan.namaObat}"
+                                                                        >
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input class="form-control" type="number" min=0 th:field="*{kuantitasobatbaru}">
+                                                            </td>
+                                                        
+                                                    </tbody>
+
+                                                </table>
+                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a type="submit" class="px-5 m-3 bg-warning btn text-white" data-toggle="modal" data-target="#myModal2">Simpan</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            
+
+                            </div>
+        
+                            <div th:if="${statMsg} == 1" class="modal fade" id="myModal2" role="dialog">
+                                <div class="px-5 modal-sm modal-dialog modal-dialog-centered text-center">
+                                    <div class="modal-content" id="ganti-obat">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-center" th:text="'Konfirmasi'"></h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Apakah Anda yakin untuk membuat retur ini?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="px-5 m-3 bg-warning btn text-white">Yakin</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            
+
+                            </div>
+
+                            <div th:if="${statMsg} == 2" class="modal fade" id="myModal" role="dialog">
+                                <div class="px-5 modal-sm modal-dialog modal-dialog-centered text-center">
+                                    <div class="modal-content" id="ganti-obat">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title text-center" th:text="'Sukses'"></h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Retur Berhasil Terbuat</p>
+                                        </div>
+                                
+                                    </div>
+                                    
+                                </div>
+                            
+
+                            </div>
+        
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<input type="text" class="form-control" id="host" hidden th:value="${host}" />
+</body>
+
+
+
+<script th:inline="javascript">
+  $('#tanggal').change(
+    function() {
+    // const host = $("#host").val();
+    //   // $.getJSON("https://sobat-arlydia-production.up.railway.app/api/v1/obat/by-farmasi/", {
+    //   $.getJSON(host + "/api/v1/penjualan/per-tanggal/", {
+    //       date : $(this).val(),
+    //       ajax : 'true'
+    //   }, function(data) {
+    //       var html = '';
+    //       var len = data.length;
+    //       for ( var i = 0; i < len; i++) {
+
+    //         var lst = data[i].lst_obat.toString().split(",")
+    //         // alert(lst[0])
+    //         //   html += '<option value="' + data[i].kode + '">'
+    //         //           + data[i].kode + ' - ' +  data[i].harga + '</option>';
+
+    //         html += '<div class="card m-1 p-4">'
+    //         html += '   <input type="radio" id="' + data[i].kode + '" name="fav_language" value=" + ' + data[i].kode + '"">'
+
+    //         html += '   </br>'
+    //         html += '<p class="text-center font-weight-bold">ID Penjualan: ' + data[i].kode + '</p>'
+    //         html += '<p class="m-1">Daftar Obat: </p>'
+    //         html +=         '<ul class="my-1">' 
+    //         for (var j = 0; j < lst.length; j++) {
+    //             html +=         '<li>' + lst[j] + '</li>'
+
+    //         }
+    //         html +=         '</ul>' 
+    //         html += '</div>'
+
+    //       }
+    //       $('#nama').html(html);
+    //   });
+        
+        const host = $("#host").val();
+        const date = $(this).val();
+
+        $("#table_result").dataTable().fnDestroy();
+        
+        $('#table_result #search').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+        });
+
+        var table = $('#table_result').DataTable({
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var that = this;
+    
+                        $('input', this.header()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+
+            "ajax": {
+                "url": "/api/v1/penjualan/per-tanggal/",
+                "data" : { date: date },
+                "dataSrc": ''
+            },
+            "searching": true,
+            "ordering": true,
+            
+            "columns": [
+                {"data": "kode", width: '25px'},
+                {"data": "waktu", width: '50px'},
+                {"data": "karyawan"},
+                {"data": "lst_obat"},
+                {"data": "harga"},
+                {"data": "null", render: function (data, type, row, meta) {
+                    return '<a class="btn btn-primary" href="/retur/add/?penjualan=' + row['kode'] +'">Pilih Penjualan</a>'
+                }},
+
+                // {"data": null, defaultContent: '<a class="btn btn-primary" href="/?penjualan?">Pilih Penjualan</a>'}
+
+            ]
+        });    
+        
+        // $('#table_result tbody').on('click', 'a', function () {
+        //     let data = table.row($(this).parents('tr')).data();
+        //     $('#nama').html('<a id="btn" hidden  data-toggle="modal" data-target="#myModal">Click me</a>');
+
+        //     var baru =  '<div class="modal-header">';
+        //     baru +=     '   <h4 class="modal-title text-center">Penjualan ' + data['kode'] + '</h4>';
+        //     baru +=     '   <button type="button" class="close" data-dismiss="modal">&times;</button>';
+        //     baru +=     '</div>'
+        //     baru +=     '<div class="modal-body">';
+        //     baru +=     '   <h4 class="modal-title text-center">Penjualan ' + data['kode'] + '</h4>';
+        //     baru +=     '</div>'
+        //             // </div>
+        //             // <div class="modal-body">
+        //             //     <p>Obat akan menunggu konfirmasi apoteker</p>
+        //             // </div>
+        //             // <div class="modal-footer">
+        //             //   <a th:href="@{/obat-detail/waiting}" class="px-5 m-3 bg-warning btn text-white">Lihat Daftar Input Obat</a>
+        //             // </div>'
+
+
+        //     // alert("AAA");
+
+        //     $('#ganti-obat').html(baru);
+
+
+        //     document.getElementById('btn').click();
+        //     // const url = host + "/pengguna/profil";
+        //     // alert(url);
+        //     // window.location.href = url;
+        //     // alert(data['kode']);
+        //     // data['stok'] = $('#' + data['id']).val();
+        //     // $.ajax({
+        //     //     type: 'PUT',
+        //     //     url: host + '/api/v1/obat/update/' + data['id'],
+        //     //     data: JSON.stringify(data),
+        //     //     contentType: 'application/json',
+        //     //     success: function (newData) {
+        //     //     $('#alert').html(
+        //     //             '<div class="alert alert-success" role="alert">Berhasil mengubah stok obat ' + newData['nama'] + ' menjadi ' + newData['stok'] + '</div>'
+        //     //     )
+        //     //     }
+        //     // })
+        //     });
+
+  });
+
+  // $('#satuan').change(
+  // function() {
+  //         var html = '';
+  //         var satuan = $(this).val().toLowerCase();
+
+  //         if (satuan==="lainnya") {
+  //           html = '<label> Jumlah satuan per box</label><input class="form-control" type="number" th:field="*{jumlahPerBox}" required/>'
+  //         } else {
+  //           html = '<label> Jumlah ' + satuan + ' per box</label><input class="form-control" type="number" th:field="*{jumlahPerBox}" required/>'
+  //         }
+          
+  //         $('#jmlsatuan').html(html);
+
+  //     });
+</script>
+
+<button th:if="${statMsg} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+<button th:if="${statMsg} == 2" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+<!-- <button th:if="${statMsg} == 1" id="btn2" hidden data-toggle="modal" data-target="#myModal2">Click me</button> -->
+<script>
+  document.getElementById('btn').click();
+</script>
+
+</body>
+</html>

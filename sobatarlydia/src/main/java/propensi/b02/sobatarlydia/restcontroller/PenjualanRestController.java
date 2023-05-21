@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import propensi.b02.sobatarlydia.dto.*;
 import propensi.b02.sobatarlydia.model.PenjualanModel;
+import propensi.b02.sobatarlydia.model.KuantitasModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.service.PenjualanService;
 
@@ -32,6 +33,43 @@ public class PenjualanRestController {
     @Autowired
     private PenjualanService penjualanService;
 
+    @GetMapping("/per-tanggal")
+    public List<PenjualanDto> perTanggal(@RequestParam(value = "date", required = true) String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate datee = LocalDate.parse(date, formatter);
+
+        List<PenjualanModel> ph = penjualanService.getListPerTanggal(datee);
+
+        return ph.stream().map(penjualan -> {
+            PenjualanDto dto = new PenjualanDto();
+            dto.setKode(penjualan.getId());
+
+            String tanggal = penjualan.getWaktu().toString().split("T")[0];
+            String waktu = penjualan.getWaktu().toString().split("T")[1];
+            dto.setTanggal(tanggal);
+            dto.setWaktu(waktu);
+
+            dto.setKaryawan(penjualan.getKaryawan().getNamaDepan() + " " + penjualan.getKaryawan().getNamaBelakang());
+
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String harga = nf.format(penjualan.getHarga());
+            dto.setHarga("Rp"+harga);
+
+            dto.setListObat(new ArrayList<>());
+            for (KuantitasModel i: penjualan.getKuantitas()) {
+                dto.getListObat().add(i.getId().getObat().getObatDetailId().getIdObat().getNamaObat() + " (" + i.getKuantitas() + ")");
+            }
+
+            System.out.println(dto);
+            System.out.println(penjualan.getKuantitas());
+            return dto;
+        })
+        .collect(Collectors.toList());
+
+        // System.out.println(ph);
+        // return ;
+    }
+
     @GetMapping("/harian")
     public List<PenjualanHarianDto> laporanHarian(@RequestParam(value = "date", required = true) String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -49,6 +87,7 @@ public class PenjualanRestController {
              ph.add(phNew);
         }
 
+        System.out.println(ph);
         return ph;
     }
     @GetMapping("/bulan")

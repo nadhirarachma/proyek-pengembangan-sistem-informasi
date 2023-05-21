@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import propensi.b02.sobatarlydia.model.PenjualanModel;
 import propensi.b02.sobatarlydia.model.KuantitasModel;
+import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.model.ObatModel;
 import propensi.b02.sobatarlydia.repository.PenjualanDb;
 
@@ -118,5 +119,29 @@ public class PenjualanServiceImpl implements PenjualanService {
         return byYear;
     }
 
+    @Override
+    public List<PenjualanModel> getListPerTanggal(LocalDate date) {
+        List<PenjualanModel> lst = penjualanDb.findAll();
+        List<PenjualanModel> baru = new ArrayList<>();
+
+        for (PenjualanModel p: lst) {
+            if (p.getWaktu().getDayOfYear() == date.getDayOfYear() && p.getWaktu().getMonth() == date.getMonth() && p.getWaktu().getYear() == date.getYear()) {
+                baru.add(p);
+            }
+        }
+        return baru;
+    }
+
+    public ObatDetailModel getObatForRetur(PenjualanModel penjualan, String obatlama){
+        List<KuantitasModel> lst = penjualan.getKuantitas();
+        
+        for (KuantitasModel i : lst) {
+            if (i.getId().getObat().getObatDetailId().getIdObat().getNamaObat().equals(obatlama)) {
+                return i.getId().getObat();
+            }
+        }
+
+        return null;
+    }
 
 }
