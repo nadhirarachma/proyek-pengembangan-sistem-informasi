@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public String encrypt(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println(password);
+        System.out.println("AAAAAAA");
         return passwordEncoder.encode(password);
     }
 

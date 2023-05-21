@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Retur Obat</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="/js/datatable.js"></script>
+</head>
+<body style="background-color: #EBFEFF">
+  <nav th:replace="fragments/fragment :: navbar(page = 'Retur')"></nav><div class="d-flex justify-content-center">
+  <div class="container m-4">
+    <div class="mx-auto" style="width:90%">
+      <div class="justify-content-center mx-auto">
+        <div style="position: relative;">
+            <h1 style="text-align: center;font-weight: bold">Daftar Retur Obat</h1>
+        </div>
+        <div class="d-flex justify-content-between mt-3" style="position: relative;">
+          <div>
+
+          </div>
+          <div>
+            <a sec:authorize="hasAuthority('Karyawan')" style="background-color: #7698F0; border-color: #7698F0;border-radius: 10px" th:href="@{/retur/add}" class="mx-2 btn btn-primary text-black">+Tambah Retur</a>
+          </div>
+        </div>
+        <div class="d-flex align-middle py-5">
+          <label class="pe-3 pt-2">Tanggal:</label>
+          <input type="date" class="form-control w-50 ml-2" id="date">
+      </div>
+      <br>
+      <div class="mt-1" th:if="*{listRetur.size() != 0}">
+        <table id="table_result" class="display table table-striped">
+          <thead style="background-color: #ADF6F6">
+            <tr>
+              <th scope="col"  class="text-center align-middle">No</th>
+              <th scope="col"  class="text-center align-middle">Tanggal</th>
+              <th scope="col"  class="text-center align-middle">Kode</th>
+              <th scope="col"  class="text-center align-middle">Obat Lama</th>
+              <th scope="col"  class="text-center align-middle">Kuantitas Lama</th>
+              <th scope="col"  class="text-center align-middle">Harga Obat Lama</th>
+              <th scope="col"  class="text-center align-middle">Obat Baru</th>
+              <th scope="col"  class="text-center align-middle">Kuantitas Baru</th>
+              <th scope="col"  class="text-center align-middle">Harga Obat Baru</th>
+              <th scope="col"  class="text-center align-middle">Status</th>
+              <th scope="col"  class="text-center align-middle" sec:authorize="hasAuthority('Karyawan')">Action</th>
+            </tr>
+      
+            <tr class="bg-white">
+              <td scope="col"></td>
+              <td scope="col"></td>
+              <td scope="col" id="search">Kode</td>
+              <td scope="col" id="search">Obat Lama</td>
+              <td scope="col" id="search">Kuantitas Lama</td>
+              <td scope="col" id="search">Harga Obat Lama</td>
+              <td scope="col" id="search">Obat Baru</td>
+              <td scope="col" id="search">Kuantitas Baru</td>
+              <td scope="col" id="search">Harga Obat Baru</td>
+              <td scope="col" id="search">Status</td>
+              <td sec:authorize="hasAuthority('Karyawan')"></td>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr>
+              <td></td>
+              <td></td>
+              <td>Kode</td>
+              <td>Obat Lama</td>
+              <td>Kuantitas Lama</td>
+              <td>Harga Obat Lama</td>
+              <td>Obat Baru</td>
+              <td>Kuantitas Baru</td>
+              <td>Harga Obat Baru</td>
+              <td>Status</td>
+              <td sec:authorize="hasAuthority('Karyawan')">Action</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:unless="*{listRetur.size() != 0}">
+        <h2 style="text-align: center;" th:text="'Tidak ada Retur'"></h2>
+      </div>
+      <span id="role" hidden th:text="${role}"></span>
+
+      <div class="modal hide fade centered" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-center">Konfirmasi Verifikasi Retur Obat</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <p>Apakah Anda yakin data sudah sesuai? Anda akan menyetujui retur obat.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+              <button class="btn btn-primary" id="terima" style="background-color: #7698F0; border-color: #7698F0; color: white;" type="submit">Terima</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal hide fade centered" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-center">Tolak dan Ajukan Revisi</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <p class="text-center">Anda akan menolak pengajuan retur dan karyawan akan segera memperbaiki data retur ini. Anda harus kembali me-review pengajuan retur ini di kemudian hari.</p>
+              <form id="feedbackForm" method="POST">
+                <div class="form-group">
+                  <label class="col-form-label">Feedback Penolakan</label>
+                  <textarea class="form-control" name="feedback" id="feedback"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+              <button class="btn btn-primary" id="tolak" style="background-color: #7698F0; border-color: #7698F0; color: white;" type="submit">Tolak</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal hide fade centered" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="px-5 modal-dialog modal-dialog-centered text-center">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-center">Detail Penolakan Pengajuan Retur Obat</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <p>Pengajuan Anda telah ditolak oleh Apoteker. Dimohon untuk merevisi informasi retur untuk di-review kembali oleh Apoteker.</p>
+              <hr>
+              <h5 class="font-weight-bold text-left">Feedback Penolakan</h5>
+              <p id="detailFeedback"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+              <button class="btn btn-primary" id="revisi" style="background-color: #7698F0; border-color: #7698F0; color: white;" type="submit">Revisi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  var role = $('#role').text();
+
+  $(document).ready(function () {
+
+    $('#table_result #search').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+    });
+
+    $.fn.dataTableExt.afnFiltering.push(
+      function( oSettings, aData, iDataIndex ) {
+        var startDate = $('#date').val();
+        var endDate = $('#date').val();
+        var colValue = aData[1]; 
+        var dateValue = new Date(colValue);
+        if (startDate == "" && endDate == "") {
+          return true;
+        }
+        else if (startDate != null && endDate == ""){
+          if(new Date(startDate) <= dateValue) {
+            return true;
+          }
+        }
+        else if ( startDate == "" && endDate != "") {
+          if(dateValue <= new Date(endDate)) {
+            return true;
+          }
+        }
+        else if (startDate != null && endDate != null){
+          if(new Date(startDate) <= dateValue && dateValue <= new Date(endDate)) {
+            return true;
+          }
+        }
+        return false;
+      }
+    );
+
+    $('#date').change(function () {
+      table.draw();
+    });
+
+    if (role == "Karyawan") {
+      var table = $('#table_result').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+  
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+  
+        "ajax": {
+          "url": "/api/v1/retur/list-all",
+          "dataSrc": ''
+        },
+        "bDestroy": true,
+  
+        "searching": true,
+          "ordering": true,
+          "columnDefs": [
+          {
+            "targets": [1, 2],
+            "bVisible": false
+          },
+          {
+              "targets": [10],
+              "bSortable": false
+          }
+          ],
+          "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0)', nRow).html(iDisplayIndexFull +1);
+          },
+          "columns": [
+                  {"data": null, "width": '10px'},
+                  {"data": "tanggal", width: '50px'},
+                  {"data": "kode", "width": '80px'},
+                  {"data": "obatLama", width: '150px'},
+                  {"data": "kuantitasLama", width: '80px'},
+                  {"data": "hargaLama", width: '100px'},
+                  {"data": "obatBaru", width: '150px'},
+                  {"data": "kuantitasBaru", width: '80px'},
+                  {"data": "hargaBaru", width: '100px'},
+                  {"data": "status", width: '100px'},
+                  {"data": "feedback", "width": '50px', "render": function (data, type, row, meta) {
+                    if (row.status == "Menunggu") {
+                      return '<a style="border-radius: 10px" class="btn btn-warning">Revisi</a>';
+                    } else if (row.status == "Ditolak") {
+                      return '<button type="button" id="detail" class="btn btn-primary" style="border-radius: 10px;" data-toggle="modal" data-target="#modal3">Detail</button>';
+                    }
+                    return null;}
+                  }
+              ]
+          
+      });
+
+      $('#table_result tbody').on('click', 'a', function (e) {
+        var $row = $(this).closest("tr");
+        var id = $('#table_result').DataTable().row($row).data()['kode'];
+
+        window.location = "/retur/revisi/" + id;
+      });  
+
+      $('#table_result tbody').on('click', 'button', function (e) {
+        var $row = $(this).closest("tr");
+        var id = $('#table_result').DataTable().row($row).data()['kode'];
+
+        $('#modal3').on('shown.bs.modal', function (event) {
+          document.getElementById("detailFeedback").innerHTML = $('#table_result').DataTable().row($row).data()['feedback'];
+          $("#revisi").on("click",function(){
+            window.location = "/retur/revisi/" + id;
+         });
+        });
+      });  
+
+    } else if (role == "Apoteker") {
+      var table = $('#table_result').DataTable({
+        initComplete: function () {
+            // Apply the search
+            this.api()
+                .columns()
+                .every(function () {
+                    var that = this;
+
+                    $('input', this.header()).on('keyup change clear', function () {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    });
+                });
+        },
+
+        "ajax": {
+          "url": "/api/v1/retur/list-all",
+          "dataSrc": ''
+        },
+        "bDestroy": true,
+
+        "searching": true,
+          "ordering": true,
+          "columnDefs": [
+          {
+            "targets": [1, 2],
+            "bVisible": false
+          },
+          ],
+          "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0)', nRow).html(iDisplayIndexFull +1);
+          },
+          "columns": [
+                  {"data": null, "width": '10px'},
+                  {"data": "tanggal", width: '50px'},
+                  {"data": "kode", "width": '80px'},
+                  {"data": "obatLama", width: '150px'},
+                  {"data": "kuantitasLama", width: '100px'},
+                  {"data": "hargaLama", width: '100px'},
+                  {"data": "obatBaru", width: '150px'},
+                  {"data": "kuantitasBaru", width: '100px'},
+                  {"data": "hargaBaru", width: '100px'},
+                  {"data": "status", width: '200px', defaultContent: '<button type="button" id="acc" class="btn btn-primary mr-3" style="border-radius: 10px;" data-toggle="modal" data-target="#modal1">Terima</button><button type="button" id="dec" class="btn btn-danger ml-2" style="border-radius: 10px;" data-toggle="modal" data-target="#modal2">Tolak</button>'},
+              ]
+          
+      });
+
+      $('#table_result tbody').on('click', 'button', function (e) {
+        var $row = $(this).closest("tr");
+        var id = $('#table_result').DataTable().row($row).data()['kode'];
+
+        var url = "/retur/verifikasi/";
+
+        $('#modal1').on('shown.bs.modal', function (event) {
+          $("#terima").on("click",function(){
+            $.ajax({
+              type: "GET",
+              url: url,
+              data: {
+                "returId" : id,
+                "status" : "Diterima",
+                "feedback" : ""
+              },
+              success: function(msg) {
+                window.location = "/retur/viewall";
+              },
+          });
+         });
+        });
+
+        $('#modal2').on('shown.bs.modal', function (event) {
+          $("#tolak").on("click",function(){
+            var feedback = $("#feedback").val();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                  "returId" : id,
+                  "status" : "Ditolak",
+                  "feedback" : feedback
+                },
+                success: function(msg) {
+                  window.location = "/retur/viewall";
+                },
+            });
+         });
+        })
+      });  
+    } 
+});
+</script>
+
+</body>
+</html> 

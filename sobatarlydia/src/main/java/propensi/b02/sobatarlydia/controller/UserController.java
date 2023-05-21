@@ -53,6 +53,7 @@ public class UserController {
 
     @PostMapping("/add")
     public String savePengguna(@ModelAttribute PenggunaModel pengguna, Model model) {
+        System.out.println(pengguna.getPassword());
         PenggunaModel savedUser = userService.addPengguna(pengguna);
         if (savedUser == null) {
             model.addAttribute("stat",1);

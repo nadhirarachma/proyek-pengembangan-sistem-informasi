@@ -54,4 +54,10 @@ public class ReturObatModel {
 
     @Column(name = "jml_obt_baru_ditukar")
     private int jumlahObatBaruDitukar;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "feedback")
+    private String feedback;
 }
