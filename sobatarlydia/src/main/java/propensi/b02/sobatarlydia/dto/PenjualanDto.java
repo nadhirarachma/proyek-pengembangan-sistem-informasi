@@ -1,5 +1,7 @@
 package propensi.b02.sobatarlydia.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -20,4 +22,7 @@ public class PenjualanDto {
 
     @JsonProperty("harga")
     private String harga;
+
+    @JsonProperty("lst_obat")
+    private List<String> listObat;
 }

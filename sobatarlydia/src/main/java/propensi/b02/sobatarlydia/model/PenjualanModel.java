@@ -3,8 +3,10 @@ package propensi.b02.sobatarlydia.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,4 +44,7 @@ public class PenjualanModel {
     @JsonIgnore
     @OneToMany(mappedBy = "id.penjualan")
     private List<KuantitasModel> kuantitas;
+
+    @OneToMany(mappedBy = "returId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ReturObatModel> retur;
 }
