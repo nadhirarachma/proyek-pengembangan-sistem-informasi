@@ -25,7 +25,7 @@
 </head>
 
 <body style="background-color: #EBFEFF">
-    <nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+    <nav th:replace="fragments/fragment :: navbar(page = 'Retur')"></nav>
 
 
     <div class="container">
@@ -123,7 +123,7 @@
                                                         <td>             
                                                             <select class="form-control" th:field="*{obatlama}">        
                                                                 <option  th:each="pilihan, iterationStatus:${penjualan.kuantitas}" 
-                                                                    th:value="${pilihan.id}" th:text="${pilihan.id.obat.obatDetailId.idObat.namaObat}"
+                                                                    th:value="${pilihan.id.obat.obatDetailId.idObat.namaObat}" th:text="${pilihan.id.obat.obatDetailId.idObat.namaObat}"
                                                                     >
                                                                 </option>
                                                             </select>

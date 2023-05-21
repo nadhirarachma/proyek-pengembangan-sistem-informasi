@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Retur Obat</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Urbanist' rel='stylesheet'>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    <style>
+        .required-field::after {
+            content: "*";
+            color: red;
+        }
+    </style>
+</head>
+
+<body style="background-color: #EBFEFF">
+<nav th:replace="fragments/fragment :: navbar(page = 'Obat')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 class="text-center p-2 m-2" style="font-family:Urbanist;font-weight: bold">Update Retur Obat</h2>
+                <br>
+                <form th:action="@{/retur/update}" th:object="${returdto}" method="POST">
+
+                    <input type="hidden" th:field="*{kode}"/>
+<!--                    <input class="form-control" type="number" min=0 th:field="*{kode}">-->
+
+                    <div class="row">
+                        <div class="col">
+                            <label class="required-field">
+                                Obat Lama:
+                            </label>
+                            <select class="form-control" th:field="*{obatlama}">
+                                <option  th:each="pilihan, iterationStatus:${penjualan.kuantitas}"
+                                         th:value="${pilihan.id.obat.obatDetailId.idObat.namaObat}" th:text="${pilihan.id.obat.obatDetailId.idObat.namaObat}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label class="required-field">
+                                Obat Baru:
+                            </label>
+                            <select id="aaa" class="form-control" th:field="*{obatbaru}">
+                                <option  th:each="pilihan, iterationStatus:${listobat}"
+                                         th:value="${pilihan.idObat}" th:text="${pilihan.namaObat}"
+                                >
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label class="required-field">
+                                Kuantitas Obat Lama:
+                            </label>
+                            <input class="form-control" type="number" min=0 th:field="*{kuantitaslama}">
+                        </div>
+
+                        <div class="col">
+                            <label class="required-field">
+                                Kuantitas Obat Baru:
+                            </label>
+                            <input class="form-control" type="number" min=0 th:field="*{kuantitasbaru}">
+                        </div>
+                    </div>
+
+                    <div class="row gx-5">
+                        <div class="col">
+                            <a class="btn btn-primary float-right" style="background-color: white; border-color: #5FE7E7; color: #161A1E; font-family:Urbanist" href="/">Batal</a>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary" style="background-color: #5FE7E7; border-color: #5FE7E7; color: white; font-family:Urbanist;font-weight: bold" type="submit">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="modal fade centered" id="myModal" role="dialog">
+                    <div class="px-5 modal-dialog modal-dialog-centered text-center">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-center">Retur Obat Gagal Diperbarui</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Masa retur obat sudah berakhir karena pembelian produk sudah lewat satu pekan</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Oke</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<button th:if="${stat == 0}" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+
+<script th:replace="fragments/fragment :: js"></script>
+<script>
+    document.getElementById("btn").click();
+</script>
