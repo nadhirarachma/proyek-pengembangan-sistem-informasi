@@ -44,8 +44,8 @@ public class ReturRestController {
             dto.setKuantitasBaru(Integer.toString(retur.getJumlahObatBaruDitukar()));
 
             NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
-            String hargaLama = nf.format(retur.getObatLama().getObatDetailId().getIdObat().getHarga());
-            String hargaBaru = nf.format(retur.getObatBaru().getObatDetailId().getIdObat().getHarga());
+            String hargaLama = nf.format(retur.getObatLama().getObatDetailId().getIdObat().getHarga() * retur.getJumlahObatLamaDitukar());
+            String hargaBaru = nf.format(retur.getObatBaru().getObatDetailId().getIdObat().getHarga() * retur.getJumlahObatBaruDitukar());
             dto.setHargaLama("Rp"+hargaLama);
             dto.setHargaBaru("Rp"+hargaBaru);
 
