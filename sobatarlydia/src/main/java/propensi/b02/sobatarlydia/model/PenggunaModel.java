@@ -54,4 +54,8 @@ public class PenggunaModel implements Serializable {
     // Relasi dengan RiwayatObatModel
     @OneToMany(mappedBy = "peubah", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RiwayatObatModel> listRiwayatObat;
+
+    // Relasi dengan PenawaranModel
+    @OneToMany(mappedBy = "distributor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PenawaranModel> listPenawaran;
 }

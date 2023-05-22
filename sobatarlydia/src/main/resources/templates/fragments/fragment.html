@@ -85,7 +85,7 @@
                     </ul>
                     <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Distributor', 'Apoteker')">
                         <li th:classappend="${page == 'Penawaran'} ? font-weight-bold : ''" class="nav-item">
-                            <a class="nav-link" href="/" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penawaran</a>
+                            <a class="nav-link" th:href="@{/penawaran/daftarkan-penawaran}" style="color: #161A1E; font-size: 20px; padding-right: 4.5rem">Penawaran</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mx-auto" sec:authorize="hasAnyAuthority('Karyawan', 'Apoteker')">
