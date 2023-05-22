@@ -44,6 +44,9 @@ public class PenawaranModel implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalKadaluarsa;
 
+    @Column(name = "status_penawaran", nullable = false)
+    private String statusPenawaran;
+
     // Relasi dengan PenggunaModel
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "distributor", referencedColumnName = "email")
