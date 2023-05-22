@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import propensi.b02.sobatarlydia.dto.InputReturDto;
-import propensi.b02.sobatarlydia.dto.ObatUpdtDTO;
 import propensi.b02.sobatarlydia.dto.ReturUpdtDto;
 import propensi.b02.sobatarlydia.model.*;
 import propensi.b02.sobatarlydia.service.ObatService;

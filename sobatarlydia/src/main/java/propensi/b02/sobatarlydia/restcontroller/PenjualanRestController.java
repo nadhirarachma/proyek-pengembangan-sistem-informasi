@@ -79,12 +79,15 @@ public class PenjualanRestController {
         List<PenjualanHarianDto> ph = new ArrayList<>();
 
         for (Map.Entry<ObatModel, Integer> set : map.entrySet()) {
-             PenjualanHarianDto phNew = new PenjualanHarianDto();
-             phNew.setObat(set.getKey().getNamaObat());
-             phNew.setKuantitas(set.getValue());
-             phNew.setHarga(set.getKey().getHarga() * set.getValue());
+            PenjualanHarianDto phNew = new PenjualanHarianDto();
+            phNew.setObat(set.getKey().getNamaObat());
+            phNew.setKuantitas(set.getValue());
 
-             ph.add(phNew);
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String harga = nf.format(set.getKey().getHarga() * set.getValue());
+            phNew.setHarga("Rp"+harga);
+
+            ph.add(phNew);
         }
 
         System.out.println(ph);
@@ -119,7 +122,10 @@ public class PenjualanRestController {
         for (Map.Entry<LocalDate, Integer> set : map.entrySet()) {
              PendapatanBulananDto phNew = new PendapatanBulananDto();
              phNew.setTanggal(set.getKey());
-             phNew.setTotal(set.getValue());
+
+             NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+             String total = nf.format(set.getValue());
+             phNew.setTotal("Rp"+total);
 
              ph.add(phNew);
         }
@@ -152,7 +158,10 @@ public class PenjualanRestController {
         for (Map.Entry<String, Integer> set : map.entrySet()) {
             PendapatanTahunanDto phNew = new PendapatanTahunanDto();
             phNew.setTanggal(set.getKey());
-            phNew.setTotal(set.getValue());
+
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String total = nf.format(set.getValue());
+            phNew.setTotal("Rp"+total);
 
             ph.add(phNew);
         }

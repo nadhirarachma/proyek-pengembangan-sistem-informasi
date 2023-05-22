@@ -19,7 +19,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import java.text.NumberFormat;
+import java.util.Locale;
 @RestController
 @RequestMapping("/api/v1/obat")
 public class ObatRestController {
@@ -45,7 +46,11 @@ public class ObatRestController {
             ObatDto dto = new ObatDto();
             dto.setId(obat.getIdObat());
             dto.setNamaObat(obat.getNamaObat());
-            dto.setHarga(obat.getHarga());
+
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String harga = nf.format(obat.getHarga());
+            dto.setHarga("Rp"+harga);
+
             dto.setBentuk(obat.getBentukObat());
             dto.setKategori(obat.getKategori().getNamaKategori());
             dto.setFarmasi(obat.getFarmasi());
@@ -64,7 +69,11 @@ public class ObatRestController {
             ObatDto dto = new ObatDto();
             dto.setId(obat.getIdObat());
             dto.setNamaObat(obat.getNamaObat());
-            dto.setHarga(obat.getHarga());
+
+            NumberFormat nf = NumberFormat.getInstance(new Locale("id", "ID"));
+            String harga = nf.format(obat.getHarga());
+            dto.setHarga("Rp"+harga);
+            
             dto.setBentuk(obat.getBentukObat());
             dto.setKategori(obat.getKategori().getNamaKategori());
             dto.setFarmasi(obat.getFarmasi());

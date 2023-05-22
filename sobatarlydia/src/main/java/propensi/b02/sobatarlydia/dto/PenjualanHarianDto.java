@@ -13,5 +13,5 @@ public class PenjualanHarianDto {
     private int kuantitas;
 
     @JsonProperty("harga")
-    private int harga;
+    private String harga;
 }

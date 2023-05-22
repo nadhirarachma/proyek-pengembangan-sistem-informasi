@@ -42,12 +42,6 @@ public class ReturObatModel {
 
     @Column(name = "jml_obt_lama_ditukar")
     private int jumlahObatLamaDitukar;
-
-    // @OneToMany(mappedBy = "id")
-    // private List<ReturKuantitas> obatLama;
-    
-    // @OneToMany(mappedBy = "id")
-    // private List<ReturKuantitas2> obatBaru;
     
     @Column(name = "obat_baru")
     private ObatDetailModel obatBaru;
