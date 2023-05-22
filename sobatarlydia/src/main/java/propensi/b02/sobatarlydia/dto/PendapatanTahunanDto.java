@@ -9,5 +9,5 @@ public class PendapatanTahunanDto {
     private String tanggal;
     
     @JsonProperty("total")
-    private int total;
+    private String total;
 }

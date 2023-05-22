@@ -14,7 +14,7 @@ public class ObatDto {
     private String namaObat;
 
     @JsonProperty("harga")
-    private int harga;
+    private String harga;
 
     @JsonProperty("bentuk")
     private String bentuk;

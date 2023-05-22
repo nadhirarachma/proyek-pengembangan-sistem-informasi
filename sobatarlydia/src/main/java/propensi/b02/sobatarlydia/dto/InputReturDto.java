@@ -25,7 +25,4 @@ public class InputReturDto {
 
     @JsonProperty("kuantitas_obat_baru")
     int kuantitasobatbaru;
-    
-    // @JsonProperty("obat_baru")
-    // List<ReturKuantitas2> listObatBaru;
 }

@@ -11,5 +11,5 @@ public class PendapatanBulananDto {
     private LocalDate tanggal;
     
     @JsonProperty("total")
-    private int total;
+    private String total;
 }

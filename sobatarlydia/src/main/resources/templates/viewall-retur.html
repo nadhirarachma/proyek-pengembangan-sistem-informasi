@@ -262,7 +262,7 @@
         var $row = $(this).closest("tr");
         var id = $('#table_result').DataTable().row($row).data()['kode'];
 
-        window.location = "/retur/revisi/" + id;
+        window.location = "/retur/update/" + id;
       });  
 
       $('#table_result tbody').on('click', 'button', function (e) {
@@ -272,7 +272,7 @@
         $('#modal3').on('shown.bs.modal', function (event) {
           document.getElementById("detailFeedback").innerHTML = $('#table_result').DataTable().row($row).data()['feedback'];
           $("#revisi").on("click",function(){
-            window.location = "/retur/revisi/" + id;
+            window.location = "/retur/update/" + id;
          });
         });
       });  
