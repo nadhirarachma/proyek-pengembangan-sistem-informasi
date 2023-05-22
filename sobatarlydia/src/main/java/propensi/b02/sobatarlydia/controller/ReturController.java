@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import propensi.b02.sobatarlydia.dto.InputReturDto;
 import propensi.b02.sobatarlydia.dto.ReturUpdtDto;
 import propensi.b02.sobatarlydia.model.*;
+import propensi.b02.sobatarlydia.service.KuantitasService;
 import propensi.b02.sobatarlydia.service.ObatService;
 import propensi.b02.sobatarlydia.service.PenjualanService;
 import propensi.b02.sobatarlydia.service.ReturService;
@@ -37,6 +38,9 @@ public class ReturController {
 
     @Autowired
     ReturService returService;
+    
+    @Autowired
+    KuantitasService kuantitasService;
 
     @Autowired
     UserService userService;
@@ -74,6 +78,7 @@ public class ReturController {
         model.addAttribute("retur", retur);
         model.addAttribute("penjualan", penjualan);
     
+        
         return "form-add-retur";
     }
 
@@ -103,13 +108,28 @@ public class ReturController {
 
         returModel.setJumlahObatBaruDitukar(retur.getKuantitasobatbaru());
         returModel.setStatus("Menunggu");
+
+        for (KuantitasModel kuantitas: returModel.getPenjualan().getKuantitas()) {
+            if (kuantitas.getId().getObat().equals(returModel.getObatLama())) {
+                if (returModel.getJumlahObatLamaDitukar() > kuantitas.getKuantitas()) {
+                    model.addAttribute("statMsg", 3);
+                    model.addAttribute("penjualan", returModel.getPenjualan());
+                    model.addAttribute("retur", retur);
+                    model.addAttribute("tanggalbatasbawah", LocalDate.now().minusDays(7));
+                    model.addAttribute("tanggalbatasatas", LocalDate.now());
+                    return "form-add-retur";
+                }
+            }
+        }
+
         returService.add(returModel);
 
 
         model.addAttribute("statMsg", 2);
         model.addAttribute("penjualan", returModel.getPenjualan());
         model.addAttribute("retur", new InputReturDto());
-
+        model.addAttribute("tanggalbatasbawah", LocalDate.now().minusDays(7));
+        model.addAttribute("tanggalbatasatas", LocalDate.now());
     
         return "form-add-retur";
     }
@@ -182,6 +202,32 @@ public class ReturController {
        
         if (retur.getStatus().equals("Diterima")) {
             returService.verifikasiRetur(returObat, "Diterima");
+            PenjualanModel penjualan = returObat.getPenjualan();
+
+            KuantitasModel kuantitasbaru = null;
+
+            for (KuantitasModel kuantitas: penjualan.getKuantitas()) {
+                if (kuantitas.getId().getObat().getObatDetailId().getIdObat().getIdObat().equals(returObat.getObatLama().getObatDetailId().getIdObat().getIdObat())) {
+                    kuantitas.setKuantitas(kuantitas.getKuantitas() - returObat.getJumlahObatLamaDitukar());
+                    kuantitasService.addKuantitas(kuantitas);
+                }
+
+                if (kuantitas.getId().getObat().getObatDetailId().getIdObat().getIdObat().equals(returObat.getObatBaru().getObatDetailId().getIdObat().getIdObat())) {
+                    kuantitasbaru = kuantitas;
+                }
+            }
+
+            if (kuantitasbaru == null) {
+                KuantitasKey key = new KuantitasKey(returObat.getObatBaru(), penjualan);
+                kuantitasbaru = new KuantitasModel(key, returObat.getJumlahObatBaruDitukar());
+            } else {
+                kuantitasbaru.setKuantitas(kuantitasbaru.getKuantitas() + returObat.getJumlahObatBaruDitukar());
+            }
+
+            penjualan.getKuantitas().add(kuantitasbaru);
+
+            kuantitasService.addKuantitas(kuantitasbaru);
+
         } else {
             returObat.setFeedback(feedback);
             returService.verifikasiRetur(returObat, "Ditolak");
