@@ -38,9 +38,17 @@
         <div style="position: relative;">
           <h2 style="text-align: center;">Daftar Penawaran</h2>
         </div>
+        <div class="d-flex justify-content-between mt-3" style="position: relative;">
+          <div>
+
+          </div>
+          <div>
+            <a sec:authorize="hasAuthority('Distributor')" style="background-color: #7698F0; border-color: #7698F0;border-radius: 10px" th:href="@{/penawaran/daftarkan-penawaran}" class="mx-2 btn btn-primary text-black">+Tambah Penawaran</a>
+          </div>
+        </div>
         <br>
         <div th:if="*{listPenawaran.size() != 0}">
-          <table class="table">
+          <table id="mytable" class="table">
             <thead bgcolor="#ADF6F6">
             <tr>
               <th class="text-center">No</th>
@@ -123,11 +131,18 @@
           </table>
         </div>
         <div th:unless="*{listPenawaran.size() != 0}">
-          <h2 th:text="'Tidak ada penawaran'"></h2>
+          <h2 style="text-align: center;" th:text="'Tidak ada Penawaran'"></h2>
         </div>
 
       </div>
 
+      <script>
+        var table = document.getElementById('mytable');
+        for (var r = 1, n = table.rows.length; r < n; r++) {
+          table.rows[r].cells[5].innerHTML = "Rp" + Number(table.rows[r].cells[5].innerHTML).toLocaleString("id-ID");
+          table.rows[r].cells[6].innerHTML = "Rp" + Number(table.rows[r].cells[6].innerHTML).toLocaleString("id-ID");
+        }
+      </script>
 
 </body>
 </html>

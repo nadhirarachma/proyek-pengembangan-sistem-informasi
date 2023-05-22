@@ -27,6 +27,11 @@ public class PenawaranServiceImpl implements PenawaranService{
     }
 
     @Override
+    public PenawaranModel addPenawaran(PenawaranModel penawaran) {
+        return penawaranDb.save(penawaran);
+    }
+
+    @Override
     public PenawaranModel updateStatusPenawaran(PenawaranModel penawaran, String status) {
         penawaran.setStatusPenawaran(status);
         return penawaranDb.save(penawaran);
