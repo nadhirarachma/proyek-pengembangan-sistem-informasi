@@ -9,6 +9,7 @@ import java.util.List;
 public interface PenawaranService {
     public List<PenawaranModel> getAllPenawaran();
     public PenawaranModel getPenawaranById(Long id);
+    public PenawaranModel addPenawaran(PenawaranModel penawaran);
     public PenawaranModel updateStatusPenawaran(PenawaranModel penawaranModel, String status);
 
 }
