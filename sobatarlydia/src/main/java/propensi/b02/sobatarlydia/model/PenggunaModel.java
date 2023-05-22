@@ -35,6 +35,9 @@ public class PenggunaModel implements Serializable {
     @Column(name = "nama_belakang")
     private String namaBelakang;
 
+    @Column(name = "nama_perusahaan")
+    private String namaPerusahaan;
+
     @NotNull
     @Column(name = "nomor_telepon", nullable = false)
     private String nomorTelepon;

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View All Penawaran Obat</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+
+  <style>
+    .btn-primary {
+      background-color: #5FE7E7;
+      border-color: #5FE7E7;
+    }
+    .btn-outline-primary {
+      color: #5FE7E7;
+      border-color: #5FE7E7;
+    }
+    * {
+      font-family: 'Urbanist', sans-serif;
+    }
+    body {
+      background-color: #EBFEFF;
+    }
+  </style>
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar(page = 'Penawaran')"></nav>
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <div style="position: relative;">
+          <h2 style="text-align: center;">Daftar Penawaran</h2>
+        </div>
+        <br>
+        <div th:if="*{listPenawaran.size() != 0}">
+          <table class="table">
+            <thead bgcolor="#ADF6F6">
+            <tr>
+              <th class="text-center">No</th>
+              <th class="text-center">Tanggal Penawaran</th>
+              <th class="text-center">Nama Perusahaan</th>
+              <th class="text-center">Nama Obat</th>
+              <th class="text-center">Jumlah</th>
+              <th class="text-center">Satuan</th>
+              <th class="text-center">Total Harga</th>
+              <th class="text-center">Status</th>
+              <th th:if="*{role == 'Apoteker'}" class="text-center">Aksi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="penawaran, iterationStatus : ${listPenawaran}"
+                th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+              <td class="text-center" th:text="${iterationStatus.count}"></td>
+              <td class="text-center" th:text="${penawaran.tanggalpenawaran}"></td>
+              <td class="text-center" th:text="${penawaran.namaperusahaan}"></td>
+              <td class="text-center" th:text="${penawaran.namaobat}"></td>
+              <td class="text-center" th:text="${penawaran.jumlah}"></td>
+              <td class="text-center" th:text="${penawaran.harga}"></td>
+              <td class="text-center" th:text="${penawaran.totalharga}"></td>
+
+              <td class="text-center" th:text="${penawaran.statuspenawaran}"></td>
+              <td align="center" th:if="*{role == 'Apoteker'}">
+                <div th:if="*{penawaran.statuspenawaran == 'Menunggu'}">
+                  <a class="btn btn-primary text-black"  data-toggle="modal" data-target="#exampleModal" style="background-color: green; border-color: green">Terima</a>
+                  <a class="btn btn-primary text-black" data-toggle="modal" data-target="#exampleModal2" style="background-color: red; border-color: red">Tolak</a>
+                </div>
+                <p>-</p>
+                <!-- <a class="btn btn-primary text-black" type="submit" th:href="@{/penawaran/diterima/} + ${penawaran.id}" style="background-color: #5FE7E7; border-color: #5FE7E7">Terima</a> -->
+
+              </td>
+
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                   
+                      <div class="modal-body text-center">
+                        Anda yakin untuk menerima penawaran?
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-primary" type="submit" th:href="@{/penawaran/diterima/} + ${penawaran.id}">Yakin</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                   
+                      <div class="modal-body text-center">
+                        Anda yakin untuk menolak penawaran?
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-primary" type="submit" th:href="@{/penawaran/ditolak/} + ${penawaran.id}">Yakin</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div th:unless="*{listPenawaran.size() != 0}">
+          <h2 th:text="'Tidak ada penawaran'"></h2>
+        </div>
+
+      </div>
+
+
+</body>
+</html>

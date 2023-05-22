@@ -2,30 +2,33 @@ package propensi.b02.sobatarlydia.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import propensi.b02.sobatarlydia.model.PenawaranModel;
-import propensi.b02.sobatarlydia.model.PenjualanModel;
 import propensi.b02.sobatarlydia.repository.PenawaranDb;
-import propensi.b02.sobatarlydia.repository.PenjualanDb;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
-public class PenawaranServiceImpl implements PenawaranService {
+public class PenawaranServiceImpl implements PenawaranService{
     @Autowired
     private PenawaranDb penawaranDb;
-
     @Override
-    public PenawaranModel getPenawaranById(Long idPenawaran) {
-        Optional<PenawaranModel> penawaran = penawaranDb.findById(idPenawaran);
-        if (penawaran.isPresent()) {
-            return penawaran.get();
-        } else return null;
+    public List<PenawaranModel> getAllPenawaran() {
+        return penawaranDb.findAll();
     }
 
     @Override
-    public PenawaranModel addPenawaran(PenawaranModel penawaran) {
+    public PenawaranModel getPenawaranById(Long id){
+        Optional<PenawaranModel> penawaran = penawaranDb.findPenawaranModelById(id);
+        if(penawaran.isPresent()){
+            return penawaran.get();
+        }
+        else return null;
+    }
+
+    @Override
+    public PenawaranModel updateStatusPenawaran(PenawaranModel penawaran, String status) {
+        penawaran.setStatusPenawaran(status);
         return penawaranDb.save(penawaran);
     }
 }
