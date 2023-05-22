@@ -153,7 +153,7 @@ public class ReturController {
             stat=0;
         }
         if (stat==1){
-            return "redirect:/";
+            return "redirect:/retur/viewall";
         }
         model.addAttribute("returdto", retur);
         model.addAttribute("penjualan", penjualan);

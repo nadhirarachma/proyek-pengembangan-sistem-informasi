@@ -117,8 +117,9 @@
               <p class="text-center">Anda akan menolak pengajuan retur dan karyawan akan segera memperbaiki data retur ini. Anda harus kembali me-review pengajuan retur ini di kemudian hari.</p>
               <form id="feedbackForm" method="POST">
                 <div class="form-group">
-                  <label class="col-form-label">Feedback Penolakan</label>
-                  <textarea class="form-control" name="feedback" id="feedback"></textarea>
+                  <label class="col-form-label">Feedback Penolakan<span style="color:red"> *</span></label>
+                  <textarea class="form-control" name="feedback" id="feedback" required></textarea>
+                  <small id="alert" class="mt-3" style="color:red;display: inline-block;"></small>
                 </div>
               </form>
             </div>
@@ -353,7 +354,10 @@
           $("#tolak").on("click",function(){
             var feedback = $("#feedback").val();
 
-            $.ajax({
+            if (feedback.length == 0) {
+              document.getElementById('alert').innerHTML = 'Mohon mengisi Alasan Penolakan Pengajuan Retur Obat.';
+            } else {
+              $.ajax({
                 type: "POST",
                 url: url,
                 data: {
@@ -364,7 +368,8 @@
                 success: function(msg) {
                   window.location = "/retur/viewall";
                 },
-            });
+              });
+            }
          });
         })
       });  
