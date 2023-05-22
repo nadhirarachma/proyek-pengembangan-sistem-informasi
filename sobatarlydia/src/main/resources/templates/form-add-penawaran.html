@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftarkan Penawaran</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="bootstrap/js/bootstrap-modal.js"></script>
+  <script src="bootstrap/js/bootstrap-transition.js"></script>
+  <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+  <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+  <style>
+    label::after {
+      content: " *";
+      color: #e32;
+    }
+  </style>
+</head>
+<body style="background-color: #EBFEFF">
+<nav th:replace="fragments/fragment :: navbar(page = 'Penawaran')"></nav>
+
+
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Formulir Penawaran Obat</h2>
+        <br>
+        <form th:action="@{/penawaran/daftarkan-penawaran}" th:object="${penawaran}" method="POST">
+          <br>
+          <label>Nama Obat</label>
+          <input type="text" name="namaObat" class="form-control" required/>
+
+          <br>
+          <label>Jumlah Box</label>
+          <input name="jumlahBox" class="form-control" type="number" required/>
+
+          <br>
+          <label>Harga Satuan</label>
+          <input type="number" name="harga" class="form-control" required/>
+
+          <br>
+          <label>Tanggal Kadaluarsa</label>
+          <input type="date" name="tanggalKadaluarsa" class="form-control"required/>
+
+          <br>
+          <a class="btn btn-link" href="/">Home</a>
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+
+        <div class="modal fade centered" id="myModal" role="dialog">
+          <div class="px-5 modal-dialog modal-dialog-centered text-center">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title text-center">Penawaran Berhasil Didaftarkan</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Anda bisa melihat daftar penawaran</p>
+              </div>
+              <div class="modal-footer">
+                <a  th:href="@{/}" class="px-5 m-3 bg-warning btn text-white">Daftar Penawaran</a>
+<!--                ^masukin link view penawaran^-->
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button th:if="${statMsg} == 1" id="btn" hidden data-toggle="modal" data-target="#myModal">Click me</button>
+  <script>
+    document.getElementById('btn').click();
+  </script>
+
+
+</body>
+</html>
