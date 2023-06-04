@@ -37,6 +37,16 @@ public class ReturServiceImpl implements ReturService {
     }
 
     @Override
+    public List<ReturObatModel> getListReturForKaryawan() {
+        return returDb.findAllForKaryawan();
+    }
+
+    @Override
+    public List<ReturObatModel> getListReturForApoteker() {
+        return returDb.findAllForApoteker();
+    }
+
+    @Override
     public ReturObatModel getReturById(Long idRetur) {
         Optional<ReturObatModel> retur = returDb.findById(idRetur);
         if (retur.isPresent()) {

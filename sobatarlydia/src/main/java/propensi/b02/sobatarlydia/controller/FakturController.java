@@ -10,6 +10,8 @@ import propensi.b02.sobatarlydia.model.FakturModel;
 import propensi.b02.sobatarlydia.model.ObatDetailModel;
 import propensi.b02.sobatarlydia.service.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -49,7 +51,21 @@ public class FakturController {
     @GetMapping("/viewall")
     private String viewAllFaktur(Model model) {
         List<FakturModel> listFaktur = fakturService.getAllFaktur();
+
+        List<String> statusObat = new ArrayList<>(Arrays.asList(new String[listFaktur.size()]));
+        for (int i = 0; i < listFaktur.size(); i++) {
+
+            if (listFaktur.get(i).getStatusFaktur().equals("Belum Lunas")) {
+                for (int j = 0; j < listFaktur.get(i).getListObatDetail().size(); j++) {
+                    if (!listFaktur.get(i).getListObatDetail().get(j).getStatusKonfirmasi().equals("Diterima")) {
+                        statusObat.set(i, "Belum");
+                    }
+                }
+            }
+        }
+
         model.addAttribute("listFaktur", listFaktur);
+        model.addAttribute("statusObat", statusObat);
         return "viewall-faktur";
     }
 
