@@ -39,6 +39,8 @@ public class WebSecurityConfig {
             .antMatchers("/pengguna/viewall").hasAuthority("Admin")
             .antMatchers("/pengguna/add").hasAuthority("Admin")
             .antMatchers("/pengguna/profil").permitAll()
+            .antMatchers("/home.png").permitAll()
+            .antMatchers("/logo.png").permitAll()
             .antMatchers("/pengguna/update-password").permitAll()
             .antMatchers("/pengguna/update-password1").permitAll()
             .antMatchers("/pengguna/profil").permitAll()
