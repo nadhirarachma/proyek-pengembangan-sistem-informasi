@@ -246,62 +246,62 @@
     </div>
 
 <input type="text" class="form-control" id="host" hidden th:value="${host}" />
-<input type="text" class="form-control" id="datenow" hidden th:value="${tanggalbatasatas}" />
+<input type="text" class="form-control" id="datenow" hidden th:value="${selected}" />
 </body>
 
 
 
 <script th:inline="javascript">
-    $(document).ready(function () {
-        const host = $("#host").val();
-        const date = $("#datenow").val();
+    // $(document).ready(function () {
+    //     const host = $("#host").val();
+    //     const date = $("#datenow").val();
 
-        document.getElementById("tanggal").value = date;
+    //     document.getElementById("tanggal").value = date;
 
-        $('#table_result #search').each(function () {
-            var title = $(this).text();
-            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
-        });
+    //     $('#table_result #search').each(function () {
+    //         var title = $(this).text();
+    //         $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+    //     });
 
-        var table = $('#table_result').DataTable({
-            initComplete: function () {
-                this.api()
-                    .columns()
-                    .every(function () {
-                        var that = this;
+    //     var table = $('#table_result').DataTable({
+    //         initComplete: function () {
+    //             this.api()
+    //                 .columns()
+    //                 .every(function () {
+    //                     var that = this;
     
-                        $('input', this.header()).on('keyup change clear', function () {
-                            if (that.search() !== this.value) {
-                                that.search(this.value).draw();
-                            }
-                        });
-                    });
-            },
+    //                     $('input', this.header()).on('keyup change clear', function () {
+    //                         if (that.search() !== this.value) {
+    //                             that.search(this.value).draw();
+    //                         }
+    //                     });
+    //                 });
+    //         },
 
-            "ajax": {
-                "url": "/api/v1/penjualan/per-tanggal/",
-                "data" : { date: date },
-                "dataSrc": ''
-            },
-            "searching": true,
-            "ordering": true,
+    //         "ajax": {
+    //             "url": "/api/v1/penjualan/per-tanggal/",
+    //             "data" : { date: date },
+    //             "dataSrc": ''
+    //         },
+    //         "searching": true,
+    //         "ordering": true,
             
-            "columns": [
-                {"data": "kode", width: '25px'},
-                {"data": "waktu", width: '50px'},
-                {"data": "karyawan"},
-                {"data": "lst_obat"},
-                {"data": "harga"},
-                {"data": "null", render: function (data, type, row, meta) {
-                    return '<a class="btn btn-primary" href="/retur/add/?penjualan=' + row['kode'] +'">Pilih Penjualan</a>'
-                }},
+    //         "columns": [
+    //             {"data": "kode", width: '25px'},
+    //             {"data": "waktu", width: '50px'},
+    //             {"data": "karyawan"},
+    //             {"data": "lst_obat"},
+    //             {"data": "harga"},
+    //             {"data": "null", render: function (data, type, row, meta) {
+    //                 return '<a class="btn btn-primary" href="/retur/add/?penjualan=' + row['kode'] +'">Pilih Penjualan</a>'
+    //             }},
 
-                // {"data": null, defaultContent: '<a class="btn btn-primary" href="/?penjualan?">Pilih Penjualan</a>'}
+    //             // {"data": null, defaultContent: '<a class="btn btn-primary" href="/?penjualan?">Pilih Penjualan</a>'}
 
-            ]
-        });    
+    //         ]
+    //     });    
 
-    })
+    // })
 
   $('#tanggal').change(
     function() {

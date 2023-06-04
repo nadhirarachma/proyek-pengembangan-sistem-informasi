@@ -61,6 +61,9 @@ public class ReturController {
         model.addAttribute("statMsg", 1);
         model.addAttribute("penjualan", penjualanModel);
         model.addAttribute("listObat", listobat);
+
+        LocalDate now = LocalDate.of(penjualanModel.getWaktu().getYear(), penjualanModel.getWaktu().getMonthValue(), penjualanModel.getWaktu().getDayOfMonth());
+        model.addAttribute("selected", now);
     
         return "form-add-retur";
     }
