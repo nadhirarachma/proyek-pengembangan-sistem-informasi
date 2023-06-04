@@ -13,5 +13,7 @@ public interface ReturService {
     ReturUpdtDto makeReturUpdateDTO(ReturObatModel retur);
     void add(ReturObatModel retur);
     List<ReturObatModel> getListRetur();
+    List<ReturObatModel> getListReturForKaryawan();
+    List<ReturObatModel> getListReturForApoteker();
     ReturObatModel verifikasiRetur(ReturObatModel returObat, String status);
 }

@@ -30,8 +30,12 @@ public class ReturRestController {
     @GetMapping(value="/list-all")
     public List<ReturDto> findAllRetur(Principal principal) {
         String role = userService.getAkunByEmail(principal.getName()).getRole();
-
-        List<ReturObatModel> lst = returService.getListRetur();
+        
+        List<ReturObatModel> lst = returService.getListReturForKaryawan();
+        if (role.equals("Apoteker")) {
+            lst = returService.getListReturForApoteker();
+        }
+        
         return lst.stream().map(retur -> {
             ReturDto dto = new ReturDto();
             dto.setKode(retur.getReturId());
@@ -49,13 +53,7 @@ public class ReturRestController {
             dto.setHargaLama("Rp"+hargaLama);
             dto.setHargaBaru("Rp"+hargaBaru);
 
-            if (!retur.getStatus().equals("Menunggu")) {
-                dto.setStatus(retur.getStatus());
-            } else {
-                if (role.equals("Karyawan")) {
-                    dto.setStatus("Menunggu");
-                }
-            }
+            dto.setStatus(retur.getStatus());
             dto.setFeedback(retur.getFeedback());
             return dto;
         })

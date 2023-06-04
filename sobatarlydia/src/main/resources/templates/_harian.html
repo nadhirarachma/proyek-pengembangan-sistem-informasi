@@ -58,7 +58,11 @@
             </tbody>
 
             <tfoot>
-
+                <tr>
+                    <th colspan="1" style="text-align:right"></th>
+                    <th></th>
+                    <th></th>
+                </tr>
             </tfoot>
               
         </table>
@@ -67,6 +71,86 @@
   <input type="text" class="form-control" id="host" hidden th:value="${host}" />
   <br><br>
 </div>
+
+<script>
+    
+    $(document).ready(function () {
+
+        const host = $("#host").val();
+        var date = new Date();
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+
+        date = yyyy + '-' + mm + '-' + dd;
+
+        document.getElementById("date").value = date;
+        
+        $('#table_result #search').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+        });
+      
+        var table = $('#table_result').DataTable({
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var that = this;
+
+                        $('input', this.header()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+
+            "ajax": {
+                "url": "/api/v1/penjualan/harian",
+                "data" : { date: date },
+                "dataSrc": ''
+            },
+            "searching": true,
+            "ordering": true,
+            "autoWidth": false,
+            
+            "columns": [
+                {"data": "obat"},
+                {"data": "kuantitas"},
+                {"data": "harga"},
+            ],
+
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+     
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\Rp.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+     
+                // Total over all pages
+                total = api
+                    .column(2)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var totalAmount = 0;
+                for (var i = 0; i < data.length; i++) {
+                    totalAmount += data[i].kuantitas;
+                }
+     
+                // Update footer
+                $(api.column(0).footer()).html('Total:');
+                $(api.column(1).footer()).html(totalAmount);
+                $(api.column(2).footer()).html('Rp' + Number(total).toLocaleString("id-ID"));
+            },
+        });
+
+    });
+</script> 
 
 <script th:inline="javascript">
     
@@ -112,7 +196,34 @@
                 {"data": "obat"},
                 {"data": "kuantitas"},
                 {"data": "harga"},
-            ]
+            ],
+
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+     
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\Rp.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+     
+                // Total over all pages
+                total = api
+                    .column(2)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var totalAmount = 0;
+                for (var i = 0; i < data.length; i++) {
+                    totalAmount += data[i].kuantitas;
+                }
+     
+                // Update footer
+                $(api.column(0).footer()).html('Total:');
+                $(api.column(1).footer()).html(totalAmount);
+                $(api.column(2).footer()).html('Rp' + Number(total).toLocaleString("id-ID"));
+            },
         });    
     });
 </script>

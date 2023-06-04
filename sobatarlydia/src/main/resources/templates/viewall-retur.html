@@ -44,10 +44,10 @@
               <th scope="col"  class="text-center align-middle">Kode</th>
               <th scope="col"  class="text-center align-middle">Obat Lama</th>
               <th scope="col"  class="text-center align-middle">Kuantitas Lama</th>
-              <th scope="col"  class="text-center align-middle">Harga Obat Lama</th>
+              <th scope="col"  class="text-center align-middle">Total Harga Obat Lama</th>
               <th scope="col"  class="text-center align-middle">Obat Baru</th>
               <th scope="col"  class="text-center align-middle">Kuantitas Baru</th>
-              <th scope="col"  class="text-center align-middle">Harga Obat Baru</th>
+              <th scope="col"  class="text-center align-middle">Total Harga Obat Baru</th>
               <th scope="col"  class="text-center align-middle">Status</th>
               <th scope="col"  class="text-center align-middle" sec:authorize="hasAuthority('Karyawan')">Action</th>
             </tr>
@@ -58,10 +58,10 @@
               <td scope="col" id="search">Kode</td>
               <td scope="col" id="search">Obat Lama</td>
               <td scope="col" id="search">Kuantitas Lama</td>
-              <td scope="col" id="search">Harga Obat Lama</td>
+              <td scope="col" id="search">Total Harga Obat Lama</td>
               <td scope="col" id="search">Obat Baru</td>
               <td scope="col" id="search">Kuantitas Baru</td>
-              <td scope="col" id="search">Harga Obat Baru</td>
+              <td scope="col" id="search">Total Harga Obat Baru</td>
               <td scope="col" id="search">Status</td>
               <td sec:authorize="hasAuthority('Karyawan')"></td>
             </tr>
@@ -73,12 +73,12 @@
               <td>Kode</td>
               <td>Obat Lama</td>
               <td>Kuantitas Lama</td>
-              <td>Harga Obat Lama</td>
+              <td>Total Harga Obat Lama</td>
               <td>Obat Baru</td>
               <td>Kuantitas Baru</td>
-              <td>Harga Obat Baru</td>
+              <td>Total Harga Obat Baru</td>
               <td>Status</td>
-              <td sec:authorize="hasAuthority('Karyawan')">Action</td>
+              <td sec:authorize="hasAuthority('Karyawan')"></td>
             </tr>
           </tbody>
         </table>
@@ -229,7 +229,7 @@
             "bVisible": false
           },
           {
-              "targets": [10],
+              "targets": [0, 9, 10],
               "bSortable": false
           }
           ],
@@ -246,9 +246,16 @@
                   {"data": "obatBaru", width: '150px'},
                   {"data": "kuantitasBaru", width: '80px'},
                   {"data": "hargaBaru", width: '100px'},
-                  {"data": "status", width: '100px'},
+                  {"data": "status", "width": '100px', "render": function (data, type, row, meta) {
+                    if (row.status == "Menunggu, Pernah Direvisi") {
+                      return "Menunggu" + " " + '<span class="badge badge-primary" style="background-color:#26a69a">Pernah Direvisi</span>';
+                    } else if (row.status == "Menunggu, Sudah Direvisi") {
+                      return "Menunggu" + " " + '<span class="badge badge-primary" style="background-color:#3d6e69">Sudah Direvisi</span>';
+                    } 
+                    return row.status;}
+                  },
                   {"data": "feedback", "width": '50px', "render": function (data, type, row, meta) {
-                    if (row.status == "Menunggu") {
+                    if (row.status == "Menunggu" || row.status == "Menunggu, Pernah Direvisi" || row.status == "Menunggu, Sudah Direvisi") {
                       return '<a style="border-radius: 10px" class="btn btn-warning">Revisi</a>';
                     } else if (row.status == "Ditolak") {
                       return '<button type="button" id="detail" class="btn btn-primary" style="border-radius: 10px;" data-toggle="modal" data-target="#modal3">Detail</button>';
@@ -317,12 +324,19 @@
                   {"data": "tanggal", width: '50px'},
                   {"data": "kode", "width": '80px'},
                   {"data": "obatLama", width: '150px'},
-                  {"data": "kuantitasLama", width: '100px'},
-                  {"data": "hargaLama", width: '100px'},
+                  {"data": "kuantitasLama", width: '95px'},
+                  {"data": "hargaLama", width: '110px'},
                   {"data": "obatBaru", width: '150px'},
-                  {"data": "kuantitasBaru", width: '100px'},
-                  {"data": "hargaBaru", width: '100px'},
-                  {"data": "status", width: '200px', defaultContent: '<button type="button" id="acc" class="btn btn-primary mr-3" style="border-radius: 10px;" data-toggle="modal" data-target="#modal1">Terima</button><button type="button" id="dec" class="btn btn-danger ml-2" style="border-radius: 10px;" data-toggle="modal" data-target="#modal2">Tolak</button>'},
+                  {"data": "kuantitasBaru", width: '95px'},
+                  {"data": "hargaBaru", width: '110px'},
+                  {"data": "status", "width": '400px', "render": function (data, type, row, meta) {
+                    if (row.status == "Menunggu, Sudah Direvisi") {
+                      return '<button type="button" id="acc" class="btn btn-primary mr-2" style="border-radius: 10px;" data-toggle="modal" data-target="#modal1">Terima</button><button type="button" id="dec" class="btn btn-danger ml-2 mr-3" style="border-radius: 10px;" data-toggle="modal" data-target="#modal2">Tolak</button><span class="badge badge-primary" style="background-color:#3d6e69">Sudah<br>Direvisi&check;</span>';
+                    } else if (row.status == "Menunggu" || row.status == "Menunggu, Pernah Direvisi") {
+                      return '<button type="button" id="acc" class="btn btn-primary mr-2" style="border-radius: 10px;" data-toggle="modal" data-target="#modal1">Terima</button><button type="button" id="dec" class="btn btn-danger ml-2 mr-3" style="border-radius: 10px;" data-toggle="modal" data-target="#modal2">Tolak</button>';
+                    }
+                    return row.status;}
+                  },
               ]
           
       });

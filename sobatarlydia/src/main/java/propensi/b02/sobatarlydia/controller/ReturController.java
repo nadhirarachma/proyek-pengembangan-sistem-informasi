@@ -166,7 +166,13 @@ public class ReturController {
             retur1.setJumlahObatLamaDitukar(retur.getKuantitaslama());
             retur1.setJumlahObatBaruDitukar(retur.getKuantitasbaru());
             retur1.setFeedback(null);
-            retur1.setStatus("Menunggu");
+            
+            if (retur1.getStatus().equals("Ditolak")) {
+                retur1.setStatus("Menunggu, Sudah Direvisi");
+            } else {
+                retur1.setStatus("Menunggu, Pernah Direvisi");
+            }
+            
             returService.add(retur1);
         }
         else{

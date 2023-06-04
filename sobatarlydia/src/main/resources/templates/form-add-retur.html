@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col">
                             <label>Pilih Tanggal Penjualan</label>
-                            <input id="tanggal" class="col-xs-4 form-control" type="date" th:min="${tanggalbatasbawah}" th:max="${tanggalbatasatas}" th:field="*{tanggalPenjualan}" th:value="${tanggalPenjualan}"/>
+                            <input id="tanggal" class="col-xs-4 form-control" type="date" th:min="${tanggalbatasbawah}" th:max="${tanggalbatasatas}" th:field="*{tanggalPenjualan}"/>
                             <input th:if="${statMsg} == 1" hidden class="col-xs-4 form-control" th:field="*{idPenjualan}" th:value="${penjualan.id}"/>
                 
                             <div class="p-5">
@@ -246,46 +246,65 @@
     </div>
 
 <input type="text" class="form-control" id="host" hidden th:value="${host}" />
+<input type="text" class="form-control" id="datenow" hidden th:value="${tanggalbatasatas}" />
 </body>
 
 
 
 <script th:inline="javascript">
+    $(document).ready(function () {
+        const host = $("#host").val();
+        const date = $("#datenow").val();
+
+        document.getElementById("tanggal").value = date;
+
+        $('#table_result #search').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+        });
+
+        var table = $('#table_result').DataTable({
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var that = this;
+    
+                        $('input', this.header()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+
+            "ajax": {
+                "url": "/api/v1/penjualan/per-tanggal/",
+                "data" : { date: date },
+                "dataSrc": ''
+            },
+            "searching": true,
+            "ordering": true,
+            
+            "columns": [
+                {"data": "kode", width: '25px'},
+                {"data": "waktu", width: '50px'},
+                {"data": "karyawan"},
+                {"data": "lst_obat"},
+                {"data": "harga"},
+                {"data": "null", render: function (data, type, row, meta) {
+                    return '<a class="btn btn-primary" href="/retur/add/?penjualan=' + row['kode'] +'">Pilih Penjualan</a>'
+                }},
+
+                // {"data": null, defaultContent: '<a class="btn btn-primary" href="/?penjualan?">Pilih Penjualan</a>'}
+
+            ]
+        });    
+
+    })
+
   $('#tanggal').change(
     function() {
-    // const host = $("#host").val();
-    //   // $.getJSON("https://sobat-arlydia-production.up.railway.app/api/v1/obat/by-farmasi/", {
-    //   $.getJSON(host + "/api/v1/penjualan/per-tanggal/", {
-    //       date : $(this).val(),
-    //       ajax : 'true'
-    //   }, function(data) {
-    //       var html = '';
-    //       var len = data.length;
-    //       for ( var i = 0; i < len; i++) {
-
-    //         var lst = data[i].lst_obat.toString().split(",")
-    //         // alert(lst[0])
-    //         //   html += '<option value="' + data[i].kode + '">'
-    //         //           + data[i].kode + ' - ' +  data[i].harga + '</option>';
-
-    //         html += '<div class="card m-1 p-4">'
-    //         html += '   <input type="radio" id="' + data[i].kode + '" name="fav_language" value=" + ' + data[i].kode + '"">'
-
-    //         html += '   </br>'
-    //         html += '<p class="text-center font-weight-bold">ID Penjualan: ' + data[i].kode + '</p>'
-    //         html += '<p class="m-1">Daftar Obat: </p>'
-    //         html +=         '<ul class="my-1">' 
-    //         for (var j = 0; j < lst.length; j++) {
-    //             html +=         '<li>' + lst[j] + '</li>'
-
-    //         }
-    //         html +=         '</ul>' 
-    //         html += '</div>'
-
-    //       }
-    //       $('#nama').html(html);
-    //   });
-        
         const host = $("#host").val();
         const date = $(this).val();
 

@@ -56,6 +56,12 @@
                     <td>Data 3</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="1" style="text-align:right"></th>
+                    <th></th>
+                </tr>
+            </tfoot>
               
         </table>
     </div>
@@ -64,6 +70,95 @@
   <input type="text" class="form-control" id="host" hidden th:value="${host}" />
 
 </div>
+
+<script>
+    
+    $(document).ready(function () {
+
+        const host = $("#host").val();
+        var month = new Date();
+        var mm = String(month.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = month.getFullYear();
+
+        month = yyyy + '-' + mm;
+
+        document.getElementById("month").value = month;
+        
+        $('#table_result #search').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" class="form-control w-100" placeholder="Search ' + title + '" />');
+        });
+        
+        $('#table_result').DataTable({
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var that = this;
+    
+                        $('input', this.header()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+
+            "ajax": {
+                "url": "/api/v1/penjualan/bulanan",
+                "data" : { month: month },
+                "dataSrc": ''
+            },
+            "aoColumnDefs": [
+            {
+                "targets": [2],
+                "bSortable": false,
+            }, 
+            ],
+            "searching": true,
+            "ordering": true,
+            "autoWidth": false,
+            
+            "columns": [
+                {"data": "tanggal"},
+                {"data": "total"},
+                {"data": null, defaultContent: '<button class="btn btn-primary">Detail</button>'}
+            ],
+
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+     
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\Rp.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+     
+                // Total over all pages
+                total = api
+                    .column(1)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+     
+                // Update footer
+                $(api.column(0).footer()).html('Total:');
+                $(api.column(1).footer()).html('Rp' + Number(total).toLocaleString("id-ID"));
+            },
+        });
+        $('#table_result tbody').on('click', 'button', function () {
+            var $row = $(this).closest("tr");
+            var id = $row.find('td').first().text();
+
+            const host = $("#host").val();
+
+            var url= host + "/penjualan/laporan-penjualan/harian/" + id;
+            window.location = url;
+
+
+        });
+    });
+</script> 
 
 <script th:inline="javascript">
     $('#month').change(
@@ -113,7 +208,28 @@
                 {"data": "tanggal"},
                 {"data": "total"},
                 {"data": null, defaultContent: '<button class="btn btn-primary">Detail</button>'}
-            ]
+            ],
+
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api();
+     
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ? i.replace(/[\Rp.]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                };
+     
+                // Total over all pages
+                total = api
+                    .column(1)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+     
+                // Update footer
+                $(api.column(0).footer()).html('Total:');
+                $(api.column(1).footer()).html('Rp' + Number(total).toLocaleString("id-ID"));
+            },
         });
         $('#table_result tbody').on('click', 'button', function () {
             var $row = $(this).closest("tr");

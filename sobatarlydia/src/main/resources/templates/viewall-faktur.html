@@ -58,7 +58,12 @@
                             <td class="text-center" th:text="${faktur.noFaktur}"></td>
                             <td class="text-center" th:text="${faktur.tanggal}"></td>
                             <td class="text-center" th:text="${faktur.tanggalJatuhTempo}"></td>
-                            <td class="text-center" th:text="${faktur.statusFaktur}"></td>
+                            <div th:if="${statusObat[__${iterationStatus.index}__] == 'Belum'}">
+                                <td class="text-center"><h6 th:style="${iterationStatus.even} ? 'font-weight:bold;'" th:text="${faktur.statusFaktur}"></h6><span class="badge badge-pill badge-danger">Ada Input Obat yang Belum Diterima</span></td>
+                            </div>
+                            <div th:unless="${statusObat[__${iterationStatus.index}__] == 'Belum'}">
+                                <td class="text-center" th:text="${faktur.statusFaktur}"></td>
+                            </div>
                             <td align="center">
                                 <a class="btn btn-primary text-black" type="submit" th:href="@{/faktur/detail-faktur/} + ${faktur.noFaktur}" style="background-color: #5FE7E7; border-color: #5FE7E7">Detail</a>
                             </td>
