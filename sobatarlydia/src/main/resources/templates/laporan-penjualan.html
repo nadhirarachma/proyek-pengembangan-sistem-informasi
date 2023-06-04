@@ -20,17 +20,6 @@
     <div class="container w-75 mx-auto">
         <div class="row">
             <div class="col">
-                <!-- <ul class="nav nav-tabs mt-5" id="myTabs">
-                    <li class="nav-item"><a href="#harian" data-url="/harian" class="nav-link active">Harian</a></li>
-                    <li class="nav-item"><a href="#bulanan" data-url="/bulanan" class="nav-link">Bulanan</a></li>
-                    <li class="nav-item"><a href="#tahunan" data-url="/tahunan" class="nav-link">Tahunan</a></li>
-                </ul>
-    
-                <div class="tab-content pt-3">
-                    <div class="tab-pane active" id="harian">Active panel</div>
-                    <div class="tab-pane" id="bulanan"></div>
-                    <div class="tab-pane" id="tahunan"></div>
-                </div> -->
                 <label style="font-weight: normal;">Periode</label>
                 <div>
                     <select id="periode" class="form-control" name="no">
@@ -62,29 +51,9 @@
     <div id="content" class="card w-75 mx-auto">
 
     </div>
-    
-    <!-- <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script> -->
 
     <script>
-        // $('#myTabs a').click(function (e) {
-        //     e.preventDefault();
 
-        //     var url = "/penjualan/laporan-penjualan" + $(this).attr("data-url");
-        //     var href = this.hash;
-        //     var pane = $(this);
-            
-        //     // ajax load from data-url
-        //     $(href).load(url, function (result) {
-        //         pane.tab('show');
-        //     });
-        // });
-        
-        // // load first tab content
-        // $('#harian').load("/penjualan/laporan-penjualan" + $('.nav-link.active').attr("data-url"), function (result) {
-            
-        // });
         $('#periode').change(function (e) {
             e.preventDefault();
 
@@ -101,14 +70,8 @@
                 document.getElementById('tipe').hidden = false
             }
 
-
-            // alert(url);
-            // var href = this.hash;
-            // var pane = $(this);
-            
-            // ajax load from data-url
             $('#content').load(url, function (result) {
-                // pane.tab('show');
+
             });
         });
 
@@ -119,13 +82,9 @@
             var tipe = $(this).val();
 
             var url = "/penjualan/laporan-" + tipe + "/" + periode;
-            // alert(url);
-            // var href = this.hash;
-            // var pane = $(this);
-            
-            // ajax load from data-url
+
             $('#content').load(url, function (result) {
-                // pane.tab('show');
+
             });
         });
         

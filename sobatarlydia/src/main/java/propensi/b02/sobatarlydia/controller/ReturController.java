@@ -141,10 +141,6 @@ public class ReturController {
         ReturUpdtDto dto = returService.makeReturUpdateDTO(retur);
         PenjualanModel penjualan = penjualanService.getPenjualanById(retur.getPenjualan().getId());
         List<ObatModel> listobat = obatService.getListObat();
-//        System.out.println(returId1);
-//        System.out.println(penjualan.getKuantitas().size());
-//        System.out.println(retur.getObatBaru().getObatDetailId().getIdObat().getNamaObat());
-//        System.out.println(listobat);
 
         model.addAttribute("returdto", dto);
         model.addAttribute("penjualan", penjualan);
